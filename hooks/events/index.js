@@ -1,5 +1,5 @@
 //import ky from 'ky-universal'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery,useQueries } from 'react-query'
 
 const fetchPosts = async (limit = 10) => {
     
@@ -15,9 +15,10 @@ const fetchPosts = async (limit = 10) => {
   return parsed.filter((x) => x.id <= limit)
 }
 const usePosts = (limit) => {
+    console.log('asd')
   return useQuery({
     queryKey: ['posts', limit],
-    queryFn: () => fetchPosts(limit),
+    queryFn: ()=> fetchPosts(limit),
   })
 }
 

@@ -5,12 +5,14 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
+const queryClient = new QueryClient()
+
 export default function App({ Component, pageProps }: AppProps) {
 
-  const [queryClient] = React.useState(() => new QueryClient());
+ // const [queryClient] = React.useState(() => new QueryClient());
 
-  return  <QueryClientProvider client={queryClient}>
-       <Component {...pageProps} />
+  return  <QueryClientProvider client={queryClient}> 
+       <Component {...pageProps} /> 
        <ReactQueryDevtools initialIsOpen={true} />
      </QueryClientProvider>
 
