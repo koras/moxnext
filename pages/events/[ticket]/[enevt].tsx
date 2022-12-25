@@ -37,17 +37,25 @@ import {
 export const  CreateTicker = ( ) => {
 //export default function CreateTicker() {
 
-const { isLoading, error, data } = usePosts(10);
 
+const { isLoading, isError, data, error } = useQuery(
+  ['todos'],
+  () => fetchPosts(10)
+);
+ 
+//const { isLoading, error, data } = usePosts(10);
+if (isError) {
+  return <span>Ошибка: {error.message}</span>;
+}
 if (isLoading) return <p>Загрузка...</p>;
 if (error) return <p>Ошибка: {error.message}</p>;
  
  
 return (
   <div>
-      {/* {data.map((todo) => (
+      {data.map((todo) => (
           <li key={todo.id}>{todo.title}</li>
-        ))} */}
+        ))}
   </div>
 );
 }
