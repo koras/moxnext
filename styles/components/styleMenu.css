@@ -1,0 +1,38 @@
+.menu 
+{
+  display: block; 
+  padding: 0px 0px ;
+  margin: 20px 0px 0px 0px;
+}
+.menu ul 
+{ 
+  width: 65%; 
+  display: block; 
+  margin: 0px 0px;
+  padding: 0px;
+}
+
+.menu li
+{ 
+  width: 100%;
+  display: block;
+  text-align: left;
+  margin: 0px ;
+} 
+
+.menu li a 
+{ 
+  display: block;
+  color: #6a6867;
+  padding: 10px 20px 10px 10px;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 16px;
+  border: 1px solid #fff; 
+}
+.menu li a:hover
+{ 
+  color:#222121;
+  border: 1px solid #d6d6d6;
+  background:  #eeeeee;
+}
