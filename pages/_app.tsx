@@ -1,9 +1,6 @@
-import '../styles/globals.css'
-import './../components/styleContent.css';
-import './../components/menu/styleMenu.css'; 
-import './../components/header/styleHeader.css'; 
-import './../components/LKHeader/style.css'; 
-import './../components/search/styleSearch.css'; 
+
+import '../styles/globals.css' 
+
  
 
 

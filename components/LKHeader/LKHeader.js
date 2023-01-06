@@ -9,7 +9,7 @@ import { GoogleLogin,GoogleLogout } from 'react-google-login';
 
 //import Button from '@mui/material-next/Button';
 
-//import './style.css';
+import style  from './styleHead.module.css';
   
 
 
@@ -61,19 +61,15 @@ export const LKHeader =() => {
 const  GetProfile =()=> {
   if(profile && profile.name){
     console.log('user image',profile);
-    return  <div className='profile-box' >
-            
-            <div  onClick={toProfile} className="moex-button-profile"> Кабинет (0)</div>   
-             
- 
-      
+    return  <div className={style.profileBox} >
+            <div  onClick={toProfile} className={style.moexButtonProfile}> Кабинет (0)</div>   
             <GoogleLogout clientId={clientId} 
                  render={renderProps => (
-                  <div className='profile-box'> 
+                  <div className={style.profileBox}> 
                     <div    
                     type="submit"
                     color="primary"
-                    className="auth-google"
+                    className={style.authGoogle}
                     onClick={renderProps.onClick}
                   >
                     {iconGoogle}
@@ -90,16 +86,14 @@ const  GetProfile =()=> {
     } else {
       return <div><GoogleLogin
               render={renderProps => (
-                <div > <div    
+                 <div    
                   type="submit" 
-           
                   color="primary"
-                  className="auth-google"
+                  className={style.authGoogle}
                   onClick={renderProps.onClick}
                 >
                   {iconGoogle}
                  <span>Войти в профиль</span>
-              </div>
               </div>
               )}
             clientId={clientId}
@@ -113,9 +107,9 @@ const  GetProfile =()=> {
 }
 
 return (
-  <div className="header-box-lk"> 
-  <div className="header-box-lk__light">  
-      <div className="header-box-lk__input"> {<GetProfile/>}</div>
+  <div className={style.headerBoxLk}> 
+  <div className={style.headerBoxLk__light}>  
+      <div className={style.headerBoxLk__input}> {<GetProfile/>}</div>
   </div> 
  </div> 
  

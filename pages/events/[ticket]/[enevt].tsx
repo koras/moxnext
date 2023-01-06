@@ -11,6 +11,9 @@ import { news } from "./../../../stories/storeNews";
 
 import { fetchPosts,usePosts  } from '../../../hooks'
 
+import ContentBox from "./../../../components/ContentBox";
+
+
 import {
   useQuery,
   useMutation,
@@ -41,7 +44,7 @@ export const  CreateTicker = ( ) => {
 // const { isLoading, isError, data, error } = useQuery(
 //   ['todos'],
 //   () => fetchPosts(10)
-// );
+// ); 
 
  
 const{ isLoading, isError, data, error }  = usePosts(10);
@@ -55,11 +58,13 @@ console.log(data);
 
  
 return (
-  <div>
-      {data.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))}
-  </div>
+  <ContentBox >
+    <div>
+        {data.map((todo) => (
+            <li key={todo.id}>{todo.title}</li>
+          ))}
+    </div>
+  </ContentBox>
 );
 }
 

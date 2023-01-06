@@ -5,10 +5,10 @@ import ContentBox from "../components/ContentBox";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Dashboard() {
+export default function Inspects() {
   return (
         <ContentBox hideBorder={false}>
-             dashboard  dashboard
+           inspects
         </ContentBox>
   )
 }

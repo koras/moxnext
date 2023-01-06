@@ -1,7 +1,7 @@
  
 import Link from 'next/link'
   
-  //import './styleHeader.css';
+  import style from'./styleHeader.module.css';
    
   import Search from './../search/Search';
   import LKHeader from './../LKHeader/LKHeader';
@@ -20,8 +20,8 @@ import Link from 'next/link'
   
   function Menu() {
     return ( 
-        <div className="head">
-          <div className="logo" >
+        <div className={style.head}>
+          <div className={style.logo} >
             <Link href="/">MoexBox</Link>
           </div>
           <div style={searchStyle} >

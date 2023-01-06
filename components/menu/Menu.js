@@ -2,7 +2,7 @@
 // import {
 //   useLocation,    matchPath
 // } from "react-router-dom"; 
-//import './../../styles/components/styleMenu.css';
+import style from './styleMenu.module.css';
  
 
 import Link from 'next/link'
@@ -18,7 +18,7 @@ function Menu() {
  // console.log(routeF );
 //   console.log(matchPath(location.pathname,'inspects'))
   return ( 
-    <div className="menu"> 
+    <div className={style.menu}> 
       <ul>
           <li>
             <Link href="/dashboard">Анализировать</Link>
@@ -27,7 +27,7 @@ function Menu() {
             <Link href="/inspects">Модерировать</Link>
           </li>
           <li>
-            <Link href="/inspects">Отслеживать</Link>
+            <Link href="/#">Отслеживать</Link>
           </li>
         </ul> 
      </div> 

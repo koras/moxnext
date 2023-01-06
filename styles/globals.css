@@ -81,3 +81,107 @@
 
  
  
+* {
+  font-size: 16px;
+  color:#6a6867;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-google { 
+  background: #eeeeee;
+  padding: 3px;
+  display: inline-flex;
+  box-shadow: none;
+  border: 1px solid #d6d6d6;
+  border-radius: 3px;
+}
+.auth-google svg { 
+  background: #eeeeee; 
+  box-shadow: none; 
+  margin: 5px;
+}
+.auth-google span{ 
+  box-shadow: none;
+  padding: 3px 2px;
+  display: inherit;
+  font-weight: 400;
+  font-size: 14px;
+}
+.auth-google:hover { 
+  border: 1px solid #919191;
+} 
+
+.user-head-profile {
+  
+}
+.user-head-profile img {
+  width: 25px;
+}
+
+.moex-button { 
+  display: contents;
+  background: #eeeeee;
+  padding: 5px; 
+  box-shadow: none;
+  border: 1px solid #eeeeee;
+  border-radius: 3px;
+  background: #eceb93;
+}
+.moex-button:hover {
+  border: 1px solid #d6d6d6;
+}
+
+.moex-button-profile {
+  width: auto;
+  background: #eeeeee;
+  padding: 5px; 
+  box-shadow: none;
+  border: 1px solid #d6d6d6;
+  border-radius: 3px;
+  font-size: 15px;
+}
+.moex-button:hover { 
+  border: 1px solid #919191;
+}
+
+.profile-box {
+  display: inline-flex;
+}
+
+.moex-button-profile{
+  background: #eeeeee;
+  padding: 5px;
+  display: inline-block;
+  box-shadow: none;
+  border: 1px solid #d6d6d6;
+  border-radius: 3px;
+  font-weight: 400;
+  margin: 0px 10px 0px 0px;
+  cursor: pointer;
+}
+.moex-button-profile:hover {
+  border: 1px solid #919191;
+}
