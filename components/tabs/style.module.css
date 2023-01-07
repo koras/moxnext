@@ -1,0 +1,130 @@
+.tabs{
+  color: #5e5e5e;
+  display: flex; 
+  padding: 0px 0px ;
+  margin: 0px 0px 0px 0px;
+}
+.tabList  
+{  
+  display: block; 
+  margin: 0px 0px;
+  padding: 0px;
+  width: -webkit-fill-available;
+}
+
+.tabList ul 
+{ 
+  width: 100%; 
+  display: flex; 
+  margin: 0px 0px;
+  padding: 0px;
+}
+
+.tabList li
+{ 
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin: 0px ;
+} 
+
+.tabList li .tabButton
+{ 
+  cursor: pointer;
+  display: block;
+  padding: 10px 10px;
+  font-weight: 100;
+  background:  #FAFAFA;
+  text-decoration: none;
+  font-size: 16px;
+  border: 1px solid #eeeeee ;
+  border-right: 0px solid #ffffff ;
+  height: 45px;
+}
+
+ 
+
+.tabList .active .tabButton
+{  
+  border: 1px solid #eeeeee; 
+  background:  #EEEEEE;
+}
+.tabList li:first-letter div 
+{  
+  border-left: 1px solid #ECECEC; 
+}
+
+.tabList li .tabButton:hover
+{  
+  background:  #FAFAFA;
+  background:  #EEEEEE;
+}
+
+.tabList .active .tabButton:hover
+{ 
+  border: 1px solid #ECECEC;
+  background:  #FAFAFA;
+  background:  #EEEEEE;
+}
+
+
+.tabButton__title {
+  
+  font-size: 15px;
+}
+
+.tabButton__titleOne {
+  padding: 0px 10px 15px 10px;
+  font-size: 15px;
+} 
+.tabButton__hint {
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  font-size: 12px;
+}
+.tabButton__hintHide {
+  display: none;
+}
+.tabInfoBlock {
+  width: 40%;
+  display: flex;
+  padding: 2px 10px;
+  font-weight: 500;
+  background: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  border: 1px solid #ffffff;
+  height: 61px;
+}
+.tabInfoBlockName {
+  color: #a1a1a1;
+  font-size: 22px;
+  padding: 12px 2px;
+
+}
+.tabInfo {
+  display: block;
+  width: 100%; 
+}
+.tabInfoHint {
+  font-weight: bold;
+  font-size: 12px; 
+}
+.tabInfoName { 
+  padding: 3px 0px; 
+}
+.minus {
+  color: #a83636;
+}
+.tabLink {
+
+}
+.tabList:last-child
+{ 
+  border-right: 1px solid #EEEEEE;
+}
+.tabList li  
+{ 
+ 
+}

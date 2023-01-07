@@ -24,7 +24,7 @@ const menuClass = {
   padding: "0px 5px 0px 0px",
 };
 
-function ContentBox({ content, children, ...params }) {
+function ContentBox({ content="", children, ...params }) {
   let className = styles.boxContent;
   if (params.hideBorder) { 
     className += " "+ styles.boxContentHide;
