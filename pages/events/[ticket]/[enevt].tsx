@@ -60,7 +60,7 @@ console.log(data);
 return (
   <ContentBox >
     <div>
-        {data.map((todo) => (
+        {data.map((todo:any) => (
             <li key={todo.id}>{todo.title}</li>
           ))}
     </div>

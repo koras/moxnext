@@ -1,0 +1,81 @@
+.newsItem 
+{
+  display: block; 
+  padding: 0px 0px ;
+  margin: 20px 0px 0px 0px; 
+  border-top: 1px solid #eeeeee;
+}
+.newsItemHead
+{
+  display: flex;
+  padding: 2px 0px;
+  margin: 0px;
+  font-size: 18px;
+  border-bottom: 1px #eeeeee;
+  border-bottom-style: dashed;
+}
+  
+ 
+.date, .event, .title {
+ font-size: 18px;
+ padding: 10px 10px 10px 0px;
+}
+ 
+.title a {
+  font-size: 18px;
+}
+
+.title {
+  font-size: 20px;
+  padding: 8px 13px;
+  font-weight: 600;
+}
+
+
+.date {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.date, .title, .title a  {
+  color:#6a6867;
+  font-weight: 600;
+}
+
+.text {
+  font-size: 20px;
+  padding: 10px 0px;
+}
+
+.controll {
+  font-size: 20px;
+  padding: 0px 10px;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+}
+.controll button {
+  color: "#6a6867";
+  border-color: "#6a6867";
+} 
+
+.divid {
+  padding: 4px 5px;
+  margin: 18px 5px 0px 25px;
+  border-radius: 10px;
+  height: 2px;
+  width: 2px;
+}
+
+.eventSplit {
+  border-bottom: 1px solid#edeede;
+  background: #84c789;
+}
+.eventNews {
+  border-bottom: 1px solid#045474;
+  background: #fa78f3;
+}
+.eventDividend {
+  border-bottom: 1px solid #045474;
+  background: #045474;
+}
