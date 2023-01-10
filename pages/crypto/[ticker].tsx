@@ -29,7 +29,7 @@ export default function Index() {
 
  
   const getUrlEdit = (ticker:string) => {  
-    router.push("/events/new/" + ticker + "/") 
+    router.push("/event/create/" + ticker + "/") 
   };
 
   const handleTimeChange = (params: any) => {
