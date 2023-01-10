@@ -298,10 +298,6 @@ const sendEvent = () => {
               tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
               apiKey="5kp3x2dadjoph5cgpy61s3ha1kl7h6fvl501s3qidoyb4k6u"
               initialValue={storeNew.fulltext}
-
-
-
-
               onInit={(evt, editor) => editorRef.current = editor}
 
 
