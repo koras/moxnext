@@ -1,0 +1,67 @@
+.formContent {
+  padding: 20px 20px 20px 20px;
+}
+
+
+.rowForm {
+  padding: 10px 0px 10px 0px;
+}
+
+.rowFormLine   {
+  display: flex;
+  width: 100%;
+}
+
+.formBlock25 {
+  width: 50%;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+}
+.formBlock25 label {
+  display: inline;
+  width: 200px;
+  text-align: right;
+  padding: 7px 10px 0px 10px;
+  font-size: 15px;
+}
+
+.formBlock100 {
+  width: 100%;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+}
+
+.formBlock100 label {
+  display: inline;
+  width: 250px;
+  text-align: right;
+  padding: 5px 10px 0px 10px;
+  font-size: 15px;
+}
+
+.formBlock100 input {
+  width: 100%;
+  font-size: 17px;
+}
+
+.formBlock100 label,
+.formBlock25 label {
+  font-weight: 600;
+}
+
+
+
+.buttonRight {
+  
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+}
+
+
+.formSelect {
+  width:56%; 
+  z-index: 10;
+}

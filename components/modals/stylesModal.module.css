@@ -1,0 +1,30 @@
+.popup-content {
+    max-width: 600px;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  } 
+  
+  
+  .form-modal-head {
+    padding: 10px 0px 10px 10px;
+    font-size: 18px;
+    font-weight: 600; 
+    border-bottom: 1px solid #eeeeee;
+  }  
+              
+  .form-modal-body {
+    padding: 10px 10px 10px 10px;
+    border-bottom: 1px solid #eeeeee;
+     
+  } 
+  
+  .form-modal-buttons {
+    padding: 10px 10px 10px 0px; 
+  } 
+  .form-modal-buttons button{
+    margin: 0px 0px 0px 10px;
+  } 
+  
