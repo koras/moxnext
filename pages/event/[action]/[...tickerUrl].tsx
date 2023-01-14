@@ -9,56 +9,140 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 
 import styles from './../styleform.module.css'
-import React, {  useRef,useState } from "react";
+import React, {  useRef,useState,useContext } from "react";
 
-import { eventsName } from "./../../../constants/general";
+import { eventsName } from "../../../constants/general";
  
-import ContentBox from "./../../../components/ContentBox";
-import AddEvent from "./../../../components/modals/AddEvent";
+import ContentBox from "../../../components/ContentBox";
+import AddEvent from "../../../components/modals/AddEvent";
+
+import { getInstrument,getNewsSingle } from '../../../hooks/index'
+
+import {  useEffect} from 'react'
+import {  useRouter} from 'next/router' 
 
 
-import {
-  useEffect
-} from 'react'
-import {
-  useRouter
-} from 'next/router' 
 
-export default function Index() {
 
+
+
+
+
+
+
+export default function TickerUrlIndex(props) {
+
+  console.log(props);
+  const router = useRouter();
+  if(!router.query){
+    return <></>;
+  }
+
+  let ticker = '';
+  let url:string = '';
+ // typeof router.query?.action === "string" ? 
+  
+ const action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+  
+    console.log(router.query);
+    if( tickerUrl && tickerUrl.length > 0){
+     ticker =  tickerUrl[0];
+    }
+
+    if( tickerUrl && tickerUrl.length > 1){
+      url =  tickerUrl[1];
+     }
+ 
+    console.log( action);
+    if(action === "" || ticker === ""){
+      return ;
+    }
+ // const {action, tickerUrl } = router.query
+ 
+
+  
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidSource, setIsInvalidSource] = useState(false);
   const [isInvalidText, setIsInvalidText] = useState(false);
   const [writeForm, setWriteForm] = useState(false);
   const [errorFulltext, setErrorFulltext] = useState(false);
+  const [instrument, setInstrument] = useState({});
+  const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
+  const [title, setTitle] = useState('');
+  const [source, setSource] = useState('');
+  const [text, setText] = useState('');
+  const [fulltext, setFulltext] = useState('');
+  const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
-
   
-  const editorRef = useRef('chart');
-  let router:any = useRouter();
+ 
+  //console.log( action, tickerUrl);
+
+
+  const editorRef = useRef('chart'); 
   let news:any = {};
-  let instrument:any = {};
+  //let instrument:any = {};
    
-  let storeNew:any = {};
-  const { url,ticker } = router.query
+
+ // console.log(tickerUrl);
+  // if(tickerUrl && tickerUrl[0]){
+  //     ticker = tickerUrl[0];
+  //     let storeNew:any = {instrument:getInstrument(ticker)}; 
+  // } 
+  //if( tickerUrl && tickerUrl[1]){
+   // url = tickerUrl[1];
+    const { isSuccess, isError,  isLoading, data  } = getNewsSingle(ticker, url);
+
+     //   console.log({ isLoading, isError, data, error });
+      // if (isError) {
+      //   return <span>Ошибка: {error.message}</span>;
+      // }
+      // if (isLoading) return <p>Загрузка...</p>;
+      // if (error) return <p>Ошибка: {error.message}</p>;
+      
+      console.log(data)
+      //  if(data  && data.data  && data.data.date){ 
+    //  setEventDate(data.date);
+    //  setSource(data.source);   
+   // }
+      // console.log(data ,
+      // data.id,
+      // data.event,
+      // data.type,
+      // data.typeId,
+      // data.hash,
+      // data.source,
+      // data.url,
+      // data.title_url);
+  //   setEventDate] = useState(moment().format("DD/MM/YYYY"));
+ //    setTitle] = useState('');
+  //  setSource] = useState('');
+ //    setText] = useState('');
+  //  setFulltext()
+  //  setTypeId(data.)
+    
+ // } 
+  console.log('url=='+url) 
 
   const closeModal = () => {
     setOpen(false)
   };
   const getType = () => {
-    if(storeNew.id){  
+ //   if(storeNew.id){  
         return   eventsName.filter(function(option) {
-        return option.value === +storeNew.typeId;
+        return option.value === typeId;
       })
-    }
+  //  }
   };
+
   const getValidateType= () => {
     if(!writeForm){
       return true;
     }
    // console.log(news.eventNew.typeId);
-    if(news.eventNew.typeId){ 
+    if(typeId != 0){ 
       return true;
     }
     return false; 
@@ -72,13 +156,17 @@ export default function Index() {
 
 
   const getDate = () => {
-    return moment().toDate()  ;
-    if(storeNew.id){ 
-      return moment(storeNew.date, 'DD/MM/YYYY').toDate()  ;
-      } 
-      if(news.eventDate ===''){ 
-        return moment().toDate()  ;
+    return  moment(eventDate, 'DD/MM/YYYY').toDate()
+ //   return moment().toDate()  ;
+      if(news.id){ 
+        return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
+        } 
+      
+      if(news.eventDate == undefined){ 
+        console.log('asd2222da')
+        return moment().toDate()  ; 
       }else{
+        console.log('as11',news.eventDate,moment(news.eventDate, 'DD/MM/YYYY').toDate())
         return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
       }
   }
@@ -97,24 +185,24 @@ const validation = () => {
   let isInvalidFulltext = true;
 
   
-  if(!news.eventNew.title  || (news.eventNew.title  && news.eventNew.title.length < 10)){ 
+  if(!title  || (title  && title.length < 10)){ 
   
    setIsInvalidTitle(true);
    isInvalidTitle = false;
   }
 
-  if(!news.eventNew.source  || (news.eventNew.source  && news.eventNew.source.length < 10)){ 
+  if(!source  || (source  && source.length < 10)){ 
 
 
     isInvalidSource = false;
     setIsInvalidSource(true);
   } 
-  if(!news.eventNew.text || (news.eventNew.text && news.eventNew.text.length < 10)){ 
+  if(!text || (text && text.length < 10)){ 
     setIsInvalidText(true);
     isInvalidText = false;
   }
-  console.log(news.eventNew.fulltext,!news.eventNew.fulltext);
-  if( !news.eventNew.fulltext || (news.eventNew.fulltext && news.eventNew.fulltext.length < 190)){ 
+  console.log(fulltext,!fulltext);
+  if( !fulltext || (fulltext && fulltext.length < 190)){ 
     isInvalidFulltext = false;
     setErrorFulltext(true);
   }
@@ -122,13 +210,20 @@ const validation = () => {
   if(isInvalidTitle && isInvalidSource && isInvalidText && isInvalidFulltext){ 
     setShowSendButton(false);
 
-    news.changeTypeEvent( storeNew.id, {});
-    news.setDateEvent(storeNew.id, moment().toDate())
-    console.log(news.eventNew);
-    news.eventNew.fulltext =''
-    news.eventNew.text =''
-    news.eventNew.source = ''
-    news.eventNew.title = ''
+
+   const params =  {
+      // eventDate,title,source,text,fulltext,typeId, action, ticker, url
+      eventDate: eventDate,
+      title: title,
+      source: source,
+      text: text,
+      fulltext: fulltext,
+      typeId: typeId,
+      action: action, 
+      ticker: ticker,
+      url: url,
+    };
+    createNews(params);
     return true;
   }
 
@@ -138,13 +233,13 @@ const validation = () => {
    
 const sendEvent = () => {
   
-  if(news.eventNew.id === undefined){
-    news.eventNew.date = news.eventDate
-  }
-  console.log(news.eventNew);
+  // if(news.eventNew.id === undefined){
+  //   news.eventNew.date = news.eventDate
+  // }
+  console.log(news);
  
-  news.eventNew.ticker = ticker;
- 
+  
+  
   if(validation()){
  //   const hash = news.saveEvent(news.eventNew);
  
@@ -167,8 +262,9 @@ const sendEvent = () => {
       return <></> ; 
   }
   const handleEditorChange = (content:any, editor:any) => {
+    setFulltext(content);
     //  onEditorChange={text => news.changeEventFulltext(text)}
-      news.changeEventFulltext(content);
+//      changeEventFulltext(content);
     //  console.log("Content was updated:", content);
       if(!writeForm){
        // console.log("1111Content was updated:", content);
@@ -187,8 +283,14 @@ const sendEvent = () => {
       
     };
 
+    if(action === "edit"){
+      // редактируем событие
+    }else{
+      // или создаём новый елемент
+
+    }
     
-  if(url === undefined){
+  if(action === undefined){
     //  news.eventNew.getGefault(ticker)
   //    storeNew.instrument = instrument.getSingle(ticker);
       
@@ -196,36 +298,73 @@ const sendEvent = () => {
     }else{
    //   storeNew = news.getNew(ticker,url); 
     }
-    let event = Object.assign({}, storeNew);
+ //   let event = Object.assign({}, storeNew);
 
-  
-  
+  // меняем тип события
+  const  changeTypeEvent = (value:any) => {
+      console.log(value);
+      setTypeId(value.value);
+    }
+
+    // устанавливаем дату
+    const setDateEvent= (value:any) => {
+      console.log(value);
+      console.log(moment(value).format("DD/MM/YYYY"));
+      news.eventDate = moment(value).format("DD/MM/YYYY");
+      const eventDate = moment(value).format("DD/MM/YYYY");
+      setEventDate(eventDate);
+    }
+    // устанавливаем название события
+    const changeEventName = (value:string) => {
+      setTitle(value);
+    }
+    // устанавливаем название события
+    const changeEventSource = (value:string) => {
+      setSource(value);
+    }
+    // устанавливаем название события
+    const changeEventText = (value:string) => {
+      setText(value);
+    }
+    // устанавливаем название события
+    const changeEventFulltext = (value:string) => {
+      setFulltext(value);
+    }
+     
+    
+ debugger;
+
+    if (isSuccess) {
   return (
-
-    <ContentBox title="График изменения цен Биткоина">
+    <> 
+   <ContentBox title="График изменения цен Биткоина" ticker="">
       <Popup open={open}
         closeOnDocumentClick={false}
         onClose={closeModal}>
-        <AddEvent instrument={storeNew.instrument} />
+        <AddEvent instrument={instrument} />
       </Popup>
+      {news.eventDate}
       <Form className={styles.formContent}>
         <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
             <div className={styles.formBlock25}>
-              <label>Событие:</label>{storeNew.value}
+              <label>Событие:</label> 
 
-              <Select
+              <Select 
                 styles={{
                   control: (baseStyles, state) => ({
                     ...baseStyles,
                     borderColor: getValidateType() ? '#ced4da' : 'red',
                   }),
                 }}
+                id={'id'}
+                instanceId={'instanceId'}
+
                 defaultValue={getType()}
                 value={getType()}
-                className={styles.formSelect + " react-select"}
+                className={styles.formSelect  }
                 placeholder="Что произошло?"
-                onChange={(value) => news.changeTypeEvent(storeNew.id, value)}
+                onChange={(value) => changeTypeEvent(value)}
                 options={eventsName}
               />
             </div>
@@ -236,7 +375,7 @@ const sendEvent = () => {
                 title='asd'
                 required={true}
                 dateFormat='dd/MM/yyyy'
-                onChange={(date:any) => news.setDateEvent(storeNew.id, date)}
+                onChange={(date:any) => setDateEvent(date)}
                 onSelect={handleDateSelect} //when day is clicked
                 selected={getDate()}
                 className="form-control" />
@@ -249,13 +388,12 @@ const sendEvent = () => {
             <label>Короткое название:</label>
 
             <Form.Control
-              onChange={(text:any) => news.changeEventName(storeNew.id, text.target.value)}
-              value={storeNew.title}
+              id={'text'}
+              onChange={(text:any) => changeEventName(text.target.value)}
+              value={title}
               type="text"
-              label="sdasd"
               aria-errormessage="asdasd"
               maxLength={256}
-              errormessage="sadasdsd"
               isInvalid={isInvalidTitle}
               placeholder="Сплит акций, выход отчётности за квартал, выплата девидендов" />
 
@@ -268,8 +406,8 @@ const sendEvent = () => {
             <label>Источник:</label>
             <Form.Control
               isInvalid={isInvalidSource}
-              onChange={text => news.changeEventSource(storeNew.id, text.target.value)}
-              value={event.source}
+              onChange={text => changeEventSource(text.target.value)}
+              value={source}
               placeholder="http://" />
           </div>
         </div>
@@ -281,8 +419,8 @@ const sendEvent = () => {
 
               isInvalid={isInvalidText}
 
-              onChange={text => news.changeEventText(storeNew.id, text.target.value)}
-              value={event.text}
+              onChange={text => changeEventText(text.target.value)}
+              value={text}
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"
@@ -295,18 +433,16 @@ const sendEvent = () => {
             <label>Полное описание:</label>
 
             <Editor
+              id={'Editor'}
               tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
               apiKey="5kp3x2dadjoph5cgpy61s3ha1kl7h6fvl501s3qidoyb4k6u"
-              initialValue={storeNew.fulltext}
-              onInit={(evt, editor) => editorRef.current = editor}
+             // initialValue={fulltext}
+            //  onInit={(evt, editor) => editorRef.current = editor}
 
-
-
-              placeholder="Подробная новость или событие"
+ 
               init={{
                 extended_valid_elements: "br[*],p,b,",
                 entity_encoding: "raw",
-                selector: "textarea",
                 height: 400,
                 width: "100%",
                 menubar: false,
@@ -344,6 +480,26 @@ const sendEvent = () => {
         </div>
       </Form>
     </ContentBox>
+  </>
+  );
 
-  )
+            }
+
+
+  if (isLoading) {
+    return <div className="center">Loading...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="center">
+        We couldn't find your pokemon{" "}
+        <span role="img" aria-label="sad">
+          😢
+        </span>
+      </div>
+    );
+  }
+
+  return <></>;
 }

@@ -88,5 +88,8 @@
     "core-js": "2.6.12",
     "whatwg-fetch": "3.6.2",
     "iconv-lite": "0.6.3"
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }

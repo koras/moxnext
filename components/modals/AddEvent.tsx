@@ -1,26 +1,28 @@
  
 import { useNavigate } from "react-router-dom";
 
-import style from"./stylesModal.module.css";
+import styles from"./stylesModal.module.css";
 //import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  useRouter
+} from 'next/router'
 
-export const AddEvent = (props:any) => {
-  const navigate = useNavigate();
-
+export const AddEvent = (props:any) => { 
+ const router:any = useRouter();
  
   const toInstrument = () => {
-    navigate("/" + props.instrument.type + "/" + props.instrument.ticker);
+    router.push("/" + props.instrument.type + "/" + props.instrument.ticker);
   };
 
   const sendEvent = () => {};
 
   return (
-    <div className="form-modal">
-      <div className="form-modal-head">Событие отправлено на проверку</div>
+    <div className={styles.formModal}>
+      <div className={styles.formModalHead}>Событие отправлено на проверку</div>
       {/* <a className="close"  onClick={closeModal}>
         &times;
       </a> */}
-      <div className="form-modal-body">
+      <div className={styles.formModalBody}>
         <p>Спасибо, что вы добавили событие.</p>
         <p>
           События помогают анализировать прошлое инструмента. На основе прошлого
@@ -32,7 +34,7 @@ export const AddEvent = (props:any) => {
           сообщества
         </p>
       </div>
-      <div className="form-modal-buttons button-right">
+      <div className={styles.formModalButtons + " "+ styles.buttonRight}>
         <button type="button" onClick={sendEvent} className="btn btn-primary">
           Отредактировать событие
         </button>

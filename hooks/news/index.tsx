@@ -15,11 +15,50 @@ const fetchPosts = async (ticker:any,limit:any = 10) => {
   return parsed.filter((x:any) => x.id <= limit)
 }
 
-const getNews = (ticker:any,limit:number = 0)  => {
+const fetchGet =  (ticker:string, url:string) => {
+  console.log('-------------');
+  const result = news.filter((item:any) => {
+    return item.ticker === ticker && item.url === url;
+  });
+  return result[0];
+
+  //     await fetch('https://jsonplaceholder.typicode.com/posts')
+  // .then(data => {
+
+  //   const result = news.filter((item:any) => {
+  //     return item.ticker === ticker && item.url === url;
+  //   });
+  //   return result[0];
+
+  //   return data.json();
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
+
+  // return news; 
+}
+
+
+
+const getNews = (ticker:string,limit:number = 0)  => {
   return useQuery({
     queryKey: ['news_'+ticker + "_"+ limit, ticker + "_"+ limit],
     queryFn: ()=> fetchPosts(ticker, limit),
   })
+}
+
+const getNewsSingle = (ticker:string, url:string)  => {
+  console.log('===========');
+  //const data = fetchGet(ticker, url);
+
+  // return     data ;
+//  const data = fetchGet(ticker, url);
+  return useQuery(ticker+'_'+URL,
+          ()=> fetchGet(ticker, url),
+    );
+
+     
 }
 
 
@@ -132,4 +171,4 @@ const news = [
     link: "https://ru.investing.com/currencies/usd-rub",
   },
 ];
-export { getNews, fetchPosts }
+export { getNews, getNewsSingle, fetchPosts }

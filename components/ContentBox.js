@@ -30,6 +30,7 @@ function ContentBox({ content="", children, ...params }) {
     className += " "+ styles.boxContentHide;
   }
 
+  
   const getHead = () => {
     let result = "";
     if (params.ticker || params.title) {

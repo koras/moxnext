@@ -1,4 +1,4 @@
-.popup-content {
+.popupContent {
     max-width: 600px;
     background-color: #fff;
     background-clip: padding-box;
@@ -7,24 +7,34 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   } 
   
+.buttonRight {
   
-  .form-modal-head {
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+}
+
+  .formModal {
+
+  }
+  
+  .formModalHead {
     padding: 10px 0px 10px 10px;
     font-size: 18px;
     font-weight: 600; 
     border-bottom: 1px solid #eeeeee;
   }  
               
-  .form-modal-body {
+  .formModalBody {
     padding: 10px 10px 10px 10px;
     border-bottom: 1px solid #eeeeee;
      
   } 
   
-  .form-modal-buttons {
+  .formModalButtons {
     padding: 10px 10px 10px 0px; 
   } 
-  .form-modal-buttons button{
+  .formModalButtons button{
     margin: 0px 0px 0px 10px;
   } 
   

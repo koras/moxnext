@@ -2,8 +2,6 @@
 import { useQuery,useQueries } from 'react-query'
 
 const fetchInstruments = async (limit = 10) => {
-
-  
     const parsed =  await fetch('https://jsonplaceholder.typicode.com/posts')
   .then(data => {  
     return data.json();
@@ -16,8 +14,15 @@ const fetchInstruments = async (limit = 10) => {
   return parsed.filter((x) => x.id <= limit)
 }
 
+
+const getInstrument = (ticker) => {
+  const event = instruments.filter((item) => {
+    return item.ticker === ticker;
+  });
+  return event[0];
+}
+
 const getInstruments = (limit) => {
- 
   return useQuery({
     queryKey: ['instruments', limit],
     //    queryFn: ()=> fetchInstruments(limit),
@@ -139,4 +144,4 @@ const instruments = [
     currency: "$",
   },
 ];
-export { getInstruments, fetchInstruments }
+export { getInstruments, getInstrument, fetchInstruments }
