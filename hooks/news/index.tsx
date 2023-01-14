@@ -43,22 +43,24 @@ const fetchGet =  (ticker:string, url:string) => {
 
 const getNews = (ticker:string,limit:number = 0)  => {
   return useQuery({
-    queryKey: ['news_'+ticker + "_"+ limit, ticker + "_"+ limit],
+    queryKey: ['news',ticker ,limit],
     queryFn: ()=> fetchPosts(ticker, limit),
   })
 }
 
-const getNewsSingle = (ticker:string, url:string)  => {
-  console.log('===========');
-  //const data = fetchGet(ticker, url);
 
+
+const getNewsSingle = (ticker:string, url:string)  => {
+  //const data = fetchGet(ticker, url);
+  console.log('-------------',ticker, url);
   // return     data ;
 //  const data = fetchGet(ticker, url);
-  return useQuery(ticker+'_'+URL,
-          ()=> fetchGet(ticker, url),
+  return useQuery({
+          queryKey: [ticker, url],
+         //      queryFn:  ()=> {},
+        queryFn:  ()=> fetchGet,
+        }
     );
-
-     
 }
 
 

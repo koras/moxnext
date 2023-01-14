@@ -73,7 +73,8 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   const [source, setSource] = useState('');
   const [text, setText] = useState('');
   const [fulltext, setFulltext] = useState('');
-  const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
+ // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
+  const [typeId, setTypeId] = useState(0);
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
   
@@ -93,8 +94,16 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   // } 
   //if( tickerUrl && tickerUrl[1]){
    // url = tickerUrl[1];
-    const { isSuccess, isError,  isLoading, data  } = getNewsSingle(ticker, url);
+   
+//  let data ={};
+//  let isLoading = false;
+//  let isError = false;
+//  let isSuccess = false;
 
+ //  if(action === "edit"){ 
+    console.log('ssss')
+    let { isSuccess, isError,  isLoading, data  } = getNewsSingle(ticker, url);
+//  } 
      //   console.log({ isLoading, isError, data, error });
       // if (isError) {
       //   return <span>Ошибка: {error.message}</span>;
@@ -130,10 +139,15 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
     setOpen(false)
   };
   const getType = () => {
+    return ;
  //   if(storeNew.id){  
-        return   eventsName.filter(function(option) {
+  console.log(typeId)
+     const  res =  eventsName.filter((option)=> {
         return option.value === typeId;
       })
+        console.log( (res && res[0])?res[0]:{},typeId);
+      return  (res && res[0])?res[0]:{};
+
   //  }
   };
 
@@ -302,8 +316,9 @@ const sendEvent = () => {
 
   // меняем тип события
   const  changeTypeEvent = (value:any) => {
-      console.log(value);
+      console.log(value.value);
       setTypeId(value.value);
+      return
     }
 
     // устанавливаем дату
@@ -332,7 +347,6 @@ const sendEvent = () => {
     }
      
     
- debugger;
 
     if (isSuccess) {
   return (
@@ -360,7 +374,7 @@ const sendEvent = () => {
                 id={'id'}
                 instanceId={'instanceId'}
 
-                defaultValue={getType()}
+               // defaultValue={getType()}
                 value={getType()}
                 className={styles.formSelect  }
                 placeholder="Что произошло?"
