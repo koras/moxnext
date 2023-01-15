@@ -16,7 +16,7 @@ import { eventsName } from "../../../constants/general";
 import ContentBox from "../../../components/ContentBox";
 import AddEvent from "../../../components/modals/AddEvent";
 
-import { getInstrument,getNewsSingle } from '../../../hooks/index'
+import { getInstrument,getNewsSingle,setEventTitle,setEventFulltext } from '../../../hooks/index'
 
 import {  useEffect} from 'react'
 import {  useRouter} from 'next/router' 
@@ -30,10 +30,27 @@ import {  useRouter} from 'next/router'
 
 
 
-export default function TickerUrlIndex(props) {
+export default function TickerUrlIndex() {
 
-  console.log(props);
+  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
+  const [isInvalidSource, setIsInvalidSource] = useState(false);
+  const [isInvalidText, setIsInvalidText] = useState(false);
+  const [writeForm, setWriteForm] = useState(false);
+  const [errorFulltext, setErrorFulltext] = useState(false);
+  const [instrument, setInstrument] = useState({});
+  const [title, setTitle] = useState(""); 
+
+   const changeEventName = (status:string) => {
+    setTitle(status);
+  }
+
+  useEffect(() => {
+    changeEventName("") ;
+ });
+
+  console.log();
   const router = useRouter();
+  const editorRef = useRef('chart'); 
   if(!router.query){
     return <></>;
   }
@@ -58,31 +75,29 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
     if(action === "" || ticker === ""){
       return ;
     }
- // const {action, tickerUrl } = router.query
+  
+ 
+ 
  
 
+ // const {action, tickerUrl } = router.query
+ 
+ 
+//   const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
   
-  const [isInvalidTitle, setIsInvalidTitle] = useState(false);
-  const [isInvalidSource, setIsInvalidSource] = useState(false);
-  const [isInvalidText, setIsInvalidText] = useState(false);
-  const [writeForm, setWriteForm] = useState(false);
-  const [errorFulltext, setErrorFulltext] = useState(false);
-  const [instrument, setInstrument] = useState({});
-  const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
-  const [title, setTitle] = useState('');
-  const [source, setSource] = useState('');
-  const [text, setText] = useState('');
-  const [fulltext, setFulltext] = useState('');
- // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
-  const [typeId, setTypeId] = useState(0);
-  const [showSendButton, setShowSendButton] = useState(true);
-  const [open, setOpen] = useState(false);
+//   const [source, setSource] = useState('');
+//   const [text, setText] = useState('');
+//   const [fulltext, setFulltext] = useState('');
+//  // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
+//   const [typeId, setTypeId] = useState(0); 
   
  
   //console.log( action, tickerUrl);
 
-
-  const editorRef = useRef('chart'); 
+ 
+ 
+  
+ 
   let news:any = {};
   //let instrument:any = {};
    
@@ -104,13 +119,29 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
     console.log('ssss')
     let { isSuccess, isError,  isLoading, data  } = getNewsSingle(ticker, url);
 //  } 
+      
+  
+const [showSendButton, setShowSendButton] = useState(true);
+const [open, setOpen] = useState(false);
      //   console.log({ isLoading, isError, data, error });
       // if (isError) {
       //   return <span>Ошибка: {error.message}</span>;
       // }
       // if (isLoading) return <p>Загрузка...</p>;
       // if (error) return <p>Ошибка: {error.message}</p>;
-      
+      console.log(data)
+      if(isSuccess){
+        if(data && data.title){
+           
+         setTitle(data.title);
+         console.log(123);
+         debugger;
+        }
+      }else{
+        return;
+      }
+      console.log(ticker, url)
+      console.log(isSuccess, isError,  isLoading)
       console.log(data)
       //  if(data  && data.data  && data.data.date){ 
     //  setEventDate(data.date);
@@ -141,11 +172,11 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   const getType = () => {
     return ;
  //   if(storeNew.id){  
-  console.log(typeId)
+  console.log(data.typeId)
      const  res =  eventsName.filter((option)=> {
-        return option.value === typeId;
+        return option.value === data.typeId;
       })
-        console.log( (res && res[0])?res[0]:{},typeId);
+   //     console.log( (res && res[0])?res[0]:{},typeId);
       return  (res && res[0])?res[0]:{};
 
   //  }
@@ -156,7 +187,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
       return true;
     }
    // console.log(news.eventNew.typeId);
-    if(typeId != 0){ 
+    if(data.typeId != 0){ 
       return true;
     }
     return false; 
@@ -170,7 +201,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
 
 
   const getDate = () => {
-    return  moment(eventDate, 'DD/MM/YYYY').toDate()
+    return  moment(data.date, 'DD/MM/YYYY').toDate()
  //   return moment().toDate()  ;
       if(news.id){ 
         return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
@@ -199,24 +230,24 @@ const validation = () => {
   let isInvalidFulltext = true;
 
   
-  if(!title  || (title  && title.length < 10)){ 
+  if(! data.title  || ( data.title  &&  data.title.length < 10)){ 
   
    setIsInvalidTitle(true);
    isInvalidTitle = false;
   }
 
-  if(!source  || (source  && source.length < 10)){ 
+  if(! data.source  || ( data.source  &&  data.source.length < 10)){ 
 
 
     isInvalidSource = false;
     setIsInvalidSource(true);
   } 
-  if(!text || (text && text.length < 10)){ 
+  if(! data.text || ( data.text &&  data.text.length < 10)){ 
     setIsInvalidText(true);
     isInvalidText = false;
   }
   console.log(fulltext,!fulltext);
-  if( !fulltext || (fulltext && fulltext.length < 190)){ 
+  if( ! data.fulltext || ( data.fulltext &&  data.fulltext.length < 190)){ 
     isInvalidFulltext = false;
     setErrorFulltext(true);
   }
@@ -225,19 +256,19 @@ const validation = () => {
     setShowSendButton(false);
 
 
-   const params =  {
-      // eventDate,title,source,text,fulltext,typeId, action, ticker, url
-      eventDate: eventDate,
-      title: title,
-      source: source,
-      text: text,
-      fulltext: fulltext,
-      typeId: typeId,
-      action: action, 
-      ticker: ticker,
-      url: url,
-    };
-    createNews(params);
+  //  const params =  {
+  //     // eventDate,title,source,text,fulltext,typeId, action, ticker, url
+  //     eventDate: eventDate,
+  //     title: title,
+  //     source: source,
+  //     text: text,
+  //     fulltext: fulltext,
+  //     typeId: typeId,
+  //     action: action, 
+  //     ticker: ticker,
+  //     url: url,
+  //   };
+    createNews( data);
     return true;
   }
 
@@ -276,7 +307,7 @@ const sendEvent = () => {
       return <></> ; 
   }
   const handleEditorChange = (content:any, editor:any) => {
-    setFulltext(content);
+    setEventFulltext(content);
     //  onEditorChange={text => news.changeEventFulltext(text)}
 //      changeEventFulltext(content);
     //  console.log("Content was updated:", content);
@@ -330,24 +361,25 @@ const sendEvent = () => {
       setEventDate(eventDate);
     }
     // устанавливаем название события
-    const changeEventName = (value:string) => {
-      setTitle(value);
-    }
+    // const changeEventName = (value:any) => {
+    //  // setEventTitle(value);
+    //   setTitle(value.target.value);
+    // }
     // устанавливаем название события
     const changeEventSource = (value:string) => {
-      setSource(value);
+    //  setSource(value);
     }
     // устанавливаем название события
     const changeEventText = (value:string) => {
-      setText(value);
+  //    setText(value);
     }
     // устанавливаем название события
     const changeEventFulltext = (value:string) => {
-      setFulltext(value);
+  //    setFulltext(value);
     }
      
     
-
+      debugger;
     if (isSuccess) {
   return (
     <> 
@@ -400,9 +432,10 @@ const sendEvent = () => {
         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое название:</label>
-
+            {data.title}
             <Form.Control
               id={'text'}
+              
               onChange={(text:any) => changeEventName(text.target.value)}
               value={title}
               type="text"
@@ -421,7 +454,7 @@ const sendEvent = () => {
             <Form.Control
               isInvalid={isInvalidSource}
               onChange={text => changeEventSource(text.target.value)}
-              value={source}
+              value={data.source}
               placeholder="http://" />
           </div>
         </div>
@@ -434,7 +467,7 @@ const sendEvent = () => {
               isInvalid={isInvalidText}
 
               onChange={text => changeEventText(text.target.value)}
-              value={text}
+              value={data.text}
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"

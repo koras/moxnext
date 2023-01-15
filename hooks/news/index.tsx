@@ -1,5 +1,21 @@
 //import ky from 'ky-universal'
-import { useQuery,useQueries } from 'react-query'
+import { useQuery,useQueries,useMutation } from 'react-query'
+
+import { useState } from 'react';
+import moment from 'moment';
+
+
+
+
+// const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
+// const [title, setTitle] = useState('');
+// const [source, setSource] = useState('');
+// const [text, setText] = useState('');
+// const [fulltext, setFulltext] = useState('');
+// // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
+// const [typeId, setTypeId] = useState(0);
+
+
 
 const fetchPosts = async (ticker:any,limit:any = 10) => {
   return news;
@@ -20,7 +36,7 @@ const fetchGet =  (ticker:string, url:string) => {
   const result = news.filter((item:any) => {
     return item.ticker === ticker && item.url === url;
   });
-  return result[0];
+  return (result && result[0])?result[0]:event;
 
   //     await fetch('https://jsonplaceholder.typicode.com/posts')
   // .then(data => {
@@ -38,7 +54,40 @@ const fetchGet =  (ticker:string, url:string) => {
 
   // return news; 
 }
+// const [events, setEvents] = useState({
+//                                   title: "",
+//                                   text:"",
+//                                   source:"",
+//                                   fulltext:"",
+//                                   typeId:0,
+//                                   date:moment().toDate(),
+//                                 });
 
+let event = {
+  title: "",
+  text:"",
+  source:"",
+  fulltext:"",
+  typeId:0,
+  date:moment().toDate(),
+}
+
+const setEventTitle = (text:string)  => {
+  console.log(text);
+  //const newText = {title: text};
+ event = {...event, title: text};
+ console.log( event);
+ return  text;
+ // setEvent({...event,...newText});
+};
+
+const setEventFulltext = (text:string)  => {
+ // event = { ...event , event.title: text};
+ // console.log(event);
+//  event = {...event,title:text};
+};
+
+ 
 
 
 const getNews = (ticker:string,limit:number = 0)  => {
@@ -58,7 +107,7 @@ const getNewsSingle = (ticker:string, url:string)  => {
   return useQuery({
           queryKey: [ticker, url],
          //      queryFn:  ()=> {},
-        queryFn:  ()=> fetchGet,
+        queryFn:  ()=> fetchGet(ticker, url),
         }
     );
 }
@@ -173,4 +222,10 @@ const news = [
     link: "https://ru.investing.com/currencies/usd-rub",
   },
 ];
-export { getNews, getNewsSingle, fetchPosts }
+export {
+  setEventTitle,
+  getNews, 
+  getNewsSingle, 
+  setEventFulltext,
+  fetchPosts
+ }
