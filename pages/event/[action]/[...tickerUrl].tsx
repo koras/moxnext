@@ -24,14 +24,9 @@ import {  useRouter} from 'next/router'
 
 
 
-
-
-
-
-
-
 export default function TickerUrlIndex() {
 
+  const [isload, setLoad] = useState(false);
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
   const [isInvalidSource, setIsInvalidSource] = useState(false);
   const [isInvalidText, setIsInvalidText] = useState(false);
@@ -39,16 +34,20 @@ export default function TickerUrlIndex() {
   const [errorFulltext, setErrorFulltext] = useState(false);
   const [instrument, setInstrument] = useState({});
   const [title, setTitle] = useState(""); 
+  const [getData, setData] = useState({}); 
+  
+  const [showSendButton, setShowSendButton] = useState(true);
+  const [open, setOpen] = useState(false);
 
    const changeEventName = (status:string) => {
     setTitle(status);
   }
 
-  useEffect(() => {
-    changeEventName("") ;
- });
+//   useEffect(() => {
+//     changeEventName("") ;
+//  });
 
-  console.log();
+ 
   const router = useRouter();
   const editorRef = useRef('chart'); 
   if(!router.query){
@@ -62,22 +61,67 @@ export default function TickerUrlIndex() {
  const action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
 let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
   
-    console.log(router.query);
-    if( tickerUrl && tickerUrl.length > 0){
-     ticker =  tickerUrl[0];
-    }
 
-    if( tickerUrl && tickerUrl.length > 1){
-      url =  tickerUrl[1];
-     }
  
-    console.log( action);
-    if(action === "" || ticker === ""){
-      return ;
-    }
   
+    useEffect(() => {
+
+      if( tickerUrl && tickerUrl.length > 0){
+        ticker =  tickerUrl[0];
+       }
+   
+       if( tickerUrl && tickerUrl.length > 1){
+         url =  tickerUrl[1];
+        }
+    
+       if(action === "" || ticker === ""){
+         return ;
+       }
+
+        
+
+      if (router.isReady) {
+        // Code using query 
  
+        const fetchSomethingById = async () => {
+          const headers = { 'Content-Type': 'application/json' }
+          const data = await fetch('http://localhost:3000/news.js', { headers })   
+          .then((response:any) => { 
+
+            if(response.ok){
+           //   console.log(response.body); //first consume it in console.log
+            //response.body.json(); //then consume it again, the error happens
+     
+         }
+            //  console.log(response.json());
+            return response.json()
+          }) 
+          .then(res => {
+           console.log(123123);
+          //  console.log(data);
+
+
+          console.log(res[0]);
+           setData(res[0])
+           setLoad(true)
+        //  } 
+        return res[0];
+            }
+           );
+          
+           setTitle(data.title);
+          // setData(data)
+           console.log(data );
+        
+        };
+        fetchSomethingById();
+       //     const response = await fetch('http://localhost:3000/news.js');
+        
+      
+       }
+    }, [router.isReady]);
  
+    
  
 
  // const {action, tickerUrl } = router.query
@@ -89,10 +133,9 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
 //   const [text, setText] = useState('');
 //   const [fulltext, setFulltext] = useState('');
 //  // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
-//   const [typeId, setTypeId] = useState(0); 
+   const [typeId, setTypeId] = useState(0); 
   
- 
-  //console.log( action, tickerUrl);
+   
 
  
  
@@ -102,7 +145,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   //let instrument:any = {};
    
 
- // console.log(tickerUrl);
+  
   // if(tickerUrl && tickerUrl[0]){
   //     ticker = tickerUrl[0];
   //     let storeNew:any = {instrument:getInstrument(ticker)}; 
@@ -116,33 +159,18 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
 //  let isSuccess = false;
 
  //  if(action === "edit"){ 
-    console.log('ssss')
-    let { isSuccess, isError,  isLoading, data  } = getNewsSingle(ticker, url);
-//  } 
-      
   
-const [showSendButton, setShowSendButton] = useState(true);
-const [open, setOpen] = useState(false);
+//  } 
+       
      //   console.log({ isLoading, isError, data, error });
       // if (isError) {
       //   return <span>Ошибка: {error.message}</span>;
       // }
       // if (isLoading) return <p>Загрузка...</p>;
       // if (error) return <p>Ошибка: {error.message}</p>;
-      console.log(data)
-      if(isSuccess){
-        if(data && data.title){
-           
-         setTitle(data.title);
-         console.log(123);
-         debugger;
-        }
-      }else{
-        return;
-      }
-      console.log(ticker, url)
-      console.log(isSuccess, isError,  isLoading)
-      console.log(data)
+
+ 
+ 
       //  if(data  && data.data  && data.data.date){ 
     //  setEventDate(data.date);
     //  setSource(data.source);   
@@ -164,19 +192,18 @@ const [open, setOpen] = useState(false);
   //  setTypeId(data.)
     
  // } 
-  console.log('url=='+url) 
-
+ 
   const closeModal = () => {
     setOpen(false)
   };
   const getType = () => {
     return ;
  //   if(storeNew.id){  
-  console.log(data.typeId)
+  
      const  res =  eventsName.filter((option)=> {
         return option.value === data.typeId;
       })
-   //     console.log( (res && res[0])?res[0]:{},typeId);
+      
       return  (res && res[0])?res[0]:{};
 
   //  }
@@ -186,7 +213,7 @@ const [open, setOpen] = useState(false);
     if(!writeForm){
       return true;
     }
-   // console.log(news.eventNew.typeId);
+    
     if(data.typeId != 0){ 
       return true;
     }
@@ -196,7 +223,7 @@ const [open, setOpen] = useState(false);
   const handleDateSelect = (info:any) =>
   {
   
-    //  console.log(info);
+    
   }
 
 
@@ -208,10 +235,10 @@ const [open, setOpen] = useState(false);
         } 
       
       if(news.eventDate == undefined){ 
-        console.log('asd2222da')
+        
         return moment().toDate()  ; 
       }else{
-        console.log('as11',news.eventDate,moment(news.eventDate, 'DD/MM/YYYY').toDate())
+      //  console.log('as11',news.eventDate,moment(news.eventDate, 'DD/MM/YYYY').toDate())
         return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
       }
   }
@@ -246,7 +273,7 @@ const validation = () => {
     setIsInvalidText(true);
     isInvalidText = false;
   }
-  console.log(fulltext,!fulltext);
+  
   if( ! data.fulltext || ( data.fulltext &&  data.fulltext.length < 190)){ 
     isInvalidFulltext = false;
     setErrorFulltext(true);
@@ -281,8 +308,7 @@ const sendEvent = () => {
   // if(news.eventNew.id === undefined){
   //   news.eventNew.date = news.eventDate
   // }
-  console.log(news);
- 
+  
   
   
   if(validation()){
@@ -347,15 +373,15 @@ const sendEvent = () => {
 
   // меняем тип события
   const  changeTypeEvent = (value:any) => {
-      console.log(value.value);
+
       setTypeId(value.value);
       return
     }
 
     // устанавливаем дату
     const setDateEvent= (value:any) => {
-      console.log(value);
-      console.log(moment(value).format("DD/MM/YYYY"));
+   //   console.log(value);
+    //  console.log(moment(value).format("DD/MM/YYYY"));
       news.eventDate = moment(value).format("DD/MM/YYYY");
       const eventDate = moment(value).format("DD/MM/YYYY");
       setEventDate(eventDate);
@@ -379,8 +405,10 @@ const sendEvent = () => {
     }
      
     
-      debugger;
-    if (isSuccess) {
+ 
+    if ( router.isReady && isload) {
+
+     
   return (
     <> 
    <ContentBox title="График изменения цен Биткоина" ticker="">
@@ -391,7 +419,7 @@ const sendEvent = () => {
       </Popup>
       {news.eventDate}
       <Form className={styles.formContent}>
-        <div className={styles.rowForm}>
+        {/* <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
             <div className={styles.formBlock25}>
               <label>Событие:</label> 
@@ -427,12 +455,11 @@ const sendEvent = () => {
                 className="form-control" />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое название:</label>
-            {data.title}
             <Form.Control
               id={'text'}
               
@@ -448,7 +475,7 @@ const sendEvent = () => {
           </div>
         </div>
 
-        <div className={styles.rowForm}>
+        {/* <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Источник:</label>
             <Form.Control
@@ -457,9 +484,9 @@ const sendEvent = () => {
               value={data.source}
               placeholder="http://" />
           </div>
-        </div>
+        </div> */}
 
-        <div className={styles.rowForm}>
+        {/* <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое описание:</label>
             <Form.Control
@@ -473,9 +500,9 @@ const sendEvent = () => {
               placeholder="Объявление девидендов в 135 рублей на акцию"
             />
           </div>
-        </div>
+        </div> */}
 
-        <div className={styles.rowForm}>
+        {/* <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Полное описание:</label>
 
@@ -519,7 +546,7 @@ const sendEvent = () => {
               onEditorChange={handleEditorChange}
             />
           </div>
-        </div>
+        </div> */}
         <div className="row-form">
           <div className={styles.formBlock100 + " "+styles.buttonRight}>
             {getButton()}
@@ -533,20 +560,20 @@ const sendEvent = () => {
             }
 
 
-  if (isLoading) {
-    return <div className="center">Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="center">Loading...</div>;
+  // }
 
-  if (isError) {
-    return (
-      <div className="center">
-        We couldn't find your pokemon{" "}
-        <span role="img" aria-label="sad">
-          😢
-        </span>
-      </div>
-    );
-  }
+  // if (isError) {
+  //   return (
+  //     <div className="center">
+  //       We couldn't find your pokemon{" "}
+  //       <span role="img" aria-label="sad">
+  //         😢
+  //       </span>
+  //     </div>
+  //   );
+  // }
 
   return <></>;
 }
