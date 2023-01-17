@@ -3,7 +3,7 @@
     "id": 100,
     "event": "Сплит акций",
     "type": "split",
-    "typeId": 8,
+    "typeId": 5,
     "hash": "78e731027d8fd50ed642340b7c9a63b3",
     "source": "https://ru.investing.com/analysis/article-200298747",
     "url": "split-couple-actii",

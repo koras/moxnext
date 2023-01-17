@@ -21,7 +21,9 @@ import { getInstrument,getNewsSingle,setEventTitle,setEventFulltext } from '../.
 import {  useEffect} from 'react'
 import {  useRouter} from 'next/router' 
 
-
+const defaultNews = {"date": "","event":"","fulltext": "","link": "","source": "","text": "","ticker": "","title": "","title_url": "","type": "","typeId": 0,"url": "",
+"instrument": {"instrumentId": 101, "name": 'Биткоин', "price": 150, "type": 'crypto', "change": '+10'}};
+ 
 
 
 export default function TickerUrlIndex() {
@@ -34,13 +36,20 @@ export default function TickerUrlIndex() {
   const [errorFulltext, setErrorFulltext] = useState(false);
   const [instrument, setInstrument] = useState({});
   const [title, setTitle] = useState(""); 
+  const [source, setSource] = useState(""); 
   const [getData, setData] = useState({}); 
   
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
+  const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
+   const [text, setText] = useState('');
+   const [fulltext, setFulltext] = useState('');
+   const [typeId, setTypeId] = useState(0); 
+
 
    const changeEventName = (status:string) => {
     setTitle(status);
+    setData({...getData, title:status});
   }
 
 //   useEffect(() => {
@@ -86,35 +95,30 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
         const fetchSomethingById = async () => {
           const headers = { 'Content-Type': 'application/json' }
           const data = await fetch('http://localhost:3000/news.js', { headers })   
-          .then((response:any) => { 
-
-            if(response.ok){
-           //   console.log(response.body); //first consume it in console.log
-            //response.body.json(); //then consume it again, the error happens
-     
-         }
-            //  console.log(response.json());
+          .then((response:any) => {
             return response.json()
           }) 
           .then(res => {
-           console.log(123123);
-          //  console.log(data);
-
-
-          console.log(res[0]);
-           setData(res[0])
-           setLoad(true)
-        //  } 
-        return res[0];
-            }
-           );
-          
-           setTitle(data.title);
-          // setData(data)
-           console.log(data );
         
+        //   return  defaultNews;
+            return res[0];
+            });
+            setData(data);
+          //  setTitle(data.title);
+           // setText(data.text);
+          //  setEventDate(data.date);
+         //   setSource(data.source);
+         //   setTypeId(data.typeId);
+         //   setFulltext(data.fulltext);
+            setLoad(true)
+          // setData(data)
         };
-        fetchSomethingById();
+        console.log(action);
+        if(action === "edit"){ 
+          fetchSomethingById();
+        }else{
+
+        }
        //     const response = await fetch('http://localhost:3000/news.js');
         
       
@@ -126,14 +130,9 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
 
  // const {action, tickerUrl } = router.query
  
- 
-//   const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
   
-//   const [source, setSource] = useState('');
-//   const [text, setText] = useState('');
-//   const [fulltext, setFulltext] = useState('');
 //  // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
-   const [typeId, setTypeId] = useState(0); 
+    
   
    
 
@@ -197,16 +196,11 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
     setOpen(false)
   };
   const getType = () => {
-    return ;
- //   if(storeNew.id){  
-  
+ 
      const  res =  eventsName.filter((option)=> {
-        return option.value === data.typeId;
+        return option.value === +getData.typeId;
       })
-      
       return  (res && res[0])?res[0]:{};
-
-  //  }
   };
 
   const getValidateType= () => {
@@ -214,7 +208,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
       return true;
     }
     
-    if(data.typeId != 0){ 
+    if(typeId != 0){ 
       return true;
     }
     return false; 
@@ -228,7 +222,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
 
 
   const getDate = () => {
-    return  moment(data.date, 'DD/MM/YYYY').toDate()
+    return  moment(getData.date, 'DD/MM/YYYY').toDate()
  //   return moment().toDate()  ;
       if(news.id){ 
         return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
@@ -373,9 +367,10 @@ const sendEvent = () => {
 
   // меняем тип события
   const  changeTypeEvent = (value:any) => {
-
-      setTypeId(value.value);
-      return
+    console.log(value);
+    setData({...getData, typeId:value.value});
+    //  setTypeId(value.value);
+    
     }
 
     // устанавливаем дату
@@ -384,7 +379,8 @@ const sendEvent = () => {
     //  console.log(moment(value).format("DD/MM/YYYY"));
       news.eventDate = moment(value).format("DD/MM/YYYY");
       const eventDate = moment(value).format("DD/MM/YYYY");
-      setEventDate(eventDate);
+    //  setEventDate(eventDate);
+      setData({...getData, date:eventDate});
     }
     // устанавливаем название события
     // const changeEventName = (value:any) => {
@@ -393,15 +389,18 @@ const sendEvent = () => {
     // }
     // устанавливаем название события
     const changeEventSource = (value:string) => {
-    //  setSource(value);
+     // setSource(value);
+      setData({...getData, source : value});
     }
     // устанавливаем название события
     const changeEventText = (value:string) => {
-  //    setText(value);
+   //   setText(value);
+      setData({...getData, text : value});
     }
     // устанавливаем название события
     const changeEventFulltext = (value:string) => {
-  //    setFulltext(value);
+      setFulltext(value);
+      setData({...getData, title:text});
     }
      
     
@@ -419,7 +418,7 @@ const sendEvent = () => {
       </Popup>
       {news.eventDate}
       <Form className={styles.formContent}>
-        {/* <div className={styles.rowForm}>
+         <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
             <div className={styles.formBlock25}>
               <label>Событие:</label> 
@@ -455,7 +454,7 @@ const sendEvent = () => {
                 className="form-control" />
             </div>
           </div>
-        </div> */}
+        </div> 
 
         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
@@ -464,7 +463,7 @@ const sendEvent = () => {
               id={'text'}
               
               onChange={(text:any) => changeEventName(text.target.value)}
-              value={title}
+              value={getData.title}
               type="text"
               aria-errormessage="asdasd"
               maxLength={256}
@@ -475,18 +474,18 @@ const sendEvent = () => {
           </div>
         </div>
 
-        {/* <div className={styles.rowForm}>
+         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Источник:</label>
             <Form.Control
               isInvalid={isInvalidSource}
               onChange={text => changeEventSource(text.target.value)}
-              value={data.source}
+              value={getData.source}
               placeholder="http://" />
           </div>
-        </div> */}
+        </div> 
 
-        {/* <div className={styles.rowForm}>
+         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое описание:</label>
             <Form.Control
@@ -494,15 +493,15 @@ const sendEvent = () => {
               isInvalid={isInvalidText}
 
               onChange={text => changeEventText(text.target.value)}
-              value={data.text}
+              value={getData.text}
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"
             />
           </div>
-        </div> */}
+        </div> 
 
-        {/* <div className={styles.rowForm}>
+         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Полное описание:</label>
 
@@ -510,7 +509,7 @@ const sendEvent = () => {
               id={'Editor'}
               tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
               apiKey="5kp3x2dadjoph5cgpy61s3ha1kl7h6fvl501s3qidoyb4k6u"
-             // initialValue={fulltext}
+              initialValue={getData.fulltext}
             //  onInit={(evt, editor) => editorRef.current = editor}
 
  
@@ -546,7 +545,7 @@ const sendEvent = () => {
               onEditorChange={handleEditorChange}
             />
           </div>
-        </div> */}
+        </div> 
         <div className="row-form">
           <div className={styles.formBlock100 + " "+styles.buttonRight}>
             {getButton()}
