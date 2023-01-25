@@ -89,9 +89,15 @@ interface InfoType {
  const router = useRouter();
  const editorRef = useRef('chart'); 
 
+ 
+ let ticker = '';
+ let url:string = '';
 
+ let action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
 
   useEffect(() => {
+     
       if (router.isReady) {
         // Code using query 
  
@@ -112,20 +118,16 @@ interface InfoType {
         console.log(action);
           fetchSomethingById();
        }
-         }, [router.isReady,isload]);
+       //     }, [router.isReady, isload]);
+         }, [action, router.isReady, isload]);
   
   if(!router.query){
     return <></>;
   }
 
-
  
-  let ticker = '';
-  let url:string = '';
  // typeof router.query?.action === "string" ? 
-  
- const action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
-let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+   
   
 
 // if( tickerUrl && tickerUrl.length > 0){
