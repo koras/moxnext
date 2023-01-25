@@ -9,16 +9,15 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 
 import styles from './../styleform.module.css'
-import React, {  useRef,useState,useContext } from "react";
+import React, {  useRef,useState,useContext,useEffect } from "react";
 
 import { eventsName } from "../../../constants/general";
  
 import ContentBox from "../../../components/ContentBox";
 import AddEvent from "../../../components/modals/AddEvent";
 
-import { getInstrument,getNewsSingle,setEventTitle,setEventFulltext } from '../../../hooks/index'
-
-import {  useEffect} from 'react'
+//import { getInstrument,getNewsSingle,setEventTitle,setEventFulltext } from '../../../hooks/index'
+ 
 import {  useRouter} from 'next/router' 
 
 const defaultNews = {"date": "","event":"","fulltext": "","link": "","source": "","text": "","ticker": "","title": "","title_url": "","type": "","typeId": 0,"url": "",
@@ -37,7 +36,24 @@ export default function TickerUrlIndex() {
   const [instrument, setInstrument] = useState({});
   const [title, setTitle] = useState(""); 
   const [source, setSource] = useState(""); 
-  const [getData, setData] = useState({}); 
+
+interface InfoType {
+    title: string; 
+    typeId:number; 
+    date: string; 
+    source :string; 
+    shorttext :string; 
+    fulltext :string; 
+  }
+ 
+  const [getData, setData] = useState<InfoType>({
+    title: "",
+    typeId:0,
+    date: moment().format("DD/MM/YYYY"),
+    source :"",
+    shorttext:"",
+    fulltext:"",
+  }); 
   
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
@@ -47,48 +63,35 @@ export default function TickerUrlIndex() {
    const [typeId, setTypeId] = useState(0); 
 
 
-   const changeEventName = (status:string) => {
+   const changeEventName = (status:any) => {
     setTitle(status);
-    setData({...getData, title:status});
+
+    //let stitle:any =  {title : status}
+    setData({...getData, title : status});
   }
 
-//   useEffect(() => {
-//     changeEventName("") ;
-//  });
-
+  const getType = () => {
  
-  const router = useRouter();
-  const editorRef = useRef('chart'); 
-  if(!router.query){
-    return <></>;
-  }
+    const  res =  eventsName.filter((option:any)=> {
+       return option.value === +getData.typeId;
+     })
+     return  (res && res[0])?res[0]:{};
+ };
+ const setEventFulltext = (text:string)  => {
+  // event = { ...event , event.title: text};
+  // console.log(event);
+  setData({...getData,fulltext:text});
+ };
 
-  let ticker = '';
-  let url:string = '';
- // typeof router.query?.action === "string" ? 
-  
- const action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
-let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
-  
 
- 
-  
-    useEffect(() => {
 
-      if( tickerUrl && tickerUrl.length > 0){
-        ticker =  tickerUrl[0];
-       }
-   
-       if( tickerUrl && tickerUrl.length > 1){
-         url =  tickerUrl[1];
-        }
-    
-       if(action === "" || ticker === ""){
-         return ;
-       }
 
-        
+ const router = useRouter();
+ const editorRef = useRef('chart'); 
 
+
+
+  useEffect(() => {
       if (router.isReady) {
         // Code using query 
  
@@ -99,31 +102,43 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
             return response.json()
           }) 
           .then(res => {
-        
-        //   return  defaultNews;
             return res[0];
             });
             setData(data);
-          //  setTitle(data.title);
-           // setText(data.text);
-          //  setEventDate(data.date);
-         //   setSource(data.source);
-         //   setTypeId(data.typeId);
-         //   setFulltext(data.fulltext);
             setLoad(true)
-          // setData(data)
         };
-        console.log(action);
-        if(action === "edit"){ 
+    //    console.log(action);
           fetchSomethingById();
-        }else{
-
-        }
-       //     const response = await fetch('http://localhost:3000/news.js');
-        
-      
        }
-    }, [router.isReady]);
+         },[action]);
+  
+  if(!router.query){
+    return <></>;
+  }
+
+
+  let ticker = '';
+  let url:string = '';
+ // typeof router.query?.action === "string" ? 
+  
+ const action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+  
+
+// if( tickerUrl && tickerUrl.length > 0){
+//   ticker =  tickerUrl[0];
+//  }
+
+//  if( tickerUrl && tickerUrl.length > 1){
+//    url =  tickerUrl[1];
+//   }
+
+//  if(action === "" || ticker === ""){
+//    return ;
+//  }
+  
+ 
+  //  }, [router.isReady,isload]);
  
     
  
@@ -161,12 +176,8 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   
 //  } 
        
-     //   console.log({ isLoading, isError, data, error });
-      // if (isError) {
-      //   return <span>Ошибка: {error.message}</span>;
-      // }
-      // if (isLoading) return <p>Загрузка...</p>;
-      // if (error) return <p>Ошибка: {error.message}</p>;
+     
+
 
  
  
@@ -195,14 +206,7 @@ let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.ti
   const closeModal = () => {
     setOpen(false)
   };
-  const getType = () => {
  
-     const  res =  eventsName.filter((option)=> {
-        return option.value === +getData.typeId;
-      })
-      return  (res && res[0])?res[0]:{};
-  };
-
   const getValidateType= () => {
     if(!writeForm){
       return true;
@@ -251,24 +255,24 @@ const validation = () => {
   let isInvalidFulltext = true;
 
   
-  if(! data.title  || ( data.title  &&  data.title.length < 10)){ 
+  if(! getData.title  || ( getData.title  &&  getData.title.length < 10)){ 
   
    setIsInvalidTitle(true);
    isInvalidTitle = false;
   }
 
-  if(! data.source  || ( data.source  &&  data.source.length < 10)){ 
+  if(! getData.source  || ( getData.source  &&  getData.source.length < 10)){ 
 
 
     isInvalidSource = false;
     setIsInvalidSource(true);
   } 
-  if(! data.text || ( data.text &&  data.text.length < 10)){ 
+  if(! getData.shorttext || ( getData.shorttext &&  getData.shorttext.length < 10)){ 
     setIsInvalidText(true);
     isInvalidText = false;
   }
   
-  if( ! data.fulltext || ( data.fulltext &&  data.fulltext.length < 190)){ 
+  if( ! getData.fulltext || ( getData.fulltext &&  getData.fulltext.length < 190)){ 
     isInvalidFulltext = false;
     setErrorFulltext(true);
   }
@@ -289,7 +293,7 @@ const validation = () => {
   //     ticker: ticker,
   //     url: url,
   //   };
-    createNews( data);
+  //  createNews( data);
     return true;
   }
 
@@ -395,7 +399,7 @@ const sendEvent = () => {
     // устанавливаем название события
     const changeEventText = (value:string) => {
    //   setText(value);
-      setData({...getData, text : value});
+      setData({...getData, shorttext: value});
     }
     // устанавливаем название события
     const changeEventFulltext = (value:string) => {
@@ -493,7 +497,7 @@ const sendEvent = () => {
               isInvalid={isInvalidText}
 
               onChange={text => changeEventText(text.target.value)}
-              value={getData.text}
+              value={getData.shorttext}
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"
@@ -529,7 +533,7 @@ const sendEvent = () => {
                   "body {  font-size:17px }",
                 paste_as_text: true,
                 setup: (editor:any) => {
-                  editor.on("click", (e) => {
+                  editor.on("click", (e:any) => {
                     const element = editor.getContainer();
 
                     if (element) {

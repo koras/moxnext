@@ -16,7 +16,7 @@ interface News {
 
 const createNews = async (data: News) => {
   // Default options are marked with *
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+  const response:any = await fetch('https://jsonplaceholder.typicode.com/posts', {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
   //  mode: 'cors', // no-cors, *cors, same-origin
  //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -35,7 +35,7 @@ const createNews = async (data: News) => {
 };
 
 
-const fetchPosts = async (limit = 10) => {
+const fetchToPostsInfo = async (limit = 10) => {
     const parsed =  await fetch('https://jsonplaceholder.typicode.com/posts')
   .then(data => {
     return data.json();
@@ -45,17 +45,19 @@ const fetchPosts = async (limit = 10) => {
   });
 
   return parsed;
-  return parsed.filter((x) => x.id <= limit)
+  return parsed.filter((x:any) => x.id <= limit)
 }
-const usePosts = (limit) => {
+const usePosts = (limit:number) => {
     console.log('asd')
   return useQuery({
     queryKey: ['posts', limit],
-    queryFn: ()=> fetchPosts(limit),
+    queryFn: ()=> fetchToPostsInfo(limit),
   })
 }
 
 
 
 
-export { usePosts, createNews, fetchPosts }
+export { 
+  usePosts,
+   createNews }

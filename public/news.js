@@ -1,7 +1,7 @@
 [
   {
     "id": 100,
-    "event": "Сплит акций",
+    "title": "Сплит акций",
     "type": "split",
     "typeId": 5,
     "hash": "78e731027d8fd50ed642340b7c9a63b3",
@@ -27,7 +27,7 @@
   },
   {
     "id": 101,
-    "event": "Отчётность",
+    "title": "Отчётность",
     "type": "reporting",
     "typeId": 3,
     "url": "dividend-couple",
@@ -53,7 +53,7 @@
   },
   {
     "id": 102,
-    "event": "Новости",
+    "title": "Новости",
     "type": "news",
     "typeId": 4,
     "ticker": "btc",
@@ -79,14 +79,6 @@
     "link": "https://www.binance.com/ru/trade/DOGE_USDT?theme=dark&type=spot"
   },
   {
-    "id": 103,
-    "event": "Новости",
-    "type": "news",
-    "typeId": 5,
-    "url": "kurs-ruble-to-12-12-2022",
-    "hash": "78e731027d8fd50ed642340b7c97777777",
-    "ticker": "btc",
-    "title_url": "kurs-ruble",
     "instrument": {
       "instrumentId": 1111,
       "name": "Биткоин",
@@ -96,6 +88,13 @@
       "change": "-10",
       "currency": "$"
     },
+    "id": 103, 
+    "type": "news",
+    "typeId": 5,
+    "url": "kurs-ruble-to-12-12-2022",
+    "hash": "78e731027d8fd50ed642340b7c97777777",
+    "ticker": "btc",
+    "title_url": "kurs-ruble", 
     "date": "01/03/2022",
     "title": "Новый курс рубля",
     "source": "https://ru.investing.com/analysis/article-200298747",

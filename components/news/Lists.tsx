@@ -70,7 +70,7 @@ export default function ListEvents(params:any)  {
   const  { isLoading, error, data } = getNews(params.ticker+'112',10);
 
   console.log('storeNews',isLoading,error);
-  if (isLoading) return <div > 'Loading...'</div>;
+  if (isLoading) return <div > `Loading...`</div>;
  
    return <div >
     {data.map((item:any, i:any) => (

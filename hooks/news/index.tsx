@@ -84,7 +84,7 @@ const setEventTitle = (text:string)  => {
 const setEventFulltext = (text:string)  => {
  // event = { ...event , event.title: text};
  // console.log(event);
-//  event = {...event,title:text};
+ event = {...event,fulltext:text};
 };
 
  

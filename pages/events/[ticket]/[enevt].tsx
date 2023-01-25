@@ -41,18 +41,14 @@ export const  CreateTicker = ( ) => {
 //export default function CreateTicker() {
 
 
-// const { isLoading, isError, data, error } = useQuery(
-//   ['todos'],
-//   () => fetchPosts(10)
-// ); 
 
  
-const{ isLoading, isError, data, error }  = usePosts(10);
+const{ isLoading, isError, data}  = usePosts(10);
 if (isError) {
-  return <span>Ошибка: {error.message}</span>;
+  return <span>Ошибка: </span>;
 }
 if (isLoading) return <p>Загрузка...</p>;
-if (error) return <p>Ошибка: {error.message}</p>;
+if (isError) return <p>Ошибка: </p>;
  
 console.log(data);
 
