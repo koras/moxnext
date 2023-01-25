@@ -99,24 +99,27 @@ interface InfoType {
           const headers = { 'Content-Type': 'application/json' }
           const data = await fetch('http://localhost:3000/news.js', { headers })   
           .then((response:any) => {
+          //  console.log('fetch',response.json());
             return response.json()
           }) 
           .then(res => {
             return res[0];
             });
             setData(data);
-            setLoad(true)
+            setLoad(true);
+            console.log('result');
         };
-    //    console.log(action);
+        console.log(action);
           fetchSomethingById();
        }
-         },[action]);
+         }, [router.isReady,isload]);
   
   if(!router.query){
     return <></>;
   }
 
 
+ 
   let ticker = '';
   let url:string = '';
  // typeof router.query?.action === "string" ? 
