@@ -84,129 +84,84 @@ interface InfoType {
  };
 
 
+ let ticker = '';
+ let url:string = '';
 
+
+ let action = ""; 
+ let tickerUrl:any = []; 
 
  const router = useRouter();
  const editorRef = useRef('chart'); 
 
  
- let ticker = '';
- let url:string = '';
+  
+ 
 
- let action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
- let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
-
-  useEffect(() => {
-     
-      if (router.isReady) {
+  useEffect(() => {  
+    setLoad(true);
+    //  if (router.isReady) {
         // Code using query 
  
-        const fetchSomethingById = async () => {
-          const headers = { 'Content-Type': 'application/json' }
-          const data = await fetch('http://localhost:3000/news.js', { headers })   
-          .then((response:any) => {
-          //  console.log('fetch',response.json());
-            return response.json()
-          }) 
-          .then(res => {
-            return res[0];
-            });
-            setData(data);
-            setLoad(true);
-            console.log('result');
-        };
-        console.log(action);
-          fetchSomethingById();
-       }
+   //     let action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+   //     let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+
+    const fetchSomethingById = async () => {
+      //return [];
+       const headers = { 'Content-Type': 'application/json' }
+      // //const data = 
+      fetch('http://localhost:3000/news.js', { headers })   
+      .then((response:any) => {
+      //  console.log('fetch',response.json());
+        return response.json()
+      }) 
+      .then(res => {
+        console.log(res[0]);
+        setData(res[0]);
+        setLoad(true);
+      //  return res[0];
+        });
+    //    setData(data); 
+        console.log('result');
+    };
+
+  
+     //   console.log(action);
+         fetchSomethingById();
+     //  }
        //     }, [router.isReady, isload]);
-         }, [action, router.isReady, isload]);
-  
-  if(!router.query){
-    return <></>;
-  }
-
- 
- // typeof router.query?.action === "string" ? 
-   
+  //       }, [ router.isReady, isload,fetchSomethingById]);
+         }, []);
   
 
-// if( tickerUrl && tickerUrl.length > 0){
-//   ticker =  tickerUrl[0];
-//  }
 
-//  if( tickerUrl && tickerUrl.length > 1){
-//    url =  tickerUrl[1];
-//   }
+       //  if (router.isReady) {
+          // Code using query 
+        
+           action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+           tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
 
-//  if(action === "" || ticker === ""){
-//    return ;
-//  }
-  
+           if( tickerUrl && tickerUrl.length > 0){
+            ticker =  tickerUrl[0];
+           }
+          
+           if( tickerUrl && tickerUrl.length > 1){
+             url =  tickerUrl[1];
+            }
+      //  }
  
-  //  }, [router.isReady,isload]);
- 
-    
- 
+    console.log(action, tickerUrl )
 
- // const {action, tickerUrl } = router.query
- 
-  
-//  // const [typeId, setTypeId] = useState({value: 0, label: '', type: ''});
-    
-  
-   
 
- 
- 
-  
- 
-  let news:any = {};
-  //let instrument:any = {};
-   
 
-  
-  // if(tickerUrl && tickerUrl[0]){
-  //     ticker = tickerUrl[0];
-  //     let storeNew:any = {instrument:getInstrument(ticker)}; 
+  // if(!router.isReady){
+  //   return <></>;
   // } 
-  //if( tickerUrl && tickerUrl[1]){
-   // url = tickerUrl[1];
-   
-//  let data ={};
-//  let isLoading = false;
-//  let isError = false;
-//  let isSuccess = false;
-
- //  if(action === "edit"){ 
-  
-//  } 
-       
-     
-
-
- 
- 
-      //  if(data  && data.data  && data.data.date){ 
-    //  setEventDate(data.date);
-    //  setSource(data.source);   
-   // }
-      // console.log(data ,
-      // data.id,
-      // data.event,
-      // data.type,
-      // data.typeId,
-      // data.hash,
-      // data.source,
-      // data.url,
-      // data.title_url);
-  //   setEventDate] = useState(moment().format("DD/MM/YYYY"));
- //    setTitle] = useState('');
-  //  setSource] = useState('');
- //    setText] = useState('');
-  //  setFulltext()
-  //  setTypeId(data.)
     
- // } 
+  
+  
+  let news:any = {};
+ 
  
   const closeModal = () => {
     setOpen(false)
@@ -229,6 +184,7 @@ interface InfoType {
     
   }
 
+  console.log('ok' );
 
   const getDate = () => {
     return  moment(getData.date, 'DD/MM/YYYY').toDate()
@@ -286,19 +242,7 @@ const validation = () => {
     setShowSendButton(false);
 
 
-  //  const params =  {
-  //     // eventDate,title,source,text,fulltext,typeId, action, ticker, url
-  //     eventDate: eventDate,
-  //     title: title,
-  //     source: source,
-  //     text: text,
-  //     fulltext: fulltext,
-  //     typeId: typeId,
-  //     action: action, 
-  //     ticker: ticker,
-  //     url: url,
-  //   };
-  //  createNews( data);
+
     return true;
   }
 
@@ -333,7 +277,7 @@ const sendEvent = () => {
     if(showSendButton){ 
      return  <button type="button"  onClick={sendEvent} className="btn btn-primary">{textButton()}</button>
     }
-      return <></> ; 
+      return <>11</> ; 
   }
   const handleEditorChange = (content:any, editor:any) => {
     setEventFulltext(content);
@@ -357,23 +301,11 @@ const sendEvent = () => {
       
     };
 
-    if(action === "edit"){
-      // редактируем событие
-    }else{
-      // или создаём новый елемент
 
-    }
+
+
+
     
-  if(action === undefined){
-    //  news.eventNew.getGefault(ticker)
-  //    storeNew.instrument = instrument.getSingle(ticker);
-      
-     // console.log( storeNew );
-    }else{
-   //   storeNew = news.getNew(ticker,url); 
-    }
- //   let event = Object.assign({}, storeNew);
-
   // меняем тип события
   const  changeTypeEvent = (value:any) => {
     console.log(value);
@@ -427,7 +359,7 @@ const sendEvent = () => {
       </Popup>
       {news.eventDate}
       <Form className={styles.formContent}>
-         <div className={styles.rowForm}>
+          <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
             <div className={styles.formBlock25}>
               <label>Событие:</label> 
@@ -451,7 +383,7 @@ const sendEvent = () => {
               />
             </div>
 
-            <div className={styles.formBlock25}>
+            {/* <div className={styles.formBlock25}>
               <label>Дата события:</label>
                <DatePicker
                 title='asd'
@@ -461,11 +393,11 @@ const sendEvent = () => {
                 onSelect={handleDateSelect} //when day is clicked
                 selected={getDate()}
                 className="form-control" />
-            </div>
+            </div> */}
           </div>
-        </div> 
+        </div>  
 
-        <div className={styles.rowForm}>
+         <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое название:</label>
             <Form.Control
@@ -481,19 +413,19 @@ const sendEvent = () => {
 
 
           </div>
-        </div>
+        </div> 
 
-         <div className={styles.rowForm}>
+          <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Источник:</label>
             <Form.Control
               isInvalid={isInvalidSource}
-              onChange={text => changeEventSource(text.target.value)}
+              onChange={(text:any) => changeEventSource(text.target.value)}
               value={getData.source}
               placeholder="http://" />
           </div>
-        </div> 
-
+        </div>  
+        
          <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
             <label>Короткое описание:</label>
@@ -501,14 +433,14 @@ const sendEvent = () => {
 
               isInvalid={isInvalidText}
 
-              onChange={text => changeEventText(text.target.value)}
+              onChange={(text:any) => changeEventText(text.target.value)}
               value={getData.shorttext}
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"
             />
           </div>
-        </div> 
+        </div>  
 
          <div className={styles.rowForm}>
           <div className={styles.formBlock100}>
@@ -554,7 +486,7 @@ const sendEvent = () => {
               onEditorChange={handleEditorChange}
             />
           </div>
-        </div> 
+        </div>  
         <div className="row-form">
           <div className={styles.formBlock100 + " "+styles.buttonRight}>
             {getButton()}
