@@ -12,7 +12,7 @@ function Tabs(props: any) {
     const onClickTab = (k: number) => {
         setActiveTab(k);
 
-        let info = props.objects.filter((item: object) => {
+        let info = props.objects.filter((item: any) => {
             const id = item.id;
             return id === k;
         })
