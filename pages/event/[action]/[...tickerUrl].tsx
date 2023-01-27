@@ -1,3 +1,5 @@
+// http://localhost:3000/event/create/btc
+
 import Head from 'next/head'
 import Image from 'next/image' 
 import Popup from 'reactjs-popup';
@@ -9,7 +11,7 @@ import DatePicker from "react-datepicker";
 import { Editor } from "@tinymce/tinymce-react";
 
 import styles from './../styleform.module.css'
-import React, {  useRef,useState,useContext,useEffect } from "react";
+import React, {  useRef,useState,useEffect } from "react";
 
 import { eventsName } from "../../../constants/general";
  
@@ -314,6 +316,7 @@ const sendEvent = () => {
     
     }
 
+    //useEffect(() => {  
     // устанавливаем дату
     const setDateEvent= (value:any) => {
    //   console.log(value);
@@ -323,6 +326,10 @@ const sendEvent = () => {
     //  setEventDate(eventDate);
       setData({...getData, date:eventDate});
     }
+  //},[]);
+
+
+
     // устанавливаем название события
     // const changeEventName = (value:any) => {
     //  // setEventTitle(value);
@@ -344,20 +351,19 @@ const sendEvent = () => {
       setData({...getData, title:text});
     }
      
-    
+    const [startDate, setStartDate] = useState(new Date());
  
     if ( router.isReady && isload) {
 
-     
   return (
     <> 
    <ContentBox title="График изменения цен Биткоина" ticker="">
-      <Popup open={open}
+       <Popup open={open}
         closeOnDocumentClick={false}
         onClose={closeModal}>
         <AddEvent instrument={instrument} />
-      </Popup>
-      {news.eventDate}
+      </Popup> 
+ 
       <Form className={styles.formContent}>
           <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
@@ -383,17 +389,18 @@ const sendEvent = () => {
               />
             </div>
 
-            {/* <div className={styles.formBlock25}>
+             <div className={styles.formBlock25}>
               <label>Дата события:</label>
-               <DatePicker
-                title='asd'
-                required={true}
+              {/* <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} /> */}
+               {/* <DatePicker 
+          //     title='asd'
+               // required={true}
                 dateFormat='dd/MM/yyyy'
-                onChange={(date:any) => setDateEvent(date)}
-                onSelect={handleDateSelect} //when day is clicked
-                selected={getDate()}
-                className="form-control" />
-            </div> */}
+                 onChange={(date:any) => setDateEvent(date)}
+               //  onSelect={handleDateSelect} //when day is clicked
+                // selected={getDate()}
+                className="form-control" />  */}
+            </div> 
           </div>
         </div>  
 
