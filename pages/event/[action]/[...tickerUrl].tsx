@@ -31,7 +31,11 @@ export default function TickerUrlIndex() {
   const [writeForm, setWriteForm] = useState(false);
   const [errorFulltext, setErrorFulltext] = useState(false);
   const [instrument, setInstrument] = useState({});
-  const [title, setTitle] = useState("");
+  const [showSendButton, setShowSendButton] = useState(true);
+  const [open, setOpen] = useState(false);
+  //const [text, setText] = useState(''); 
+  //const [typeId, setTypeId] = useState(0);
+
 
   interface InfoType {
     title: string;
@@ -50,12 +54,7 @@ export default function TickerUrlIndex() {
     shorttext: "",
     fulltext: "",
   });
-
-  const [showSendButton, setShowSendButton] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [eventDate, setEventDate] = useState(moment().format("DD/MM/YYYY"));
-  const [text, setText] = useState(''); 
-  const [typeId, setTypeId] = useState(0);
+ 
 
 
   const changeEventName = (status: any) => {
@@ -91,7 +90,7 @@ export default function TickerUrlIndex() {
   }
 
   useEffect(() => {
-    const fetchSomethingById = async (tickers: any, urls: any) => {
+    const getEvent = async (tickers: any, urls: any) => {
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
@@ -103,36 +102,22 @@ export default function TickerUrlIndex() {
           console.log('fetch', response);
           return response.json()
         })
-        .then((res: any) => {
-          console.log(res);
-          setData(res);
+        .then((data: any) => {
+          console.log(data);
+          setData(data.data);
+          setInstrument(data.instrument);
           setLoad(true);
         }).catch(function (error) {
-          console.log("Ошибка обработана, продолжить работу", error);
+          console.log("Ошибка обработана, продолжить работу ", error);
         });
       console.log('result');
     };
 
 
     if (router.isReady && !isload) {
-      if (ticker && url) {
-        fetchSomethingById(ticker, url);
-      } else {
-        setLoad(true);
-      }
+        getEvent(ticker, url);
     }
   });
-
-
-  console.log(action, tickerUrl)
-
-
-
-  // if(!router.isReady){
-  //   return <></>;
-  // } 
-
-
 
   let news: any = {};
 
@@ -146,11 +131,7 @@ export default function TickerUrlIndex() {
       return true;
     }
 
-    if (typeId != 0) {
-      return true;
-    }
     return false;
-    // return  news.storeNew.typeId !==0;
   }
   const handleDateSelect = (info: any) => {
 
