@@ -13,9 +13,11 @@ import { Editor } from "@tinymce/tinymce-react";
 import styles from './../styleform.module.css'
 import React, {  useRef,useState,useEffect } from "react";
 
+import Datetime from 'react-datetime';
 import { eventsName } from "../../../constants/general";
  
 import ContentBox from "../../../components/ContentBox";
+import DateFormatInput from 'material-ui-next-datepicker'
 import AddEvent from "../../../components/modals/AddEvent";
 
 //import { getInstrument,getNewsSingle,setEventTitle,setEventFulltext } from '../../../hooks/index'
@@ -75,81 +77,111 @@ interface InfoType {
   const getType = () => {
  
     const  res =  eventsName.filter((option:any)=> {
+      if(getData){ 
+  
        return option.value === +getData.typeId;
+      }
      })
      return  (res && res[0])?res[0]:{};
  };
- const setEventFulltext = (text:string)  => {
-  // event = { ...event , event.title: text};
-  // console.log(event);
-  setData({...getData,fulltext:text});
- };
+//  const setEventFulltext = (text:string)  => {
+//   // event = { ...event , event.title: text};
+//   // console.log(event);
+//   setData({...getData,fulltext:text});
+//  };
+
+ let ticker:any = null;
+ let url:any = null;
 
 
- let ticker = '';
- let url:string = '';
-
-
- let action = ""; 
- let tickerUrl:any = []; 
+ //let action:any  = null; 
+ //let tickerUrl:any = []; 
 
  const router = useRouter();
- const editorRef = useRef('chart'); 
+ const { asPath } = useRouter();
+ 
+ const {action,tickerUrl} = router.query
 
  
   
- 
 
-  useEffect(() => {  
-    setLoad(true);
-    //  if (router.isReady) {
-        // Code using query 
- 
-   //     let action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
-   //     let tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+ if (router.isReady) {
+ if( tickerUrl && tickerUrl.length > 0){
+  ticker =  tickerUrl[0];
+ }
 
-    const fetchSomethingById = async () => {
+ if( tickerUrl && tickerUrl.length > 1){
+   url =  tickerUrl[1];
+  }
+}
+
+  useEffect(() => {
+
+
+  //  if(!tickerUrl && !url) {
+  //    return;
+  //  }
+
+
+  //  setLoad(true);
+
+    const fetchSomethingById = async (tickers:any ,urls:any) => {
       //return [];
-       const headers = { 'Content-Type': 'application/json' }
-      // //const data = 
-      fetch('http://localhost:3000/news.js', { headers })   
+      //   "accept": "application/json, text/plain, */*",
+      const headers = { 
+        'Accept': 'application/json',
+          'Content-Type': 'application/json, text/plain, */*',   
+        }
+        let urlRequest = `http://localhost:8083/api/event/${tickers}/${urls}`;
+        console.log('urlRequest ',urlRequest );
+        fetch(urlRequest,{ headers })   
       .then((response:any) => {
-      //  console.log('fetch',response.json());
+        console.log('fetch');
+        console.log('fetch',response);
         return response.json()
       }) 
-      .then(res => {
-        console.log(res[0]);
-        setData(res[0]);
+      .then((res:any) => {
+        console.log(res);
+        setData(res);
         setLoad(true);
       //  return res[0];
+        }).catch(function(error) {
+
+          console.log("Ошибка обработана, продолжить работу",error);
+        
         });
     //    setData(data); 
         console.log('result');
     };
 
-  
+    
+    
+ 
+   if(router.isReady &&  !isload) {
+    fetchSomethingById(ticker ,url);
+   }
      //   console.log(action);
-         fetchSomethingById();
-     //  }
+         
+      // }
        //     }, [router.isReady, isload]);
   //       }, [ router.isReady, isload,fetchSomethingById]);
-         }, []);
+         });
   
 
 
        //  if (router.isReady) {
           // Code using query 
         
-           action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
-           tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
+          //  action =  typeof router.query?.action === "string"  ? router.query.action : ""; 
+          //  tickerUrl =  typeof router.query?.tickerUrl === "object"  ?  router.query.tickerUrl : []; 
 
-           if( tickerUrl && tickerUrl.length > 0){
-            ticker =  tickerUrl[0];
-           }
+          //  if( tickerUrl && tickerUrl.length > 0){
+          //   ticker =  tickerUrl[0];
+          //  }
           
-           if( tickerUrl && tickerUrl.length > 1){
-             url =  tickerUrl[1];
-            }
+          //  if( tickerUrl && tickerUrl.length > 1){
+          //    url =  tickerUrl[1];
+          //   }
       //  }
  
     console.log(action, tickerUrl )
@@ -189,6 +221,7 @@ interface InfoType {
   console.log('ok' );
 
   const getDate = () => {
+    if(getData){ 
     return  moment(getData.date, 'DD/MM/YYYY').toDate()
  //   return moment().toDate()  ;
       if(news.id){ 
@@ -202,6 +235,7 @@ interface InfoType {
       //  console.log('as11',news.eventDate,moment(news.eventDate, 'DD/MM/YYYY').toDate())
         return moment(news.eventDate, 'DD/MM/YYYY').toDate()  ;
       }
+    }
   }
  // ПРоверяем условия
 const validation = () => {
@@ -281,8 +315,10 @@ const sendEvent = () => {
     }
       return <>11</> ; 
   }
-  const handleEditorChange = (content:any, editor:any) => {
-    setEventFulltext(content);
+  const handleEditorChange = (content:string, editor:any) => {
+   // setEventFulltext(content);
+      console.log(content);
+  //  setData({...getData, fulltext:content});
     //  onEditorChange={text => news.changeEventFulltext(text)}
 //      changeEventFulltext(content);
     //  console.log("Content was updated:", content);
@@ -304,8 +340,17 @@ const sendEvent = () => {
     };
 
 
+    getData.title
 
 
+    
+  // меняем тип события
+ // const getTitle = () => {
+    //  if(getData &&  getData.title){
+    //    console.log( getData);
+    //    return getData.title;
+    //  }
+   // }
 
     
   // меняем тип события
@@ -350,10 +395,23 @@ const sendEvent = () => {
       setFulltext(value);
       setData({...getData, title:text});
     }
+    const isValidDate = (status:boolean) => {
+   //   console.log(status);
+      return status;
+   //   setFulltext(value);
+   //   setData({...getData, title:text});
+    }
+     
+    var valid = ( current:any ) => {
+      return current.day() != 0 && current.day() != 6;
+   }; 
      
     const [startDate, setStartDate] = useState(new Date());
  
-    if ( router.isReady && isload) {
+    if ( router.isReady) {
+
+      const property = {placeholder:"asdasd"}
+
 
   return (
     <> 
@@ -391,6 +449,21 @@ const sendEvent = () => {
 
              <div className={styles.formBlock25}>
               <label>Дата события:</label>
+              <Datetime      
+              value={getDate()}
+             // isValidDate={(status:any) =>isValidDate(status)}
+              isValidDate={ valid }
+              strictParsing={false}
+              inputProps={property}
+              closeOnClickOutside={true}
+              timeFormat={false}
+              closeOnSelect={true}
+              dateFormat='DD/MM/yyyy'
+              locale={"date-fns/locale/ru"}
+              onChange={(date:any) => setDateEvent(date)}  /> 
+
+
+
               {/* <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} /> */}
                {/* <DatePicker 
           //     title='asd'
@@ -399,7 +472,7 @@ const sendEvent = () => {
                  onChange={(date:any) => setDateEvent(date)}
                //  onSelect={handleDateSelect} //when day is clicked
                 // selected={getDate()}
-                className="form-control" />  */}
+                className="form-control" />   */}
             </div> 
           </div>
         </div>  
@@ -437,11 +510,10 @@ const sendEvent = () => {
           <div className={styles.formBlock100}>
             <label>Короткое описание:</label>
             <Form.Control
-
-              isInvalid={isInvalidText}
-
-              onChange={(text:any) => changeEventText(text.target.value)}
               value={getData.shorttext}
+              isInvalid={isInvalidText}
+              onChange={(text:any) => changeEventText(text.target.value)}
+
               as="textarea"
               rows={3}
               placeholder="Объявление девидендов в 135 рублей на акцию"
@@ -459,8 +531,6 @@ const sendEvent = () => {
               apiKey="5kp3x2dadjoph5cgpy61s3ha1kl7h6fvl501s3qidoyb4k6u"
               initialValue={getData.fulltext}
             //  onInit={(evt, editor) => editorRef.current = editor}
-
- 
               init={{
                 extended_valid_elements: "br[*],p,b,",
                 entity_encoding: "raw",
