@@ -1,12 +1,13 @@
 // http://localhost:3000/event/create/btc
 
 import Head from 'next/head'
-import Image from 'next/image'
+ 
 import Popup from 'reactjs-popup';
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import moment from 'moment';
-import DatePicker from "react-datepicker";
+import moment from 'moment'; 
+ 
+import 'moment/locale/ru';
 
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -33,8 +34,6 @@ export default function TickerUrlIndex() {
   const [instrument, setInstrument] = useState({});
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
-  //const [text, setText] = useState(''); 
-  //const [typeId, setTypeId] = useState(0);
 
 
   interface InfoType {
@@ -62,13 +61,15 @@ export default function TickerUrlIndex() {
   }
 
   const getType = () => {
+
     const res = eventsName.filter((option: any) => {
       if (getData) {
 
         return option.value === +getData.typeId;
       }
     })
-    return (res && res[0]) ? res[0] : {};
+    return (res ) ? res : {};
+
   };
   let ticker: any = null;
   let url: any = null;
@@ -288,16 +289,14 @@ export default function TickerUrlIndex() {
   }
 
   var valid = (current: any) => {
-    return current.day() != 0 && current.day() != 6;
+    return true;
+    return current.day() == 0 && current.day() != 8;
   };
 
   const [startDate, setStartDate] = useState(new Date());
 
   if (router.isReady) {
-
-    const property = { placeholder: "asdasd" }
-
-
+ 
     return (
       <>
         <ContentBox title="График изменения цен Биткоина" ticker="">
@@ -321,12 +320,10 @@ export default function TickerUrlIndex() {
                       }),
                     }}
                     id={'id'}
-                    instanceId={'instanceId'}
-
-                    // defaultValue={getType()}
+                    instanceId={'instanceId'} 
                     value={getType()}
                     className={styles.formSelect}
-                    placeholder="Что произошло?"
+                    placeholder={"Что произошло?"}
                     onChange={(value) => changeTypeEvent(value)}
                     options={eventsName}
                   />
@@ -335,29 +332,23 @@ export default function TickerUrlIndex() {
                 <div className={styles.formBlock25}>
                   <label>Дата события:</label>
                   <Datetime
-                    value={getDate()}
-                    // isValidDate={(status:any) =>isValidDate(status)}
-                    isValidDate={valid}
-                    strictParsing={false}
-                    inputProps={property}
-                    closeOnClickOutside={true}
+                    value={getDate()} 
+                    isValidDate={valid} 
                     timeFormat={false}
-                    closeOnSelect={true}
-                    dateFormat='DD/MM/yyyy'
-                    locale={"date-fns/locale/ru"}
-                    onChange={(date: any) => setDateEvent(date)} />
+                    closeOnSelect={true}  
 
-
-
-                  {/* <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} /> */}
-                  {/* <DatePicker 
-          //     title='asd'
-               // required={true}
-                dateFormat='dd/MM/yyyy'
-                 onChange={(date:any) => setDateEvent(date)}
-               //  onSelect={handleDateSelect} //when day is clicked
-                // selected={getDate()}
-                className="form-control" />   */}
+                    closeOnClickOutside={true}
+                    dateFormat='DD/MM/yyyy' 
+                    initialViewMode="days"
+                    inputProps={{
+                      placeholder: "DD/MM/yyyy",
+                      required: true,
+                      
+                    }} 
+                    
+                    onChange={(date: any) => setDateEvent(date)}
+                    
+                    />
                 </div>
               </div>
             </div>
@@ -409,7 +400,6 @@ export default function TickerUrlIndex() {
             <div className={styles.rowForm}>
               <div className={styles.formBlock100}>
                 <label>Полное описание:</label>
-
                 <Editor
                   id={'Editor'}
                   tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
@@ -417,6 +407,7 @@ export default function TickerUrlIndex() {
                   initialValue={getData.fulltext}
                   //  onInit={(evt, editor) => editorRef.current = editor}
                   init={{
+                    placeholder:"Подробное описание события",
                     extended_valid_elements: "br[*],p,b,",
                     entity_encoding: "raw",
                     height: 400,
@@ -460,22 +451,5 @@ export default function TickerUrlIndex() {
     );
 
   }
-
-
-  // if (isLoading) {
-  //   return <div className="center">Loading...</div>;
-  // }
-
-  // if (isError) {
-  //   return (
-  //     <div className="center">
-  //       We couldn't find your pokemon{" "}
-  //       <span role="img" aria-label="sad">
-  //         😢
-  //       </span>
-  //     </div>
-  //   );
-  // }
-
-  return <></>;
+   return <>load page</>;
 }

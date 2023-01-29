@@ -13,6 +13,7 @@ import { LineTicker } from "./../../components/charts/LineEvents";
 import ListEvents from "./../../components/news/Lists";
 
 import {
+  useState,
   useEffect
 } from 'react'
 import {
@@ -25,7 +26,58 @@ export default function Index() {
 
   const router:any = useRouter();
  
+
+  interface IEvent {
+    title: string;
+    typeId: number;
+    date: string;
+    source: string;
+    slug: string;
+    shorttext: string;
+    fulltext: string;
+}
+
+
   const { ticker } = router.query
+  const [isload, setLoad] = useState(false);
+  const [instrument, setInstrument] = useState({});
+  const [getData, setData] = useState<Array<IEvent>>(Array<IEvent>);
+
+
+
+  useEffect(() => {
+
+
+    const getEvents = async (tickers: any) => {
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json, text/plain, */*',
+      }
+      let urlRequest = `http://localhost:8083/api/events/${tickers}`;
+        console.log( urlRequest);
+      fetch(urlRequest, { headers })
+        .then((response: any) => {
+          console.log('fetch', response);
+          return response.json()
+        })
+        .then((data: any) => {
+          console.log(data);
+       //   setData(data.data);
+      //    setInstrument(data.instrument);
+          setLoad(true);
+        }).catch(function (error) {
+          console.log("Ошибка обработана, продолжить работу ", error);
+        });
+      console.log('result');
+    };
+
+
+    if (router.isReady && !isload) {
+        getEvents(ticker);
+    }
+  });
+
+
 
  
   const getUrlEdit = (ticker:string) => {  
@@ -62,7 +114,6 @@ export default function Index() {
 
       <div className={stylesHome.boxContent}>
         <div className={styles.graphicTab}>
-
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           <LineTicker ticker={ticker} />
         </div>
