@@ -424,14 +424,12 @@ export default function TickerUrlIndex() {
                     setup: (editor: any) => {
                       editor.on("click", (e: any) => {
                         const element = editor.getContainer();
-
                         if (element) {
                           if (errorFulltext) {
                             element.style.border = "1px solid green";
                           }
                         }
                       });
-
 
                     }
                   }}
