@@ -336,7 +336,6 @@ export default function TickerUrlIndex() {
                     isValidDate={valid} 
                     timeFormat={false}
                     closeOnSelect={true}  
-
                     closeOnClickOutside={true}
                     dateFormat='DD/MM/yyyy' 
                     initialViewMode="days"
