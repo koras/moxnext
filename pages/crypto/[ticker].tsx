@@ -42,38 +42,47 @@ export default function Index() {
   const [isload, setLoad] = useState(false);
   const [instrument, setInstrument] = useState({});
   const [getData, setData] = useState<Array<IEvent>>(Array<IEvent>);
+  const [newsEvent, setNews] = useState<Array<IEvent>>(Array<IEvent>);
 
 
 
   useEffect(() => {
+    const getEventsTicker = async (tickers: any) => {
 
+   //  await getNews(tickers,100);
 
-    const getEvents = async (tickers: any) => {
       const headers = {
-        'Accept': 'application/json',
+        'Accept': 'application/json; charset=utf-8',
         'Content-Type': 'application/json, text/plain, */*',
       }
       let urlRequest = `http://localhost:8083/api/events/${tickers}`;
         console.log( urlRequest);
-      fetch(urlRequest, { headers })
+    const  datas = fetch(urlRequest, {   headers})
         .then((response: any) => {
           console.log('fetch', response);
           return response.json()
+          return response
         })
         .then((data: any) => {
-          console.log(data);
+
+          setNews(data.data);
+          setInstrument(data.instrument);
+          console.log(data.data);
        //   setData(data.data);
       //    setInstrument(data.instrument);
           setLoad(true);
         }).catch(function (error) {
-          console.log("Ошибка обработана, продолжить работу ", error);
+          console.log("Ошибка обработана, продолжить работу ");
+          console.log( error);
         });
-      console.log('result');
+
+        console.log(datas);
+  //    console.log('result');
     };
 
 
     if (router.isReady && !isload) {
-        getEvents(ticker);
+        getEventsTicker(ticker);
     }
   });
 
@@ -98,28 +107,21 @@ export default function Index() {
   const infoBox = { title: 'Изменение цены', hintInfo: 'в течении суток', changes: '+212' };
 
   return (
-
     <ContentBox title="" hideBorder={true}>
-
-
       <div className={styles.graphicHead}>
         <div className={styles.title}>Биткоин:График событий</div>
         <div className={styles.button}>
           <Button size="small" onClick={() => getUrlEdit(ticker)} variant="outlined">Добавить событие</Button>
         </div>
       </div>
-
-
-
-
       <div className={stylesHome.boxContent}>
         <div className={styles.graphicTab}>
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           <LineTicker ticker={ticker} />
         </div>
 
-        <div className={styles.pageText}>
-          <ListEvents ticker={ticker} />
+        <div className={styles.pageText}> 
+          <ListEvents instrument={instrument} news={newsEvent}/> 
         </div>
       </div>
     </ContentBox>

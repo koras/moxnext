@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 
 import style from './styleNews.module.css';
 
+//import { useRouter } from 'next/router'
 import { observer } from "mobx-react-lite";
  
 import Button from "@mui/material/Button";
 
+import React, { useState, useEffect } from "react";
 
 import { getNews } from './../../hooks/index'
 
@@ -21,9 +23,7 @@ import { getNews } from './../../hooks/index'
 // instrumentId: 1111,
 // date: "12.12.2022",
 
-const getUrl = (props:any) => {
-  return "/events/" + props.ticker + "/" + props.url;
-};
+ 
 const classNameEvent = (props:any) => {
   return "news-item-head__divid news-item-head__event_" + props.type;
 };
@@ -33,13 +33,24 @@ const checkChart = (props:any) => {
 };
 
 export default function ListEvents(params:any)  {
+
+  const instrument = params.instrument;
+ 
+  console.log('params',params.ticker)
+ 
+  const getUrl = (props:any) => {
+    return "/events/" + instrument.ticker + "/" + props.slug;
+  };
+
+
  //const navigate = useNavigate();
  const router = useRouter();
-  const getUrlEdit = (props:any) => { 
-    router.push("/event/edit/" + props.ticker + "/" + props.url) 
+  const getUrlEdit = (hash:string) => { 
+    router.push("/event/change/" + hash) 
   }; 
 
   const ObjectRow = (props:any) => {
+    
     return (
       <div className={style.newsItem}>
         <div className={style.newsItemHead}>
@@ -57,23 +68,22 @@ export default function ListEvents(params:any)  {
             <Link href={getUrl(props.item)}>{props.item.title}</Link>
           </div>
         </div>
-        <div className="news-item-head__text">{props.item.text}</div>
-
+        <div className="news-item-head__text">{props.item.shorttext}</div>
+              {props.item.hash}
         <div className={style.controll}>
-          <Button   size="small" onClick={() => getUrlEdit(props.item)} variant="outlined">Изменить</Button>
+          <Button   size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>
         </div>
       </div>
     );
   }; 
 
+ 
 
-  const  { isLoading, error, data } = getNews(params.ticker+'112',10);
-
-  console.log('storeNews',isLoading,error);
-  if (isLoading) return <div > `Loading...`</div>;
+ // console.log('storeNews',isLoading,error);
+ // if (isLoading) return <div > `Loading...`</div>;
  
    return <div >
-    {data.map((item:any, i:any) => (
+    {params && params.news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
    </div>;

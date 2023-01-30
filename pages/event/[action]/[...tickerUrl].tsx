@@ -100,7 +100,6 @@ export default function TickerUrlIndex() {
       console.log('urlRequest ', urlRequest);
       fetch(urlRequest, { headers })
         .then((response: any) => {
-          console.log('fetch', response);
           return response.json()
         })
         .then((data: any) => {

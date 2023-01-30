@@ -18,17 +18,27 @@ import moment from 'moment';
 
 
 const fetchPosts = async (ticker:any,limit:any = 10) => {
-  return news;
-    const parsed =  await fetch('https://jsonplaceholder.typicode.com/posts')
-  .then(data => {
-    return data.json();
-  })
-  .catch(err => {
-    console.log(err);
-  });
 
-  return news;
-  return parsed.filter((x:any) => x.id <= limit)
+  console.log('fetchPostsfetchPostsfetchPostsfetchPosts')
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json, text/plain, */*',
+  }
+  let urlRequest = `http://localhost:8083/api/events/${tickers}`;
+    console.log( urlRequest);
+  return   fetch(urlRequest, { headers })
+    .then((response: any) => {
+      console.log('fetch', response);
+      return response.json()
+    })
+    .then((data: any) => {
+      console.log(data);
+   //   setData(data.data);
+  //    setInstrument(data.instrument);
+     
+    }).catch(function (error) {
+      console.log("Ошибка обработана, продолжить работу ", error);
+    });
 }
 
 const fetchGet =  (ticker:string, url:string) => {
@@ -54,14 +64,7 @@ const fetchGet =  (ticker:string, url:string) => {
 
   // return news; 
 }
-// const [events, setEvents] = useState({
-//                                   title: "",
-//                                   text:"",
-//                                   source:"",
-//                                   fulltext:"",
-//                                   typeId:0,
-//                                   date:moment().toDate(),
-//                                 });
+ 
 
 let event = {
   title: "",
@@ -91,9 +94,11 @@ const setEventFulltext = (text:string)  => {
 
 
 const getNews = (ticker:string,limit:number = 0)  => {
-  return useQuery({
+  console.log('getNewsgetNews');
+
+  return useQuery({ 
     queryKey: ['news',ticker ,limit],
-    queryFn: ()=> fetchPosts(ticker, limit),
+    queryFn:  ()=>  fetchPosts(ticker, limit),
   })
 }
 
@@ -105,9 +110,8 @@ const getNewsSingle = (ticker:string, url:string)  => {
   // return     data ;
 //  const data = fetchGet(ticker, url);
   return useQuery({
-          queryKey: [ticker, url],
-         //      queryFn:  ()=> {},
-        queryFn:  ()=> fetchGet(ticker, url),
+          queryKey: [ticker, url], 
+          queryFn:  ()=> fetchGet(ticker, url),
         }
     );
 }
