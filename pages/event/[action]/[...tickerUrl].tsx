@@ -34,7 +34,8 @@ export default function TickerUrlIndex() {
   const [instrument, setInstrument] = useState({});
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
-
+  const [title, setTitle] = useState("События графика");
+  
 
   interface InfoType {
     title: string;
@@ -91,12 +92,22 @@ export default function TickerUrlIndex() {
   }
 
   useEffect(() => {
-    const getEvent = async (tickers: any, urls: any) => {
+    let urlRequest = "";
+    const getEvent = async (action: any, tickers:string, urls: any) => {
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
       }
-      let urlRequest = `http://localhost:8083/api/event/${tickers}/${urls}`;
+      console.log('action',action)
+      if(action === "change"){
+         urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
+      } 
+    //  if(action === "change"){
+    //     urlRequest = `http://localhost:8083/api/event/${action}/${tickers}/${urls}`;
+    //  } 
+      if(action === "create"){
+         urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
+      } 
       console.log('urlRequest ', urlRequest);
       fetch(urlRequest, { headers })
         .then((response: any) => {
@@ -107,17 +118,38 @@ export default function TickerUrlIndex() {
           setData(data.data);
           setInstrument(data.instrument);
           setLoad(true);
+            console.log(instrument);
+          updateTitle(action, data.instrument)
+           
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ", error);
         });
       console.log('result');
     };
 
-
     if (router.isReady && !isload) {
-        getEvent(ticker, url);
+        getEvent(action, ticker, url);
     }
   });
+
+
+  const updateTitle = (action:any, instrument:any)=>{
+    if(action === "change"){ 
+      setTitle('Изменение события на графике : '+ instrument.instrument_name);
+      return '';
+   } 
+ 
+   if(action === "create"){
+    setTitle('Добавление нового события на график : '+ instrument.instrument_name);
+      return;
+       
+   } 
+   return 'События ';
+  }
+
+
+
+
 
   let news: any = {};
 
@@ -298,7 +330,7 @@ export default function TickerUrlIndex() {
  
     return (
       <>
-        <ContentBox title="График изменения цен Биткоина" ticker="">
+        <ContentBox title={title} ticker="">
           <Popup open={open}
             closeOnDocumentClick={false}
             onClose={closeModal}>
