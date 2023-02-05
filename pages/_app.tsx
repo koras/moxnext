@@ -21,8 +21,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
-
- // const [queryClient] = React.useState(() => new QueryClient());
+ 
 
   return  <QueryClientProvider client={queryClient}> 
        <Component {...pageProps} />

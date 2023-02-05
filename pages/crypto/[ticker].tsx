@@ -54,14 +54,17 @@ export default function Index() {
       const headers = {
         'Accept': 'application/json; charset=utf-8',
         'Content-Type': 'application/json, text/plain, */*',
+        'Access-Control-Allow-Origin': "*",
       }
       let urlRequest = `http://localhost:8083/api/events/${tickers}`;
         console.log( urlRequest);
-    const  datas = fetch(urlRequest, {   headers})
+    const  datas = fetch(urlRequest, { 
+      //mode: 'no-cors', 
+    headers})
         .then((response: any) => {
           console.log('fetch', response);
           return response.json()
-          return response
+    
         })
         .then((data: any) => {
 
@@ -74,6 +77,7 @@ export default function Index() {
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ");
           console.log( error);
+          setLoad(true);
         });
 
         console.log(datas);

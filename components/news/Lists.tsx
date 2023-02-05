@@ -3,6 +3,7 @@ import Link from 'next/link'
 //import "./styleNews.css";
 import { useRouter } from 'next/navigation';
 
+import moment from 'moment';
 import style from './styleNews.module.css';
 
 //import { useRouter } from 'next/router'
@@ -28,8 +29,9 @@ const classNameEvent = (props:any) => {
   return "news-item-head__divid news-item-head__event_" + props.type;
 };
 
-const checkChart = (props:any) => {
-  return props.id;
+const checkChart = (data:any) => {
+console.log('data',data);
+  //  return props;
 };
 
 export default function ListEvents(params:any)  {
@@ -40,6 +42,11 @@ export default function ListEvents(params:any)  {
  
   const getUrl = (props:any) => {
     return "/events/" + instrument.ticker + "/" + props.slug;
+  };
+
+  const changeDate = (date:any) => {
+    
+    return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY") 
   };
 
 
@@ -60,7 +67,7 @@ export default function ListEvents(params:any)  {
               checkChart(props.item.id);
             }}
           >
-            {props.item.date}
+            {changeDate(props.item.date)}
           </div>
           <div className={classNameEvent(props?.item)}></div>
           <div className={style.event}>{props?.item?.event}</div>
@@ -69,7 +76,6 @@ export default function ListEvents(params:any)  {
           </div>
         </div>
         <div className="news-item-head__text">{props.item.shorttext}</div>
-              {props.item.hash}
         <div className={style.controll}>
           <Button   size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>
         </div>
@@ -83,7 +89,7 @@ export default function ListEvents(params:any)  {
  // if (isLoading) return <div > `Loading...`</div>;
  
    return <div >
-    {params && params.news.map((item:any, i:any) => (
+    {params && params.news && params.news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
    </div>;

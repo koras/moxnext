@@ -1,18 +1,21 @@
 // http://localhost:3000/event/create/btc
 
 import Head from 'next/head'
- 
+
 import Popup from 'reactjs-popup';
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import moment from 'moment'; 
- 
+import moment from 'moment';
+//  
+
+import { createEvent } from './../../../hooks/index'
+
 import 'moment/locale/ru';
 
 import { Editor } from "@tinymce/tinymce-react";
 
 import styles from './../styleform.module.css'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Datetime from 'react-datetime';
 import { eventsName } from "../../../constants/general";
@@ -32,10 +35,12 @@ export default function TickerUrlIndex() {
   const [writeForm, setWriteForm] = useState(false);
   const [errorFulltext, setErrorFulltext] = useState(false);
   const [instrument, setInstrument] = useState({});
+  const [serverResponse, setServerResponse] = useState({});
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
+  const [fulltext, setFullText] = useState("");
   const [title, setTitle] = useState("События графика");
-  
+
 
   interface InfoType {
     title: string;
@@ -44,6 +49,7 @@ export default function TickerUrlIndex() {
     source: string;
     shorttext: string;
     fulltext: string;
+    instrument_id: string;
   }
 
   const [getData, setData] = useState<InfoType>({
@@ -53,13 +59,13 @@ export default function TickerUrlIndex() {
     source: "",
     shorttext: "",
     fulltext: "",
+    instrument_id: "",
   });
- 
 
 
-  const changeEventName = (status: any) => {
-    setData({ ...getData, title: status });
-  }
+  const textareaEl = useRef(null);
+
+
 
   const getType = () => {
 
@@ -69,15 +75,14 @@ export default function TickerUrlIndex() {
         return option.value === +getData.typeId;
       }
     })
-    return (res ) ? res : {};
+    return (res) ? res : {};
 
   };
   let ticker: any = null;
   let url: any = null;
 
 
-  const router = useRouter();
-  const { asPath } = useRouter();
+  const router = useRouter(); 
 
   const { action, tickerUrl } = router.query
 
@@ -93,21 +98,18 @@ export default function TickerUrlIndex() {
 
   useEffect(() => {
     let urlRequest = "";
-    const getEvent = async (action: any, tickers:string, urls: any) => {
+    const getEvent = async (action: any, tickers: string, urls: any) => {
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
       }
-      console.log('action',action)
-      if(action === "change"){
-         urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
-      } 
-    //  if(action === "change"){
-    //     urlRequest = `http://localhost:8083/api/event/${action}/${tickers}/${urls}`;
-    //  } 
-      if(action === "create"){
-         urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
-      } 
+      console.log('action', action)
+    //  if (action === "change") {
+        urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
+  //    }
+    //  if (action === "create") {
+     //   urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
+   //   }
       console.log('urlRequest ', urlRequest);
       fetch(urlRequest, { headers })
         .then((response: any) => {
@@ -115,12 +117,18 @@ export default function TickerUrlIndex() {
         })
         .then((data: any) => {
           console.log(data);
-          setData(data.data);
+
+          console.log( data.data.date);
+
+          setData({ ...data.data, instrument_id: data.instrument.instrument_id });
+          // отдельно
+          setFullText(data.data.fulltext);
           setInstrument(data.instrument);
           setLoad(true);
-            console.log(instrument);
           updateTitle(action, data.instrument)
-           
+
+        //  setData({ ...getData, instrument_id: instrument.instrument_id });
+
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ", error);
         });
@@ -128,23 +136,54 @@ export default function TickerUrlIndex() {
     };
 
     if (router.isReady && !isload) {
-        getEvent(action, ticker, url);
+      getEvent(action, ticker, url);
     }
+ 
+  
   });
 
 
-  const updateTitle = (action:any, instrument:any)=>{
-    if(action === "change"){ 
-      setTitle('Изменение события на графике : '+ instrument.instrument_name);
+  const changeStatePopup =(params:boolean)=>{
+ console.log('111',params)
+  setOpen(params);
+  }
+
+
+  const handleEditorChange = (content: string, editor: any) => {
+    setData({ ...getData, fulltext: content });
+
+    if (!writeForm) {
+      return true;
+    }
+
+    setData({ ...getData, fulltext: content });
+
+
+
+    const element = editor.getContainer();
+    if (element) {
+      if (content.length < 200) {
+        element.style.border = "1px solid red";
+      } else {
+
+        element.style.border = "1px solid #ced4da";
+      }
+    }
+
+  };
+
+  const updateTitle = (action: any, instrument: any) => {
+    if (action === "change") {
+      setTitle('Изменение события на графике : ' + instrument.instrument_name);
       return '';
-   } 
- 
-   if(action === "create"){
-    setTitle('Добавление нового события на график : '+ instrument.instrument_name);
+    }
+
+    if (action === "create") {
+      setTitle('Добавление нового события на график : ' + instrument.instrument_name);
       return;
-       
-   } 
-   return 'События ';
+
+    }
+    return 'События ';
   }
 
 
@@ -162,8 +201,7 @@ export default function TickerUrlIndex() {
     if (!writeForm) {
       return true;
     }
-
-    return false;
+    return getData.typeId != 0;
   }
   const handleDateSelect = (info: any) => {
 
@@ -190,6 +228,8 @@ export default function TickerUrlIndex() {
   // ПРоверяем условия
   const validation = () => {
 
+    const fulltext = textareaEl.current.currentContent
+
     setWriteForm(true);
     setIsInvalidTitle(false);
     setIsInvalidSource(false);
@@ -203,55 +243,120 @@ export default function TickerUrlIndex() {
 
 
     if (!getData.title || (getData.title && getData.title.length < 10)) {
-
       setIsInvalidTitle(true);
+      console.log('bug 1');
       isInvalidTitle = false;
     }
 
+    if (getData.typeId === 0) {
+
+      console.log('bug 2');
+    }
+
     if (!getData.source || (getData.source && getData.source.length < 10)) {
-
-
       isInvalidSource = false;
       setIsInvalidSource(true);
+      console.log('bug 3');
     }
     if (!getData.shorttext || (getData.shorttext && getData.shorttext.length < 10)) {
       setIsInvalidText(true);
       isInvalidText = false;
+      console.log('bug 4');
     }
 
-    if (!getData.fulltext || (getData.fulltext && getData.fulltext.length < 190)) {
+    //   console.log('fulltext',fulltext);
+
+    setData({ ...getData, fulltext: fulltext });
+
+    if (!fulltext || (fulltext && fulltext.length < 190)) {
       isInvalidFulltext = false;
       setErrorFulltext(true);
+      console.log('bug 5 ', fulltext);
+      console.log
     }
 
     if (isInvalidTitle && isInvalidSource && isInvalidText && isInvalidFulltext) {
       setShowSendButton(false);
-
-
-
+      console.log('bug 5');
       return true;
     }
-
     return false;
 
   };
 
-  const sendEvent = () => {
 
+
+
+
+
+  const getValidFullContent = (editor: any) => {
+    editor.on("click", (e: any) => {
+      const element = editor.getContainer();
+      if (element) {
+        if (errorFulltext) {
+          element.style.border = "1px solid green";
+        }
+      }
+    });
+  }
+
+
+
+  const sendEvent = async () => {
+    const current = textareaEl.current.elementRef.current;
+
+    current.style.border = "1px solid red";
+
+    const fulltext = textareaEl.current.currentContent
+    setData({ ...getData, fulltext: fulltext });
     // if(news.eventNew.id === undefined){
     //   news.eventNew.date = news.eventDate
     // }
 
-
-
     if (validation()) {
       //   const hash = news.saveEvent(news.eventNew);
+      console.log('getData')
 
-      //console.log('sendEvent',news.eventNew,hash)
-      // return;
-      setOpen(true)
+ 
+      console.log(getData,instrument)
+
+      const responses = await fetch(`http://localhost:8083/api/event/save`, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      //  mode: 'cors', // no-cors, *cors, same-origin
+     //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+     //   credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      //  redirect: 'follow', // manual, *follow, error
+       // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(getData) // body data type must match "Content-Type" header
+      }) 
+      
+     
+      if (responses.ok) { // если HTTP-статус в диапазоне 200-299
+        // получаем тело ответа (см. про этот метод ниже)
+        let json = await responses.json();
+        console.log(json);
+      //  return json;
+        setServerResponse(json);
+        setOpen(true)
+      } else {
+        alert("Ошибка HTTP: " + responses.status);
+    
+        
+      } 
+
+
+
+
+    //  const response = await createEvent(getData)
+  
+      console.log(serverResponse.hash);
+      
     }
-
   };
 
   const textButton = () => {
@@ -259,30 +364,11 @@ export default function TickerUrlIndex() {
   }
 
   const getButton = () => {
-    if (showSendButton) {
-      return <button type="button" onClick={sendEvent} className="btn btn-primary">{textButton()}</button>
-    }
-    return <>11</>;
+    //  if (showSendButton) {
+    return <button type="button" onClick={sendEvent} className="btn btn-primary">{textButton()}</button>
+    //  }
+    return <></>;
   }
-  const handleEditorChange = (content: string, editor: any) => {
-    if (!writeForm) {
-      return true;
-    }
-
-    const element = editor.getContainer();
-    if (element) {
-      if (content.length < 200) {
-        element.style.border = "1px solid red";
-      } else {
-        element.style.border = "1px solid #ced4da";
-      }
-    }
-
-  };
-
-
-  getData.title
-
 
   // меняем тип события
   const changeTypeEvent = (value: any) => {
@@ -305,18 +391,18 @@ export default function TickerUrlIndex() {
   }
   // устанавливаем название события
   const changeEventText = (value: string) => {
-    //   setText(value);
+
     setData({ ...getData, shorttext: value });
   }
-  // устанавливаем название события
-  const changeEventFulltext = (value: string) => {
 
-    setData({ ...getData, title: text });
-  }
   const isValidDate = (status: boolean) => {
     //   console.log(status);
     return status;
     //   setData({...getData, title:text});
+  }
+
+  const changeEventName = (value: any) => {
+    setData({ ...getData, title: value });
   }
 
   var valid = (current: any) => {
@@ -324,25 +410,31 @@ export default function TickerUrlIndex() {
     return current.day() == 0 && current.day() != 8;
   };
 
-  const [startDate, setStartDate] = useState(new Date());
 
-  if (router.isReady) {
- 
+
+
+
+  if (router.isReady && isload) {
+//    open={open}
     return (
       <>
         <ContentBox title={title} ticker="">
           <Popup open={open}
             closeOnDocumentClick={false}
             onClose={closeModal}>
-            <AddEvent instrument={instrument} />
+            <AddEvent 
+            setLoad={setLoad}
+            server={serverResponse}
+            close={changeStatePopup}
+            instrument={instrument} />
           </Popup>
-
+          
           <Form className={styles.formContent}>
             <div className={styles.rowForm}>
               <div className={styles.rowFormLine}>
                 <div className={styles.formBlock25}>
                   <label>Событие:</label>
-
+             
                   <Select
                     styles={{
                       control: (baseStyles, state) => ({
@@ -351,7 +443,7 @@ export default function TickerUrlIndex() {
                       }),
                     }}
                     id={'id'}
-                    instanceId={'instanceId'} 
+                    instanceId={'instanceId'}
                     value={getType()}
                     className={styles.formSelect}
                     placeholder={"Что произошло?"}
@@ -363,22 +455,22 @@ export default function TickerUrlIndex() {
                 <div className={styles.formBlock25}>
                   <label>Дата события:</label>
                   <Datetime
-                    value={getDate()} 
-                    isValidDate={valid} 
+                    value={getDate()}
+                    isValidDate={valid}
                     timeFormat={false}
-                    closeOnSelect={true}  
+                    closeOnSelect={true}
                     closeOnClickOutside={true}
-                    dateFormat='DD/MM/yyyy' 
+                    dateFormat='DD/MM/yyyy'
                     initialViewMode="days"
                     inputProps={{
                       placeholder: "DD/MM/yyyy",
                       required: true,
-                      
-                    }} 
-                    
+
+                    }}
+
                     onChange={(date: any) => setDateEvent(date)}
-                    
-                    />
+
+                  />
                 </div>
               </div>
             </div>
@@ -431,13 +523,14 @@ export default function TickerUrlIndex() {
               <div className={styles.formBlock100}>
                 <label>Полное описание:</label>
                 <Editor
-                  id={'Editor'}
+                  ref={textareaEl}
+                  id={'editor'}
                   tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                   apiKey="5kp3x2dadjoph5cgpy61s3ha1kl7h6fvl501s3qidoyb4k6u"
-                  initialValue={getData.fulltext}
+                  initialValue={fulltext}
                   //  onInit={(evt, editor) => editorRef.current = editor}
                   init={{
-                    placeholder:"Подробное описание события",
+                    placeholder: "Подробное описание события",
                     extended_valid_elements: "br[*],p,b,",
                     entity_encoding: "raw",
                     height: 400,
@@ -452,17 +545,7 @@ export default function TickerUrlIndex() {
                     content_style:
                       "body {  font-size:17px }",
                     paste_as_text: true,
-                    setup: (editor: any) => {
-                      editor.on("click", (e: any) => {
-                        const element = editor.getContainer();
-                        if (element) {
-                          if (errorFulltext) {
-                            element.style.border = "1px solid green";
-                          }
-                        }
-                      });
-
-                    }
+                    setup: (editor: any) => getValidFullContent(editor)
                   }}
                   onEditorChange={handleEditorChange}
                 />
@@ -479,5 +562,5 @@ export default function TickerUrlIndex() {
     );
 
   }
-   return <>load page</>;
+  return <>load page</>;
 }
