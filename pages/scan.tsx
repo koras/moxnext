@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 import {  useQuery} from 'react-query'
 
 import { useRouter } from 'next/router'
-import { getInstruments } from './../hooks/index'
+import { getInstruments } from '../hooks/index'
 
 
 export default () => {
@@ -21,20 +21,13 @@ export default () => {
 
   const router = useRouter(); 
  //api/instruments/list
-// https://habr.com/ru/post/495324/
 
-// https://iss.moex.com/iss/history/engines/stock/markets/shares/boardgroups/57/securities.jsonp?iss.meta=off&iss.json=extended&lang=ru&security_collection=3&date=2022-02-08&start=200&limit=100&sort_column=VALUE&sort_order=des
 
- // короткие имена акций
-// https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,SECNAME
 
-//Узнавать текущую цену для конкретной ценной бумаги
-//http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE
+
+
  
   const ObjectRow   = (props: any)  => {
-    if(props.item.price === 0){
-      return;
-    }
     const logo = props.item.logo;
     const name = props.item.instrument_name;
     //   console.log(props.item.images.logo);
@@ -118,7 +111,10 @@ export default () => {
     queryKey: ['instruments_list'],
     queryFn: async () => {
       //   if(!router.isReady) return
-      return fetch(`http://localhost:8083/api/instruments/list`, { headers }).then((res) => res.json())
+      const  start= 600;
+
+      const moexUrl =`https://iss.moex.com/iss/apps/infogrid/equities/rates.json?_=1675803368101&lang=ru&iss.meta=off&sort_order=asc&sort_column=SECID&start=${start}&limit=100&sec_type=stock_common_share,stock_preferred_share,stock_russian_depositary_receipt,stock_foreign_share,stock_foreign_share_dr&bg=stock_tplus,stock_d_tplus`;
+      return fetch(moexUrl, { headers }).then((res) => res.json())
     },
     staleTime: 1 * 60 * 1000,
     cacheTime: 5 * 60 * 1000,
@@ -129,14 +125,14 @@ export default () => {
     return <div>load</div>;
   }  
 
-  console.log(data);
+  console.log(data.rates);
 
   return (
         <ContentBox hideBorder={true}>
               <div>
-               {data && data.map((item:object, i:number) => (
+               {/* {data && data.map((item:object, i:number) => (
                         <ObjectRow key={i} item={item} />
-              ))} 
+              ))}  */}
             </div>
         </ContentBox>
   )

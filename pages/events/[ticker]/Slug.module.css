@@ -1,0 +1,45 @@
+
+.shorttext {        
+    border: 1px solid #eeeeee;
+    padding: 10px 5px 10px 5px;
+    margin: 0px 0px 10px 0px;
+    font-size: 21px;
+}
+
+.fulltext {
+    border: 1px solid #eeeeee;
+    padding: 10px 5px 10px 5px; 
+}
+.fulltext, .fulltext p {
+    font-size: 18px;
+}
+.panelInfo {
+    padding: 10px 5px 10px 5px;
+    margin: 0px 0px 10px 0px;
+    font-size: 18px;
+    display: inline;
+}
+
+.panelInfoDate {
+    background: #38159b;
+    border: 1px solid #eeeeee;
+}
+
+.panelInfoTypeEvent {
+    background: #4e1e1e;
+    border: 1px solid #eeeeee;
+ 
+}
+.panelInfoDate, .panelInfoTypeEvent,.styleTypeEvent {
+    display: inherit;
+     
+}
+
+.styleTypeEvent {
+    border-radius: 25px;
+    background: #831e6a;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin: 0px 10px 0px 0px;
+}

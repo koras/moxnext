@@ -68,37 +68,38 @@ const setEventFulltext = (text:string)  => {
 };
 
  
-const getPost = (ticker:any, slug:any) => {
-  console.log( 'getPost',ticker, slug);
-  const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json, text/plain, */*',
+  const getPost  = async (ticker: any, slug: any) => {
+    
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json, text/plain, */*',
+      }
+
+      let urlRequest = `http://localhost:8083/api/event/get/${ticker}/${slug}`;
+      console.log('news', ticker, slug)
+      
+      return useQuery({
+        queryKey: ['event', ticker, slug],
+        queryFn: async () => {
+          //   if(!router.isReady) return
+          return fetch(urlRequest, { headers }).then((res) => res.json())
+        },
+        staleTime: 1 * 60 * 1000,
+        cacheTime: 5 * 60 * 1000,
+        enabled: ticker !== undefined && slug !== undefined,
+      });
   }
-  let urlRequest = `http://localhost:8083/api/event/get/${ticker}/${slug}`;
-    console.log( urlRequest);
-  return   fetch(urlRequest, { headers })
-    .then((response: any) => {
-      console.log('fetch', response);
-      return response.json()
-    })
-    .then((data: any) => {
-      console.log(data);
-     
-    }).catch(function (error) {
-      console.log("Ошибка обработана, продолжить работу ", error);
-    });
- 
-}
 
-const getEvent = (ticker:any,slug:any)  => {
-  return useQuery({ 
-    queryKey: ['news',ticker ,slug],
-    queryFn: ()=>  getPost(ticker, slug),
-    }
-  )
+
+// const getEvent = (ticker:any,slug:any)  => {
+//   return useQuery({ 
+//     queryKey: ['news',ticker ,slug],
+//     queryFn: ()=>  getPost(ticker, slug),
+//     }
+//   )
  
 
-}
+// }
 
 
 
@@ -116,7 +117,7 @@ const getNewsSingle = (ticker:string, url:string)  => {
  
 export {
   setEventTitle,
-  getEvent, 
+ // getEvent, 
   getNewsSingle, 
   setEventFulltext,
   fetchPosts,
