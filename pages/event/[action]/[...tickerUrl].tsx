@@ -35,6 +35,7 @@ export default function TickerUrlIndex() {
   const [writeForm, setWriteForm] = useState(false);
   const [errorFulltext, setErrorFulltext] = useState(false);
   const [instrument, setInstrument] = useState({});
+  const [pricesDate, setPricesDate] = useState(Array);
   const [serverResponse, setServerResponse] = useState({});
   const [showSendButton, setShowSendButton] = useState(true);
   const [open, setOpen] = useState(false);
@@ -104,12 +105,9 @@ export default function TickerUrlIndex() {
         'Content-Type': 'application/json, text/plain, */*',
       }
       console.log('action', action)
-    //  if (action === "change") {
+
         urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
-  //    }
-    //  if (action === "create") {
-     //   urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
-   //   }
+
       console.log('urlRequest ', urlRequest);
       fetch(urlRequest, { headers })
         .then((response: any) => {
@@ -126,8 +124,12 @@ export default function TickerUrlIndex() {
           setInstrument(data.instrument);
           setLoad(true);
           updateTitle(action, data.instrument)
-
-        //  setData({ ...getData, instrument_id: instrument.instrument_id });
+          
+          let chartDate = [];
+          for(const dt of data.date ){
+            chartDate.push(dt.Date);
+          }
+          setPricesDate(chartDate) 
 
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ", error);
@@ -144,7 +146,7 @@ export default function TickerUrlIndex() {
 
 
   const changeStatePopup =(params:boolean)=>{
- console.log('111',params)
+
   setOpen(params);
   }
 
@@ -339,7 +341,7 @@ export default function TickerUrlIndex() {
       if (responses.ok) { // если HTTP-статус в диапазоне 200-299
         // получаем тело ответа (см. про этот метод ниже)
         let json = await responses.json();
-        console.log(json);
+     //   console.log(json);
       //  return json;
         setServerResponse(json);
         setOpen(true)
@@ -372,7 +374,7 @@ export default function TickerUrlIndex() {
 
   // меняем тип события
   const changeTypeEvent = (value: any) => {
-    console.log(value);
+   // console.log(value);
     setData({ ...getData, typeId: value.value });
     //  setTypeId(value.value);
 
@@ -406,7 +408,9 @@ export default function TickerUrlIndex() {
   }
 
   var valid = (current: any) => {
-    return true;
+    // выбрать можно только день торгов.
+    const dt = current.format("YYYY-MM-DD")
+    return pricesDate.includes(dt);
     return current.day() == 0 && current.day() != 8;
   };
 

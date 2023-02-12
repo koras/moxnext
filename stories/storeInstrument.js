@@ -65,7 +65,7 @@ class storeInstrument {
       enabled: ticker !== undefined 
     });
   
-
+    console.log( data);
    // dataBitcoin = data;
 
     
@@ -82,13 +82,7 @@ class storeInstrument {
 
     return {
       fill: true,
-      labels: [ 
-        "2022-12-18",
-        "",
-        "",
-        "",
-        "",
-      ],
+      labels: [1,2,3,4,5,6,7,8,9   ],
       datasets: [
         {
           fill: true,

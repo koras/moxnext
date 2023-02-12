@@ -185,3 +185,9 @@
 .moex-button-profile:hover {
   border: 1px solid #919191;
 }
+
+.rdtDay {
+  color: #0e0e0e;
+    font-weight: 600;
+    background: #ebebeb;
+}
