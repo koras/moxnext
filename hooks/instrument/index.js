@@ -2,7 +2,7 @@
 import { useQuery,useQueries } from 'react-query'
 
 const fetchInstruments = async (limit = 10) => {
-    const parsed =  await fetch('https://jsonplaceholder.typicode.com/posts')
+    const parsed =  await fetch('https://jsonplaceholder.typicode.com2/posts')
   .then(data => {  
     return data.json();
   }) 

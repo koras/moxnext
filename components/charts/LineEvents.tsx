@@ -79,19 +79,6 @@ ChartJS.register(
       intersect: false,
     },
   
-   // legend: {
-   //   display: true,
-   //   position: "right",
-   //   align: "start",
-   //   labels: {
-   //     usePointStyle: true,
-   //     boxWidth: 6,
-    //  },
-   //   title: {
-    //    display: true,
-   //     text: "Chart.js Bar Chart",
-    //  },
-   // },
   },
   scales: {
     y: {
@@ -115,17 +102,10 @@ ChartJS.register(
 
   onClick : (event:any, items:any) =>{
     if(items && items[0]){ 
-  //  console.log(items);
-  //  console.log(items[0].index);
-  //  console.log(chartRef.current);
-  //  console.log(chartRef.current.data.datasets[0].data      ); 
     let  chart:any = chartRef.current;
     chart.data.datasets[0].data.push(123)
     chart.data.labels.push('color');
 
-   // console.log(chart.options ); 
-  //  console.log(chart.options.elements.line.borderDash.push(3) ); 
-   // chart.options.scales[2].title='asdasd'
 
     console.log(chart    ); 
     chart.update();

@@ -1,6 +1,6 @@
  
 import { useNavigate } from "react-router-dom";
-
+import   {   useEffect } from "react";
 import styles from"./stylesModal.module.css";
 //import "bootstrap/dist/css/bootstrap.min.css";
 import {
@@ -14,7 +14,13 @@ export const AddEvent = (props:any) => {
     router.push("/" + props.instrument.type + "/" + props.instrument.ticker);
   };
 
-  const sendEvent = () => {};
+
+
+  const sendEvent = () => {
+    props.close(false)
+    props.setLoad(false);
+    router.push(`/event/change/${props.server.hash}`);
+  };
 
   return (
     <div className={styles.formModal}>

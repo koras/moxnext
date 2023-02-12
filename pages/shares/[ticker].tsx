@@ -4,13 +4,14 @@ import { Inter } from '@next/font/google'
 import styles from './style.module.css'
 import stylesHome from './../../components/styleContent.module.css'
 
-import Tabs from "./../../components/tabs/index";
+import Tabs from "../../components/tabs/index";
 
 import Button from "@mui/material/Button";
 
-import ContentBox from "./../../components/ContentBox";
-import { LineTicker } from "./../../components/charts/LineEvents";
-import ListEvents from "./../../components/news/Lists";
+import ContentBox from "../../components/ContentBox";
+import { LineTicker } from "../../components/charts/LineEvents";
+import ListEvents from "../../components/news/Lists";
+import { useQuery,useQueries } from 'react-query'
 
 import {
   useState,
@@ -43,53 +44,6 @@ export default function Index() {
   const [instrument, setInstrument] = useState({});
   const [getData, setData] = useState<Array<IEvent>>(Array<IEvent>);
   const [newsEvent, setNews] = useState<Array<IEvent>>(Array<IEvent>);
-
-
-
-  useEffect(() => {
-    const getEventsTicker = async (tickers: any) => {
-
-   //  await getNews(tickers,100);
-
-      const headers = {
-        'Accept': 'application/json; charset=utf-8',
-        'Content-Type': 'application/json, text/plain, */*',
-        'Access-Control-Allow-Origin': "*",
-      }
-      let urlRequest = `http://localhost:8083/api/events/${tickers}`;
-        console.log( urlRequest);
-    const  datas = fetch(urlRequest, { 
-      //mode: 'no-cors', 
-    headers})
-        .then((response: any) => {
-          console.log('fetch', response);
-          return response.json()
-    
-        })
-        .then((data: any) => {
-
-          setNews(data.data);
-          setInstrument(data.instrument);
-          console.log(data.data);
-       //   setData(data.data);
-      //    setInstrument(data.instrument);
-          setLoad(true);
-        }).catch(function (error) {
-          console.log("Ошибка обработана, продолжить работу ");
-          console.log( error);
-          setLoad(true);
-        });
-
-        console.log(datas);
-  //    console.log('result');
-    };
-
-
-    if (router.isReady && !isload) {
-        getEventsTicker(ticker);
-    }
-  });
-
 
 
  

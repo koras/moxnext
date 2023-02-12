@@ -3,6 +3,7 @@
 
 import { makeAutoObservable } from "mobx";
 import { dataBitcoin } from "./bitcoinData";
+import { useQuery,useQueries } from 'react-query'
 //import _ from "lodash";
  
 class storeInstrument {
@@ -25,104 +26,6 @@ class storeInstrument {
       change: "-10",
       currency: "$",
     },
-    {
-      instrumentId:   5,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://logodix.com/logo/2103877.png",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "-20",
-      currency: "$",
-    },
-    {
-      instrumentId:   4,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "20",
-      currency: "$",
-    },
-    {
-      instrumentId:   22,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://logodix.com/logo/2103877.png",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "-20",
-      currency: "$",
-    },
-    {
-      instrumentId:   446,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "20",
-      currency: "$",
-    },
-    {
-      instrumentId:   123,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "20",
-      currency: "$",
-    },
-    {
-      instrumentId:  34576,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "-20",
-      currency: "$",
-    },
-    {
-      instrumentId:  12363,
-      name: "Газпром",
-      type: "crypto",
-      images: {
-        logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-      },
-      description:
-        "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-      ticker: "gazp",
-      price: 160,
-      change: "-20",
-      currency: "$",
-    },
   ];
 
   getAll() {
@@ -143,23 +46,51 @@ class storeInstrument {
   }
 
   getChart(ticker) {
+      console.log(' ticker', ticker);
+
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json, text/plain, */*',
+      }
+    const { data, isLoading } = useQuery({
+      queryKey: ['chart', ticker],
+      queryFn: async () => {
+        //{"Label":"2009-10-09","Price":"0.0012"}
+        return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
+        .then((res) => res.json())
+        .catch(error =>console.log( ticker))
+      },
+      staleTime: 1 * 60 * 1000,
+      cacheTime: 5 * 60 * 1000,
+      enabled: ticker !== undefined 
+    });
+  
+    console.log( data);
+   // dataBitcoin = data;
+
+    
+    // console.log('isLoading', isLoading);
+    // if (typeof data === 'undefined' || data === undefined) {
+    //   return <div>load</div>;
+    // } else {
+    //   // changeLoad();
+    // }
+  
+
+
+
+
     return {
       fill: true,
-      labels: [ 
-        "2022-12-18",
-        "",
-        "",
-        "",
-        "",
-      ],
+      labels: [1,2,3,4,5,6,7,8,9   ],
       datasets: [
         {
           fill: true,
      
-          data:dataBitcoin,
+          data:data,
        
           parsing: {
-            xAxisKey: "Label",
+            xAxisKey: "Date",
             yAxisKey: "Price",
           },
           backgroundColor: [

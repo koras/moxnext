@@ -3,40 +3,62 @@ import { useQuery,useQueries } from 'react-query'
 
 interface News {
   // eventDate,title,source,text,fulltext,typeId, action, ticker, url
-  eventDate: string;
+  eventDate: string; 
+  text: string; 
+  slug: string; 
+  action: string;  
+  ticker: string; 
+
   title: string;
+  typeId: number;
+  date: string;
   source: string;
-  text: string;
+  shorttext: string;
   fulltext: string;
-  typeId: string; 
-  action: string; 
-  ticker: string;
-  url: string;
+  hash: string; 
 };
 
-const createNews = async (data: News) => {
+const createEvent = async (data: News) => {
   // Default options are marked with *
-  const response:any = await fetch('https://jsonplaceholder.typicode.com/posts', {
+  
+ 
+  const response:any = await fetch(`http://localhost:8083/api/event/save`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
   //  mode: 'cors', // no-cors, *cors, same-origin
  //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
  //   credentials: 'same-origin', // include, *same-origin, omit
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
   //  redirect: 'follow', // manual, *follow, error
    // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
+  }) 
   
-  return "100fda21745f3d75da61b97f7a54d6cd";
-  return response.data;
+ 
+  if (response.ok) { // если HTTP-статус в диапазоне 200-299
+    // получаем тело ответа (см. про этот метод ниже)
+    let json = await response.json();
+    console.log(json);
+    return json;
+
+  } else {
+    alert("Ошибка HTTP: " + response.status);
+
+    
+  } 
+ 
+
+ // console.log('response',response);
+ // return "100fda21745f3d75da61b97f7a54d6cd";
+ // return response.data;
 };
 
 
 const fetchToPostsInfo = async (limit = 10) => {
-    const parsed =  await fetch('https://jsonplaceholder.typicode.com/posts')
+    const parsed =  await fetch('https://jsonplaceholder1.typicode.com/posts')
   .then(data => {
     return data.json();
   })
@@ -60,4 +82,5 @@ const usePosts = (limit:number) => {
 
 export { 
   usePosts,
-   createNews }
+   createEvent
+   }

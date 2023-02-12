@@ -17,7 +17,7 @@ function Search() {
 
   return ( 
     <div className={styles.searchBox}> 
-      <div className={styles.searchBox__light}> 
+      {/* <div className={styles.searchBox__light}> 
           <div className={styles.searchBox__icon}>
             
             <Image
@@ -33,7 +33,7 @@ function Search() {
             <input type="text" name="search" placeholder="Ведите название тикера или компании"/>
             </div>
           <div className={styles.searchBox__disable}>x</div>
-      </div> 
+      </div>  */}
      </div> 
   );
 }
