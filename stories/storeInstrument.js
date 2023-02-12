@@ -48,24 +48,23 @@ class storeInstrument {
   getChart(ticker) {
       console.log(' ticker', ticker);
 
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json, text/plain, */*',
-      }
-    const { data, isLoading } = useQuery({
-      queryKey: ['chart', ticker],
-      queryFn: async () => {
-        //{"Label":"2009-10-09","Price":"0.0012"}
-        return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
-        .then((res) => res.json())
-        .catch(error =>console.log( ticker))
-      },
-      staleTime: 1 * 60 * 1000,
-      cacheTime: 5 * 60 * 1000,
-      enabled: ticker !== undefined 
-    });
-  
-    console.log( data);
+    //   const headers = {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json, text/plain, */*',
+    //   }
+    // const { data, isLoading } = useQuery({
+    //   queryKey: ['chart', ticker],
+    //   queryFn: async () => {
+    //     //{"Label":"2009-10-09","Price":"0.0012"}
+    //     return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
+    //     .then((res) => res.json())
+    //     .catch(error =>console.log( ticker))
+    //   },
+    //   staleTime: 1 * 60 * 1000,
+    //   cacheTime: 5 * 60 * 1000,
+    //   enabled: ticker !== undefined 
+    // });
+   
    // dataBitcoin = data;
 
     
@@ -77,12 +76,22 @@ class storeInstrument {
     // }
   
 
+      const data = [ 
+      {"Price":6048,"Date":"2013-11-01"},
+      {"Price":4048,"Date":"2013-11-02"},
+      {"Price":6048,"Date":"2013-11-10"},
+    {"Price":5084,"Date":"2014-11-11"},
+    {"Price":4103,"Date":"2014-11-12"},
+    {"Price":3030,"Date":"2014-11-13"},
+    {"Price":3152,"Date":"2015-11-14"},
+    {"Price":6280,"Date":"2015-11-17"},
+    ]
 
-
+   //   console.log( data);
 
     return {
       fill: true,
-      labels: [1,2,3,4,5,6,7,8,9   ],
+      labels: ["2013","2014","2015", ],
       datasets: [
         {
           fill: true,
