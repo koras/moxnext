@@ -12,7 +12,14 @@ import Button from "@mui/material/Button";
 
 import ContentBox from "../../components/ContentBox";
 import { LineTicker } from "../../components/charts/LineEvents";
+import { Echarts } from "../../components/charts/EchartsLineEvents";
+
+
+ 
 import ListEvents from "../../components/news/Lists";
+
+
+
 import { useQuery,useQueries } from 'react-query'
 
 import {
@@ -69,7 +76,7 @@ export default function Index() {
  //  chart.data.datasets[0].data.push(123)
   }
 
-  
+
   const objects = [
     //   {name:'5 лет',id:1,hint:'',hintInfo:'За последние 5 лет',changes:'+212',time:157784630},
     { name: 'Всё время', typeTime: 1, id: 1, hint: '', hintInfo: 'За всю историю', changes: '+212', time: 0 },
@@ -94,11 +101,16 @@ export default function Index() {
         <div className={styles.graphicTab}>
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           
-          <LineTicker rangeTime={rangeTime}  period={period} ticker={ticker} />
+          {/* <LineTicker rangeTime={rangeTime}  period={period} ticker={ticker} /> */}
+          <Echarts instrument={instrument} news={newsEvent}/> 
         </div>
 
         <div className={styles.pageText}> 
-          <ListEvents instrument={instrument} news={newsEvent}/> 
+           <ListEvents instrument={instrument} news={newsEvent}/> 
+      
+
+
+           
         </div>
       </div>
     </ContentBox>
