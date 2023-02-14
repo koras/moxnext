@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 
 import ContentBox from "../../components/ContentBox";
 import { LineTicker } from "../../components/charts/LineEvents";
-import { Echarts } from "../../components/charts/EchartsLineEvents";
+import { EchartsInfo } from "../../components/charts/EchartsLineEvents";
 
 
  
@@ -86,7 +86,6 @@ export default function Index() {
     { name: 'День', typeTime: 5,id: 5, hint: '', hintInfo: 'в течении суток', changes: '+25', time: 86400 },
   ]
 
-
   const infoBox = { title: 'Изменение цены', hintInfo: 'в течении суток', changes: '+212' };
 
   return (
@@ -102,7 +101,7 @@ export default function Index() {
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           
           {/* <LineTicker rangeTime={rangeTime}  period={period} ticker={ticker} /> */}
-          <Echarts instrument={instrument} news={newsEvent}/> 
+          <EchartsInfo instrument={instrument} news={newsEvent} ticker={ticker} /> 
         </div>
 
         <div className={styles.pageText}> 
