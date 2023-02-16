@@ -224,6 +224,10 @@ export function EchartsInfo(props: any, ref: any) {
              color: ['rgba(225,236,230,1)'], 
             opacity: 0.4, 
           },
+          
+          emphasis:{
+            disabled:true,
+          },
           lineStyle: {
             color: ['rgba(144,163,155,1)', 'rgba(144,163,155,1)'],
             shadowBlur: 0,
