@@ -5,6 +5,12 @@
   padding: 0px;
   border-bottom: #b7b7b7 1px solid;
 }
+.graphicTabBox {
+  width: 100%;
+  display: block; 
+  padding: 0px;
+  border-bottom: #b7b7b7 1px solid;
+}
 
 .pageText {
   padding: 10px;

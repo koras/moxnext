@@ -101,7 +101,9 @@ export default function Index() {
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           
           {/* <LineTicker rangeTime={rangeTime}  period={period} ticker={ticker} /> */}
-          <EchartsInfo instrument={instrument} news={newsEvent} ticker={ticker} /> 
+          <div  className={styles.graphicTabBox}>
+           <EchartsInfo instrument={instrument} news={newsEvent} ticker={ticker} /> 
+          </div>
         </div>
 
         <div className={styles.pageText}> 
