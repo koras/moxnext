@@ -118,7 +118,7 @@ export function EchartsInfo(props: any, ref: any) {
       grid={{
         left: '2%',
         right: '2%',
-        bottom: '2%',
+        bottom: '10%',
         containLabel: true
       }}
       style={{ height: '500px', width: '100%' }}
@@ -128,19 +128,33 @@ export function EchartsInfo(props: any, ref: any) {
       xAxis={{
         animation: false,
         triggerEvent: false,
-        silent: true,
+        silent:  false,
         showGrid: true, 
         data: yAxis, 
-       
-        axisTick: {
-          show: true, 
-          interval: 0,  
+        nameGap: 0, 
+        axisTick: { 
+          show: true, //为 false 时隐藏
+          alignWithLabel: true,
+          interval: 0, //可以设置成 0 强制显示所有tick, 不是 label
+          length: 1, // tick 长度, 默认5
+          lineStyle: {
+            color: "gray",
+            width: 2 //tick 宽度
+          }
         },
         axisLabel: {
           //x轴上标签
-          show: true,  
-          color: "red", 
-        }
+           show: true, 
+        },
+
+        axisLine: {
+          //轴线
+          show: true, //false 时隐藏
+          lineStyle: {
+            color: "green", //同时改变了 label 颜色
+            width: 0 //x轴线条粗细，默认1px
+          }
+        },
       }}
       yAxis={{
  
@@ -271,9 +285,6 @@ export function EchartsInfo(props: any, ref: any) {
               }
             }
           },
-
-           
-          
           smooth: true,
         }
       }
