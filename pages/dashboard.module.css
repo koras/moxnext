@@ -134,12 +134,14 @@
     justify-content: flex-end;
     display: flex;
     flex-direction: row;
+    margin: 0px 0px 0px 30px;
   }
   .dashboardItemDescriptionControll a {
     text-decoration: none;
     font-family: 'Source Sans Pro', 'Lucida Grande', sans-serif;
     font-weight: 600;
     font-size: 17px;
+    margin: 0px 0px 0px 30px;
   }
   .dashboardItemChang__chartInfo {
     position: absolute;

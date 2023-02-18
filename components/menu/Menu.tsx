@@ -9,15 +9,9 @@ import Link from 'next/link'
  
 
 
-function Menu() {
- // const location = useLocation();
-
-//  console.log(location);
- // console.log(location.pathname);
-    //const  routeF = matchPath(this.props.location, 'inspect')
- // console.log(routeF );
-//   console.log(matchPath(location.pathname,'inspects'))
+function Menu() { 
   return ( 
+    <div> 
     <div className={style.menu}> 
       <ul>
           <li>
@@ -30,7 +24,16 @@ function Menu() {
             <Link href="/#">Отслеживать</Link>
           </li>
         </ul> 
-     </div> 
+      </div> 
+      
+      <div className={style.menu +" "+style.adminMenu}> 
+      <ul>
+          <li>
+            <Link href="/users">Пользователи</Link>
+          </li> 
+        </ul> 
+      </div> 
+     </div>
   );
 }
 

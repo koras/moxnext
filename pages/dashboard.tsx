@@ -75,7 +75,7 @@ export default () => {
           </div>
 
           <div className={styles.dashboardItemDescriptionControll}>
-            <Link href="#">Следить за тикером</Link>
+            <Link href={"/instrument/edit/"+props.item.instrument_id}>Редактировать</Link> <Link href="#">Следить за тикером</Link>
           </div>
         </div>
 
