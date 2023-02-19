@@ -21,7 +21,7 @@ import Datetime from 'react-datetime';
 import { eventsName } from "../../../constants/general";
 
 import ContentBox from "../../../components/ContentBox";
-import AddEvent from "../../../components/modals/AddEvent";
+import SaveInstrument from "../../../components/modals/SaveInstrument";
 
 
 import { useRouter } from 'next/router'
@@ -186,13 +186,11 @@ export default function TickerUrlIndex() {
         formData.append(name, getData[name]);
       }
 
-      
-
-    //  let currentFile1 = selectedFiles[0];
-    //  setCurrentFile(currentFile1);
-    //  if(selectedFiles && selectedFiles[0]){ 
+      formData.append("industry_id", "0");
+       
+      if(selectedFiles && selectedFiles[0]){ 
         formData.append( "upload", selectedFiles[0]);
-    //  }
+      }
       //   const hash = news.saveEvent(news.eventNew);
       console.log('getData')
 
@@ -217,6 +215,10 @@ export default function TickerUrlIndex() {
       }) 
       
      
+
+
+
+      
       if (responses.ok) { // если HTTP-статус в диапазоне 200-299
         // получаем тело ответа (см. про этот метод ниже)
         let json = await responses.json();
@@ -278,11 +280,11 @@ export default function TickerUrlIndex() {
           <Popup open={open}
             closeOnDocumentClick={false}
             onClose={closeModal}>
-            <AddEvent 
+            <SaveInstrument 
             setLoad={setLoad}
             server={serverResponse}
             close={changeStatePopup}
-            instrument={instrument} />
+            instrument={getData} />
           </Popup>
           
           <Form className={styles.formContent}>
