@@ -6,6 +6,8 @@ import Popup from 'reactjs-popup';
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import moment from 'moment';
+
+import { getServerSession } from "next-auth";
 //  
 
 import { createEvent } from '../../../hooks/index'
