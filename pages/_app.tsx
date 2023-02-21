@@ -3,6 +3,10 @@ import '../styles/globals.css'
 import 'reactjs-popup/dist/index.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import "react-datepicker/dist/react-datepicker.css"; 
+import { SessionProvider } from "next-auth/react"
+ 
+
+ 
 
 /// import 'react-datepicker/dist/react-datepicker.css'
 import 'react-datetime-picker/dist/DateTimePicker.css';
@@ -11,8 +15,7 @@ import 'react-clock/dist/Clock.css'
 import "react-datetime/css/react-datetime.css";
 
 
-
-import type { AppProps } from 'next/app'
+ 
 import React from "react";
 import { ReactQueryDevtools } from "react-query/devtools";
 
@@ -20,12 +23,15 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient()
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps }  }: AppProps) {
  
-
-  return  <QueryClientProvider client={queryClient}> 
-       <Component {...pageProps} />
-       <ReactQueryDevtools initialIsOpen={true} />
-     </QueryClientProvider>
-
+ 
+  return  <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}> 
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={true} />
+            </QueryClientProvider>
+        </SessionProvider>
+ 
+   
 }

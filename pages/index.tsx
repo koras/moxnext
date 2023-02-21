@@ -3,10 +3,33 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import ContentBox from "../components/ContentBox";
+import { getServerSession} from "next-auth";
+import { loadEnvConfig } from '@next/env'
+import { useSession, getSession } from "next-auth/react"
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home(req:any, res:any) {
+
+
+
+ 
+
+
+  const { data: session, status } = useSession()
+  
+  //const projectDir = process.cwd()
+ // loadEnvConfig(projectDir)
+//  if (status === "loading") {
+//   return <p>Loading...</p>
+// }
+
+// if (status === "unauthenticated") {
+//   return <p>Access Denied</p>
+// }
+console.log('status',status);
+
+ 
   return (
     <>
       <Head>
@@ -17,8 +40,13 @@ export default function Home() {
             {/* <script src="./datepicker/datepicker.min.js"></script> */}
             {/* <script src="./datepicker/datepicker.min.css"></script> */}
       </Head> 
+
+  
       <ContentBox title="График изменения цен Биткоина">
-      Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать 
+ 
+
+        
+      11Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать 
             текст более привлекательным и живым для визуально-слухового восприятия.
       По своей сути рыбатекст является альтернативой традиционному lorem ipsum, который вызывает у некторых людей недоумение при попытках прочитать рыбу текст. В отличии от lorem ipsum, текст рыба на русском языке наполнит любой макет непонятным смыслом и придаст неповторимый колорит советских времен.
  
