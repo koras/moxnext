@@ -60,7 +60,7 @@
   }
   .dashboardItemImage img{
     vertical-align: middle;
-    max-width: 150px;
+    max-width: 100px;
     max-height: 135px;
     position: absolute;
     top: 50%;

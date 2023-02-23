@@ -32,7 +32,8 @@ export default () => {
 //http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE
  
   const ObjectRow   = (props: any)  => {
-    if(props.item.price === 0){
+    if(+props.item.price === 0){
+      console.log(props.item.instrument_name,props.item.price);
       return;
     }
     const logo = props.item.logo;
@@ -57,7 +58,7 @@ export default () => {
     return (
       <div className={styles.dashboardItem}> 
         <div className={styles.dashboardItemImage}>
-          <img alt="" src={`${logo}`} />
+          <img alt="" src={"/img/logo/"+`${logo}`} />
         </div>
         <div className={styles.dashboardItemDescription}>
           <div className={styles.dashboardItemDescriptionHead}>
