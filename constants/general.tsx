@@ -1,12 +1,13 @@
 export const eventsName = [
-    { value: 1, label: "Новости", type: "news" },
-    { value: 2, label: "Девиденды", type: "dividends" },
-    { value: 3, label: "Отчётность", type: "reporting" },
-    { value: 4, label: "Поглощение", type: "absorption" },
-    { value: 5, label: "Назначения", type: "appointments" },
-    { value: 6, label: "Делистинг", type: "delisting" },
-    { value: 7, label: "Листинг на бирже", type: "exchangeListing" },
-    { value: 8, label: "Сплит акций", type: "split" },
+    { value: 1,symbolSize:5, label: "Новости", type: "news", color: "rgba(124, 0, 89, 0.5)" },
+    { value: 2,symbolSize:10, label: "Девиденды", type: "dividends", color: "rgba(146, 126, 70, 0.5)"  },
+    { value: 3,symbolSize:10, label: "Отчётность", type: "reporting", color: "rgba(208, 126, 70, 0.5)"  },
+    { value: 4,symbolSize:10, label: "Поглощение", type: "absorption", color: "rgba(37, 31, 104, 0.5)"  },
+    { value: 5,symbolSize:15, label: "Назначения", type: "appointments", color: "rgba(83, 31, 54, 0.5)"  },
+    { value: 6,symbolSize:10, label: "Делистинг", type: "delisting", color: "rgba(124, 22, 0, 0.5)"  },
+    { value: 7,symbolSize:15, label: "Листинг на бирже", type: "exchangeListing", color: "rgba(48, 126, 70, 0.5)"  },
+    { value: 8,symbolSize:15, label: "Сплит акций", type: "split", color: "rgba(67, 0, 45, 0.5)"  },
   ];
   
-   
+
+  

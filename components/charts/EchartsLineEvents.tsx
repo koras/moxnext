@@ -7,6 +7,8 @@ import { EChart } from '@hcorta/react-echarts'
 
 import { instrument } from "../../stories/storeInstrument";
 
+import { eventsName } from "../../constants/general";
+
 //import faker from 'faker';
 
 
@@ -57,19 +59,56 @@ export function EchartsInfo(props: any, ref: any) {
   console.log('props.rangeTime', props.rangeTime)
   let xAxis = [];
   let yAxis = [];
+  let  tmp = {};
+  // события на графике
+  let markEvent = [];
 
 
-  // console.log(dataInfo )
-  // for(const item of dataData){
+  const getMarksConst = (item:any) => {
+    const dataColor =   eventsName.filter((el) =>  el.value === +item.typeId);
+    return dataColor[0];
+    }
+  
   for (const item of dataInfo) {
-    // console.log(item)
     xAxis.push(item.price);
     yAxis.push(item.date);
 
+    // name: 'Mark',
+    // coord: ['2019-01-18', 500],
+    // //      value: "Сплит акций",
+    // symbol: 'circle',
+    // symbolSize: 15,
+    // silent: true,
+    // click: onClick,
+    // itemStyle: {
+    //   color: 'rgb(41,60,85)'
+    // }
+ 
+
+ 
+      if(item.typeId && +item.typeId !== 0){
+      const dataMark =   getMarksConst(item);
+        console.log( +item.typeId, item);
+       tmp =  {
+            name: item.title,
+            coord:[item.date, item.price],
+            symbol: 'circle',
+            symbolSize: dataMark.symbolSize,
+            silent: true,
+            click: ()=>onClick,
+            itemStyle: {
+                  color: dataMark.color
+            }
+          }
+       //     console.log( tmp);
+        markEvent.push(tmp)
+      }
+    //eventsName
+
+
   }
 
-
-
+ 
 
 
 //https://codesandbox.io/s/series-line-echart-forked-5p0ej?file=/src/xAxis-category.js
@@ -87,8 +126,8 @@ export function EchartsInfo(props: any, ref: any) {
 
 
 
-  const onClick = () => {
-    console.log('mey onClick')
+  const onClick = (params:any) => {
+    console.log('mey onClick',params)
   }
   const onChartClick = (params: any) => {
     console.log('mey', params)
@@ -255,32 +294,33 @@ export function EchartsInfo(props: any, ref: any) {
                 //    return param != null ? Math.round(param.value) + '' : '';
               }
             },
-            data: [
-              {
-                name: 'Mark',
-                coord: ['2019-01-18', 5300],
-                //      value: "Сплит акций",
-                symbol: 'circle',
-                symbolSize: 15,
-                silent: true,
-                click: onClick,
-                itemStyle: {
-                  color: 'rgb(41,60,85)'
-                }
-              },
-              {
-                name: 'Mark1',
-                coord: ['2021-07-23', 29300],
-                //      value: "Сплит акций",
-                symbol: 'circle',
-                symbolSize: 15,
-                silent: true,
-                click: onClick,
-                itemStyle: {
-                  color: ['rgba(178, 177, 177,1)', 'rgba(178, 177, 177,1)']
-                }
-              },
-            ],
+            // data: [
+            //   {
+            //     name: 'Mark',
+            //     coord: ['2019-01-18', 500],
+            //     //      value: "Сплит акций",
+            //     symbol: 'circle',
+            //     symbolSize: 15,
+            //     silent: true,
+            //     click: onClick,
+            //     itemStyle: {
+            //       color: 'rgb(41,60,85)'
+            //     }
+            //   },
+            //   {
+            //     name: 'Mark1',
+            //     coord: ['2021-07-23', 200],
+            //     //      value: "Сплит акций",
+            //     symbol: 'circle',
+            //     symbolSize: 15,
+            //     silent: true,
+            //     click: onClick,
+            //     itemStyle: {
+            //       color: 'rgba(178, 177, 177,1)'
+            //     }
+            //   },
+            // ],
+            data: markEvent,
             tooltip: {
               formatter: (param: any) => {
                 console.log(param);
