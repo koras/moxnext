@@ -63,8 +63,8 @@ export function EchartsInfo(props: any, ref: any) {
   // for(const item of dataData){
   for (const item of dataInfo) {
     // console.log(item)
-    xAxis.push(item.Price);
-    yAxis.push(item.Date);
+    xAxis.push(item.price);
+    yAxis.push(item.date);
 
   }
 
