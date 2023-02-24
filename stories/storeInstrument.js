@@ -11,22 +11,7 @@ class storeInstrument {
     makeAutoObservable(this);
   }
 
-  // instruments = [
-  //   {
-  //     instrumentId: 1,
-  //     name: "Биткоин",
-  //     type: "crypto",
-  //     ticker: "btc",
-  //     description:
-  //       "«Газпром» — крупнейший в России производитель и экспортёр сжиженного природного газа (СПГ). ",
-  //     price: 130,
-  //     images: {
-  //       logo: "https://img.freepik.com/premium-vector/vector-illustration-large-bitcoin-coin_541404-125.jpg?w=360",
-  //     },
-  //     change: "-10",
-  //     currency: "$",
-  //   },
-  // ];
+ 
 
   getAll() {
     return this.instruments;
@@ -80,4 +65,4 @@ class storeInstrument {
 
 export { storeInstrument };
 
-export const instrument = new storeInstrument();
+export const instrumentStore = new storeInstrument();

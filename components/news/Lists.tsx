@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 
 import React, { useState, useEffect } from "react";
 
-import { getNews } from './../../hooks/index'
+//import { getNews } from './../../hooks/index'
 
 
 //import { useNavigate } from "react-router-dom";
