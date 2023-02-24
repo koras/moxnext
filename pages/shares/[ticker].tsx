@@ -130,7 +130,8 @@ export default function Index() {
   //   console.log( 'char',chart);
 //    console.log( 'char',chart, chartsRef.current?.childMethod());
 
-     setPeriod(params);
+//setPeriod(params);
+setPeriod([1,2,3,4,5,5,5,6,1,1]);
  //  chart.data.datasets[0].data.push(123)
   }
 
