@@ -55,6 +55,10 @@ export default function Index() {
   const [instrument, setInstrument] = useState({});
   const [rangeTime, setRangeTime] = useState(0);
   const [period, setPeriod] = useState(0);
+  const [dataInfoParams, setDataInfoParams] = useState([]);
+
+
+   
 
   const [newsEvent, setNews] = useState<string[]>([]);
   const chartsRef:any = useRef(null);
@@ -69,7 +73,7 @@ export default function Index() {
   
   let dataInfo = instrumentStore.getChart(ticker);
 
-  let  dataInfoParams =  dataInfo;
+  //setDataInfoParams(dataInfo);
   // const getMarksConst = (item:any) => {
   //   const dataColor =   eventsName.filter((el) =>  el.value === +item.typeId);
   //   return dataColor[0];
@@ -105,9 +109,11 @@ export default function Index() {
 
 
   const handleTimeChange = (params: any) => {
-    if(params === 0){
-      dataInfoParams =  dataInfo;
+    if(params === 0){ 
+      setDataInfoParams(dataInfo);
+      console.log( 'Ноль');
       console.log( dataInfoParams);
+      setPeriod(params);
       return;
     }
     console.log('handleTimeChange', params);
@@ -116,11 +122,11 @@ export default function Index() {
     var CurrentDate = moment().subtract('seconds', params);
     const info = CurrentDate.format("YYYY-MM-DD");
 
-    dataInfoParams =  dataInfo.filter((item:any)=>  {
-   
+   const  dataParam =  dataInfo.filter((item:any)=>  {
     return   moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
     })
    
+    setDataInfoParams(dataParam);
     console.log( 'dataInfoParams');
     console.log( dataInfoParams);
 
@@ -130,8 +136,8 @@ export default function Index() {
   //   console.log( 'char',chart);
 //    console.log( 'char',chart, chartsRef.current?.childMethod());
 
-//setPeriod(params);
-setPeriod([1,2,3,4,5,5,5,6,1,1]);
+  setPeriod(params);
+//setPeriod([1,2,3,4,5,5,5,6,1,1]);
  //  chart.data.datasets[0].data.push(123)
   }
 

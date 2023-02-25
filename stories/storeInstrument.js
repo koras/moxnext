@@ -54,11 +54,12 @@ class storeInstrument {
 
     
      console.log('isLoading', isLoading);
+     console.log(data);
     if (typeof data === 'undefined' || data === undefined) {
-      return [];
-    } else {
-      // changeLoad();
-    }
+      console.log('data 1');
+      return []; 
+    } 
+    console.log('data 2');
     return  data;
   }
 }
