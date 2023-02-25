@@ -11,6 +11,8 @@ import moment from 'moment';
 export function EchartsInfo(props: any) {
   let markEvent: object[] = [];
   const [xAxis, setXAxis] = useState<any | null>(null);
+  const [yAxis, setYAxis] = useState<any | null>(null);
+  const [markEvents, setMarkEvents] = useState<any | null>(null);
 
   let xAxisTMP: string[] = [];
   let yAxisTMP: string[] = [];
@@ -28,16 +30,16 @@ export function EchartsInfo(props: any) {
   }
 
   const reloadDataChart = () => {
-  //  console.log(' reloadDataChart');
-  //  console.log('props.dataInfo');
-  //  console.log(props.dataInfo);
+   console.log(' reloadDataChart');
+   console.log('props.dataInfo');
+   console.log(props.dataInfo);
 
      
-    //  setMarkEvent([])
-    //  setXAxis([])
-    //  setYAxis([])
+ 
     xAxisTMP = [];
     yAxisTMP = [];
+    
+    markEvent = [];
 
 
     for (const item of props.dataInfo) {
@@ -60,15 +62,16 @@ export function EchartsInfo(props: any) {
           itemStyle: {
             color: dataMark.color
           }
-        }
-        //     console.log( tmp);
-        markEvent.push(tmp)
-        //  setMarkEvent([...markEvent, tmp ])
+        } 
+        markEvent.push(tmp) 
+      //  setMarkEvent([...markEvent, tmp ])
       }
       //eventsName
     }
    // console.log(xAxisTMP)
+    setMarkEvents(markEvent)
     setXAxis(xAxisTMP);
+    setYAxis(yAxisTMP)
   }
 
 
@@ -87,7 +90,7 @@ export function EchartsInfo(props: any) {
   //    console.log('options');
   //    console.log(options);
     }
-  //    eChartsRef.current.getEchartsInstance().setOption(options)
+       eChartsRef.current.getEchartsInstance().setOption(options)
 
   }, [props.period])
 
@@ -101,15 +104,25 @@ export function EchartsInfo(props: any) {
   }
 
   const getOption = () => {
+    console.log('markEvents',markEvents);
     const data = {
+      blur:{
+        areaStyle: {
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          shadowBlur: 10
+        }
+      },
       grid: {
         left: '2%',
         right: '2%',
         bottom: '10%',
         containLabel: true
       },
-      title: false,
-      style: { height: '500px', width: '100%' },
+      style:{ 
+        height: '500px', 
+        width: '100%' 
+      },
+      title: false, 
       tooltip: {
 
       },
@@ -118,7 +131,7 @@ export function EchartsInfo(props: any) {
         triggerEvent: false,
         silent: false,
         showGrid: true,
-        data: yAxisTMP,
+        data: yAxis,
         nameGap: 0,
         axisTick: {
           show: true, //为 false 时隐藏
@@ -207,7 +220,7 @@ export function EchartsInfo(props: any) {
                 //    return param != null ? Math.round(param.value) + '' : '';
               }
             },
-            data: markEvent,
+            data: markEvents,
             tooltip: {
               formatter: (param: any) => {
                 //  console.log(param);
