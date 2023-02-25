@@ -34,22 +34,12 @@ export function EchartsInfo(props: any) {
    console.log('props.dataInfo');
    console.log(props.dataInfo);
 
-     
- 
     xAxisTMP = [];
     yAxisTMP = [];
-    
     markEvent = [];
-
-
     for (const item of props.dataInfo) {
-
-      //xAxis.push(item.price);
       xAxisTMP.push(item.price);
       yAxisTMP.push(item.date);
-      // setXAxis([...xAxis, item.price])
-      //  setYAxis([...yAxis, item.date ])
-      // yAxis.push(item.date);
       if (item.typeId && +item.typeId !== 0) {
         const dataMark = getMarksConst(item);
         let tmp = {
@@ -62,36 +52,19 @@ export function EchartsInfo(props: any) {
           itemStyle: {
             color: dataMark.color
           }
-        } 
+        }
         markEvent.push(tmp) 
-      //  setMarkEvent([...markEvent, tmp ])
       }
-      //eventsName
     }
-   // console.log(xAxisTMP)
     setMarkEvents(markEvent)
     setXAxis(xAxisTMP);
     setYAxis(yAxisTMP)
-  }
-
-
-
-
-  useEffect(() => {
-    //  eChartsRef.current.echarts.setOption(options)
+  } 
+  useEffect(() => { 
     reloadDataChart();
-    const options = getOption();
-    //options.series[0].data = props.period;
-
-  //  console.log(options, props.period);
-
-    //chart.current?.setOption(options);xAxis
-    if (eChartsRef && eChartsRef.current){
-  //    console.log('options');
-  //    console.log(options);
+    const options = getOption(); 
+    if (eChartsRef && eChartsRef.current){ 
     }
-       eChartsRef.current.getEchartsInstance().setOption(options)
-
   }, [props.period])
 
 
@@ -113,13 +86,13 @@ export function EchartsInfo(props: any) {
         }
       },
       grid: {
-        left: '2%',
+        left: '5%',
         right: '2%',
         bottom: '10%',
-        containLabel: true
+        containLabel: false
       },
       style:{ 
-        height: '500px', 
+        height: '500', 
         width: '100%' 
       },
       title: false, 
@@ -139,8 +112,8 @@ export function EchartsInfo(props: any) {
           interval: 0, //可以设置成 0 强制显示所有tick, 不是 label
           length: 1, // tick 长度, 默认5
           lineStyle: {
-            color: "gray",
-            width: 2 //tick 宽度
+            color: 'rgb(106,104,103)',
+            width: 12 //tick 宽度
           }
         },
         axisLabel: {
@@ -152,8 +125,9 @@ export function EchartsInfo(props: any) {
           //轴线
           show: true, //false 时隐藏
           lineStyle: {
-            color: "green", //同时改变了 label 颜色
-            width: 0 //x轴线条粗细，默认1px
+            // текст
+            color: 'rgb(106,104,103)', 
+            width: 1
           }
         },
       },
@@ -186,7 +160,7 @@ export function EchartsInfo(props: any) {
 
           areaStyle: {
 
-            color: ['rgba(225,236,230,1)'],
+            color: 'rgba(225,236,230,1)',
             opacity: 0.4,
           },
 
@@ -254,8 +228,12 @@ export function EchartsInfo(props: any) {
     option={getOption()}
     notMerge={true}
 
+    style={{ 
+      height: 350, 
+      width: '100%' 
+    }}
 
-  //  lazyUpdate={true}
+    lazyUpdate={true}
   //  theme={"theme_name"}
   //  onChartReady={onChartReadyCallback}
   // onEvents={EventsDict}

@@ -54,7 +54,7 @@ export default function Index() {
   const [period, setPeriod] = useState(0);
   const [dataInfoParams, setDataInfoParams] = useState([]);
 
-  const [newsEvent, setNews] = useState<string[]>([]);
+  const [news, setNews] = useState<string[]>([]);
   const chartsRef: any = useRef(null);
 
   const getUrlEdit = (ticker: string) => {
@@ -75,17 +75,6 @@ export default function Index() {
 // const { isLoading, error, data, status } = instrumentStore.getChart(ticker);
 
   if (isLoading) return <p>Загрузка...</p>;
-
-  //if (error) return <p>Ошибка: {error.message}</p>;
-
-  // if (status === 'loading') {
-  //   return <span>Загрузка...</span>;
-  // }
-
-  // if (status === 'error') {
-  //   return <span>Ошибка: {error.message}</span>;
-  // }
-
 
 
   if (!router.isReady) {
@@ -116,6 +105,12 @@ export default function Index() {
       return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
     })
 
+    const events = dataInfo.filter((item: any) => {
+      return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title !=""
+    })
+
+
+    setNews(events);
     setDataInfoParams(dataParam);
     console.log('dataInfoParams');
     console.log(dataInfoParams);
@@ -137,14 +132,15 @@ export default function Index() {
   console.log('dataInfoParams');
   console.log(dataInfoParams);
 
-
+  // надо определить сколько табов показывать в инструменете
+  
   const objects = [
     //   {name:'5 лет',id:1,hint:'',hintInfo:'За последние 5 лет',changes:'+212',time:157784630},
     { name: 'Всё время', typeTime: 1, id: 1, hint: '', hintInfo: 'За всю историю', changes: '+212', time: 0 },
     { name: 'Год', typeTime: 2, id: 2, hint: '', hintInfo: 'за последний год', changes: '+15', time: 31556926 },
     { name: 'Mесяц', typeTime: 3, id: 3, hint: '', hintInfo: 'за последний месяц', changes: '+35', time: 2629743 },
     { name: 'Неделя', typeTime: 4, id: 4, hint: '', hintInfo: 'за неделю', changes: '-15', time: 86400 },
-    { name: 'День', typeTime: 5, id: 5, hint: '', hintInfo: 'в течении суток', changes: '+25', time: 86400 },
+   // { name: 'День', typeTime: 5, id: 5, hint: '', hintInfo: 'в течении суток', changes: '+25', time: 86400 },
   ]
 
   const infoBox = { title: 'Изменение цены', hintInfo: 'в течении суток', changes: '+212' };
@@ -159,21 +155,19 @@ export default function Index() {
       </div>
       <div className={stylesHome.boxContent}>
         <div className={styles.graphicTab}>
+        
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
-
           <div className={styles.graphicTabBox}>
-
             <EchartsInfo
               instrument={instrument}
               dataInfo={dataInfoParams}
               period={period}
               ticker={ticker} />
-
           </div>
         </div>
 
         <div className={styles.pageText}>
-          <ListEvents instrument={instrument} news={newsEvent} />
+          <ListEvents instrument={instrument} news={news} />
 
         </div>
       </div>
