@@ -20,7 +20,7 @@ export function EchartsInfo(props: any) {
 
 
   const onClick = (params: any) => {
-    console.log('mey onClick', params)
+   // console.log('mey onClick', params)
   }
   const getMarksConst = (item: any) => {
     const dataColor = eventsName.filter((el) => el.value === +item.typeId);
@@ -28,9 +28,9 @@ export function EchartsInfo(props: any) {
   }
 
   const reloadDataChart = () => {
-    console.log(' reloadDataChart');
-    console.log('props.dataInfo');
-    console.log(props.dataInfo);
+  //  console.log(' reloadDataChart');
+  //  console.log('props.dataInfo');
+  //  console.log(props.dataInfo);
 
      
     //  setMarkEvent([])
@@ -67,7 +67,7 @@ export function EchartsInfo(props: any) {
       }
       //eventsName
     }
-    console.log(xAxisTMP)
+   // console.log(xAxisTMP)
     setXAxis(xAxisTMP);
   }
 
@@ -80,12 +80,12 @@ export function EchartsInfo(props: any) {
     const options = getOption();
     //options.series[0].data = props.period;
 
-    console.log(options, props.period);
+  //  console.log(options, props.period);
 
     //chart.current?.setOption(options);xAxis
     if (eChartsRef && eChartsRef.current){
-      console.log('options');
-      console.log(options);
+  //    console.log('options');
+  //    console.log(options);
     }
   //    eChartsRef.current.getEchartsInstance().setOption(options)
 
@@ -201,7 +201,7 @@ export function EchartsInfo(props: any) {
             //    silent :true,
             label: {
               formatter: (param: any) => {
-                console.log("test");
+           //     console.log("test");
                 //    console.log(param);
                 // return "asdfasdf";
                 //    return param != null ? Math.round(param.value) + '' : '';
@@ -211,7 +211,7 @@ export function EchartsInfo(props: any) {
             tooltip: {
               formatter: (param: any) => {
                 //  console.log(param);
-                console.log('asdad');
+           //     console.log('asdad');
                 return param.name + '<br>' + (param.data.coord || '');
               }
             }
@@ -225,7 +225,7 @@ export function EchartsInfo(props: any) {
 
 
   const onChartClick = (params: any) => {
-    console.log('mey', params)
+   // console.log('mey', params)
   }
   const onEvents = {
     'click': onChartClick,

@@ -3,15 +3,24 @@
 
 import { makeAutoObservable } from "mobx";
 import { dataBitcoin } from "./bitcoinData";
-import { useQuery,useQueries } from 'react-query'
+import { useQuery, useQueries } from "react-query";
 //import _ from "lodash";
- 
+
 class storeInstrument {
   constructor() {
     makeAutoObservable(this);
   }
 
- 
+  getChart(ticker) {
+    console.log(" ticker", ticker);
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json, text/plain, */*",
+    };
+    return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
+    .then((res) => res.json())
+    .catch((error) => console.log(ticker));
+  }
 
   getAll() {
     return this.instruments;
@@ -25,42 +34,9 @@ class storeInstrument {
   }
   getSingle(ticker) {
     const event = this.instruments.filter((item) => {
-      return  item.ticker === ticker;
+      return item.ticker === ticker;
     });
-    return event[0]?event[0]:{};
-  }
-
-  getChart(ticker) {
-      console.log(' ticker', ticker);
-
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json, text/plain, */*',
-      }
-    const { data, isLoading } = useQuery({
-      queryKey: ['chart', ticker],
-      queryFn: async () => {
-        //{"Label":"2009-10-09","Price":"0.0012"}
-        return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
-        .then((res) => res.json())
-        .catch(error =>console.log( ticker))
-      },
-      staleTime: 1 * 60 * 1000,
-      cacheTime: 5 * 60 * 1000,
-      enabled: ticker !== undefined 
-    });
- 
-   // dataBitcoin = data;
-
-    
-     console.log('isLoading', isLoading);
-     console.log(data);
-    if (typeof data === 'undefined' || data === undefined) {
-      console.log('data 1');
-      return []; 
-    } 
-    console.log('data 2');
-    return  data;
+    return event[0] ? event[0] : {};
   }
 }
 
