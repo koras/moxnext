@@ -21,10 +21,10 @@ function Tabs(props: any) {
         })
         setСhanges(info[0].changes);
         setHintInfo(info[0].hintInfo);
-        props.onTimeChange(info[0].time,info[0].typeTime);
+        props.onTimeChange(info[0].time,info[0].typeName);
     }
 
-    
+
     const activeNav = (id: number) => {
         if (id === activeTab) {
             return styles.active;

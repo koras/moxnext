@@ -22,7 +22,6 @@ export function EchartsInfo(props: any) {
 
 
   const onClick = (params: any) => {
-    // console.log('mey onClick', params)
   }
   const getMarksConst = (item: any) => {
     const dataColor = eventsName.filter((el) => el.value === +item.typeId);
@@ -31,7 +30,6 @@ export function EchartsInfo(props: any) {
 
   const reloadDataChart = () => {
     let dataParam = [];
-    console.log(props.period);
     if (props.dataInfo && props.dataInfo.price) {
           var CurrentDate = moment().subtract('seconds', props.period);
           dataParam = props.dataInfo.price.filter((item: any) => {
@@ -192,8 +190,6 @@ export function EchartsInfo(props: any) {
             //    silent :true,
             label: {
               formatter: (param: any) => {
-                //     console.log("test");
-                //    console.log(param);
                 // return "asdfasdf";
                 //    return param != null ? Math.round(param.value) + '' : '';
               }
@@ -201,8 +197,6 @@ export function EchartsInfo(props: any) {
             data: markEvents,
             tooltip: {
               formatter: (param: any) => {
-                //  console.log(param);
-                //     console.log('asdad');
                 return param.name + '<br>' + (param.data.coord || '');
               }
             }

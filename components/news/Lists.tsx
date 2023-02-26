@@ -29,7 +29,6 @@ export default function ListEvents(props:any)  {
 
   const [news, setNews] = useState<any | null>(null);
 
-   
   const instrument = props.instrument; 
  
   const getUrl = (props:any) => {
