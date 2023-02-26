@@ -7,7 +7,10 @@ function Tabs(props: any) {
 
     const [activeTab, setActiveTab] = useState(1);
     const [hintInfo, setHintInfo] = useState('Время изменения');
-    const [changes, setСhanges] = useState(-24);
+    const [changes, setСhanges] = useState("--");
+
+
+
 
     const onClickTab = (k: number) => {
         setActiveTab(k);
@@ -28,6 +31,11 @@ function Tabs(props: any) {
         }
     }
 
+    const getChanges = () => {
+        return props.objects[0].change;
+    }
+    console.log('props.objects[0]',props.objects[0]);
+ 
 
     const titleClass = (props: any) => {
         return (props.hint && props.hint !== "") ? styles.tabButton__title : styles.tabButton__titleOne + " ";
@@ -57,7 +65,7 @@ function Tabs(props: any) {
                 <div className={styles.tabInfoHint}>{hintInfo}</div>
             </div>
             <div className={styles.tabInfoPrice}>
-                <div className={styles.tabInfoBlockName + " minus"}>{changes}%</div>
+                <div className={styles.tabInfoBlockName + " minus"}>{()=>getChanges()}%</div>
             </div>
         </div>;
     }

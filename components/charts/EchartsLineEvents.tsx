@@ -31,17 +31,12 @@ export function EchartsInfo(props: any) {
 
   const reloadDataChart = () => {
     let dataParam = [];
+    console.log(props.period);
     if (props.dataInfo && props.dataInfo.price) {
-      if (props.period !== 0) { 
           var CurrentDate = moment().subtract('seconds', props.period);
-
           dataParam = props.dataInfo.price.filter((item: any) => {
             return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
           })
-
-        } else {
-          dataParam = props.dataInfo.price;
-        }
     }
 
     xAxisTMP = [];
@@ -74,9 +69,7 @@ export function EchartsInfo(props: any) {
 
   useEffect(() => {
     reloadDataChart();
-    // const options = getOption(); 
-    // if (eChartsRef && eChartsRef.current){ 
-    // }
+   
   }, [props.period])
 
 

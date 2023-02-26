@@ -43,18 +43,16 @@ export default function ListEvents(props:any)  {
   const updateNews = () => {
     let dataNews = [] ;
     
-    if( props.data.price &&  props.data.price){ 
-    console.log('props.period', props.period);
-
-      if( props.period !== 0){ 
+    if( props.data.price &&  props.data.price){  
+     // if( props.period !== 0){ 
         var CurrentDate = moment().subtract('seconds', props.period);
             dataNews = props.data.price.filter((item: any) => {
             return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) &&  item.title !=""
           })
-        }else{ 
-            dataNews = props.data.price.filter((item: any) =>    item.title !="")
+     //   }else{ 
+      //      dataNews = props.data.price.filter((item: any) =>    item.title !="")
           
-        }
+      //  }
       }
 
       setNews(dataNews)

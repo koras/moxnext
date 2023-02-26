@@ -35,6 +35,13 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Index() {
 
+  const periods = {
+    all: 3155692600,
+    year:31556926,
+    month:2629743,
+    week:86400,
+  }
+
   const router: any = useRouter();
   interface IEvent {
     title: string;
@@ -49,7 +56,7 @@ export default function Index() {
 
   const { ticker } = router.query 
   const [instrument, setInstrument] = useState({}); 
-  const [period, setPeriod] = useState(0); 
+  const [period, setPeriod] = useState(periods.all); 
 
   const [news, setNews] = useState<string[]>([]);
   const chartsRef: any = useRef(null);
@@ -67,7 +74,7 @@ export default function Index() {
    // cacheTime: 5 * 60 * 1000,
     enabled: ticker !== undefined,
     onSuccess: async (data:any) => { 
-        setPeriod(0);
+    //    setPeriod(0);
     //   const events = data.filter((item: any) => {
     //    return item.title !=""
     //  })
@@ -89,18 +96,105 @@ export default function Index() {
   }
 
  
+  console.log(data.price);
+    let tabTime  = {
+      all:[],
+      year:[],
+      month:[],
+      week:[],
+    };
+
+    // const periods = {
+    //   all: 3155692600,
+    //   year:31556926,
+    //   month:2629743,
+    //   week:86400,
+    // }
+    const  periodAll  = moment().subtract('seconds', periods.all);
+    const  periodYear  = moment().subtract('seconds', periods.year);
+    const  periodMonth = moment().subtract('seconds', periods.month);
+    const  periodWeek = moment().subtract('seconds', periods.week);
  
 
+
   // надо определить сколько табов показывать в инструменете
-  
-  const objects = [
-    //   {name:'5 лет',id:1,hint:'',hintInfo:'За последние 5 лет',changes:'+212',time:157784630},
-    { name: 'Всё время', typeTime: 1, id: 1, hint: '', hintInfo: 'За всю историю', changes: '+212', time: 0 },
-    { name: 'Год', typeTime: 2, id: 2, hint: '', hintInfo: 'за последний год', changes: '+15', time: 31556926 },
-    { name: 'Mесяц', typeTime: 3, id: 3, hint: '', hintInfo: 'за последний месяц', changes: '+35', time: 2629743 },
-    { name: 'Неделя', typeTime: 4, id: 4, hint: '', hintInfo: 'за неделю', changes: '-15', time: 86400 },
+  //  for (const tab of data.price) {
+  //     console.log(tab );
+      tabTime.all = data.price.filter((item: any) => {
+        return moment(item.date, 'YYYY-MM-DD').isAfter(periodAll)
+      })
+      tabTime.year = data.price.filter((item: any) => {
+        return moment(item.date, 'YYYY-MM-DD').isAfter(periodYear)
+      })
+      tabTime.month = data.price.filter((item: any) => {
+          return moment(item.date, 'YYYY-MM-DD').isAfter(periodMonth)
+        })
+      tabTime.week = data.price.filter((item: any) => {
+         return moment(item.date, 'YYYY-MM-DD').isAfter(periodWeek)
+       })
+   console.log(tabTime);
+
+
+  let objects = [ 
+    { name: 'Всё время', typeTime: 1, id: 1, hint: '', hintInfo: 'За всю историю', changes: '0', price:0, time: periods.all },
+    { name: 'Год', typeTime: 2, id: 2, hint: '', hintInfo: 'за последний год', changes: '0', price:0, time: periods.year},
+    { name: 'Mесяц', typeTime: 3, id: 3, hint: '', hintInfo: 'за последний месяц', changes: '0', price:0, time: periods.month },
+    { name: 'Неделя', typeTime: 4, id: 4, hint: '', hintInfo: 'за неделю', changes: '0', price:0, time: periods.week },
    // { name: 'День', typeTime: 5, id: 5, hint: '', hintInfo: 'в течении суток', changes: '+25', time: 86400 },
   ]
+
+
+    const getPercent = (_priceDate:any, _priceCurrent:any) => {
+        if(_priceCurrent >= _priceDate){
+            // цена выросла
+            if(_priceCurrent != 0){
+              const mount = (_priceCurrent - _priceDate) / (_priceCurrent / 100);
+               return   '+' + parseInt(mount);
+            }
+        }else{
+          // цена упала
+            if(_priceDate != 0){ 
+
+              const mount = ( _priceDate - _priceCurrent) /  (_priceDate/100);
+
+               return  '-' + parseInt(mount)
+            }
+        }
+        return "0";
+    }
+
+
+    const getDateState = (_data:any,_priceCurent:any) =>{
+ 
+ 
+      objects[0].changes = getPercent(_data[0].price, data.instrument.price);
+
+      var currentDateYears = moment().subtract('seconds', periods.year);
+      const dataYears =  _data.filter((item: any) => {
+        return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateYears)
+      })
+      objects[1].changes = getPercent(dataYears[0].price, data.instrument.price);
+   
+
+      var currentDateMonth = moment().subtract('seconds', periods.month);
+      const dataMonth =  _data.filter((item: any) => {
+        return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateMonth)
+      })
+      objects[2].changes = getPercent(dataMonth[0].price, data.instrument.price);
+ 
+      var currentDateWeek = moment().subtract('seconds', periods.month);
+      const dataWeek =  _data.filter((item: any) => {
+        return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateWeek)
+      })
+      objects[3].changes =  getPercent(dataYears[0].price, data.instrument.price);
+ 
+      console.log(objects);
+
+  }
+  
+  console.log(getDateState(data.price, data.instrument.price))
+  console.log(data.instrument.price)
+   
 
   const infoBox = { title: 'Изменение цены', hintInfo: 'в течении суток', changes: '+212' };
 
@@ -117,16 +211,16 @@ export default function Index() {
         
           <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
           <div className={styles.graphicTabBox}>
-            <EchartsInfo
+             <EchartsInfo
               instrument={instrument}
               dataInfo={data}
               period={period}
-              ticker={ticker} />
+              ticker={ticker} /> 
           </div>
         </div>
 
         <div className={styles.pageText}>
-           <ListEvents instrument={instrument}  period={period} data={data} /> 
+            <ListEvents instrument={instrument}  period={period} data={data} />  
 
         </div>
       </div>
