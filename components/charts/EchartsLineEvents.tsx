@@ -31,8 +31,8 @@ export function EchartsInfo(props: any) {
 
   const reloadDataChart = () => {
    console.log(' reloadDataChart');
-   console.log('props.dataInfo');
-   console.log(props.dataInfo);
+ //  console.log('props.dataInfo');
+ //  console.log(props.dataInfo);
 
     xAxisTMP = [];
     yAxisTMP = [];

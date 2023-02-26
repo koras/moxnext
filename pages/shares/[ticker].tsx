@@ -53,6 +53,7 @@ export default function Index() {
   const [rangeTime, setRangeTime] = useState(0);
   const [period, setPeriod] = useState(0);
   const [dataInfoParams, setDataInfoParams] = useState([]);
+  const [priceAndEvents, setPriceAndEvents] = useState([]);
 
   const [news, setNews] = useState<string[]>([]);
   const chartsRef: any = useRef(null);
@@ -70,12 +71,11 @@ export default function Index() {
     onSuccess: async (data:any) => {
       console.log('data',data)
        setDataInfoParams(data);
-
+       setPriceAndEvents(data);
        const events = data.filter((item: any) => {
         return item.title !=""
       })
       setNews(events);
-
      },
     } );
 // const { isLoading, error, data, status } = instrumentStore.getChart(ticker);
@@ -95,16 +95,15 @@ export default function Index() {
 
   const handleTimeChange = (params: any) => {
     if (params === 0) {
-      setDataInfoParams(dataInfo);
+      setDataInfoParams(priceAndEvents);
       console.log('Ноль');
-      console.log(dataInfoParams);
-      setPeriod(params);
 
-      const events = dataInfoParams.filter((item: any) => {
+      const events = priceAndEvents.filter((item: any) => {
           return  item.title !== ""
         })
         
-    setNews(events);
+      setNews(events);
+      setPeriod(params);
       return;
     }
     console.log('handleTimeChange', params);
@@ -113,11 +112,11 @@ export default function Index() {
     var CurrentDate = moment().subtract('seconds', params);
     const info = CurrentDate.format("YYYY-MM-DD");
 
-    const dataParam = dataInfoParams.filter((item: any) => {
+    const dataParam = priceAndEvents.filter((item: any) => {
       return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
     })
 
-    const events = dataInfoParams.filter((item: any) => {
+    const events = priceAndEvents.filter((item: any) => {
     // console.log( moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title !="", item.title !="" );
       return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title !=""
     })
@@ -125,25 +124,17 @@ export default function Index() {
     setDataInfoParams(dataParam);
     console.log(events);
     setNews(events);
-    console.log('dataInfoParams');
-    console.log(dataInfoParams);
-
-    //setRangeTime(params); 
     // setPeriod(params)
     let chart: any = chartsRef.current;
-    //   console.log( 'char',chart);
-    //    console.log( 'char',chart, chartsRef.current?.childMethod());
 
     setPeriod(params);
-    //setPeriod([1,2,3,4,5,5,5,6,1,1]);
-    //  chart.data.datasets[0].data.push(123)
   }
 
 
 
 
-  console.log('dataInfoParams');
-  console.log(dataInfoParams);
+ // console.log('dataInfoParams');
+//  console.log(dataInfoParams);
 
   // надо определить сколько табов показывать в инструменете
   
@@ -180,7 +171,7 @@ export default function Index() {
         </div>
 
         <div className={styles.pageText}>
-          <ListEvents instrument={instrument} news={news} />
+          <ListEvents instrument={instrument}    period={period} news={news} />
 
         </div>
       </div>

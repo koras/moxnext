@@ -41,9 +41,10 @@ export default function ListEvents(props:any)  {
 
 
   useEffect(() => {  
-    console.log('============================');
+
+    console.log('============================',props.news.length);
     console.log('props.news',props.news);
-  }, [props.news])
+  }, [props.news, props.period])
 
   
 
@@ -56,7 +57,7 @@ export default function ListEvents(props:any)  {
   const ObjectRow = (props:any) => {
     
     return (
-      <div className={style.newsItem}>
+      <div className={style.newsItem}> 
         <div className={style.newsItemHead}>
           <div
             className={style.date}
@@ -85,7 +86,7 @@ export default function ListEvents(props:any)  {
  // console.log('storeNews',isLoading,error);
  // if (isLoading) return <div > `Loading...`</div>;
  
-   return <div >
+   return <div>
     {props && props.news && props.news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
