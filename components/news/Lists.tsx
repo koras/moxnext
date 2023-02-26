@@ -13,16 +13,6 @@ import Button from "@mui/material/Button";
 
 import React, { useState, useEffect } from "react";
 
-//import { getNews } from './../../hooks/index'
-
-
-//import { useNavigate } from "react-router-dom";
-// event: "Новости",
-// type: "news",
-// ticker: 'btc',
-// title_url: 'kurs-ruble',
-// instrumentId: 1111,
-// date: "12.12.2022",
 
  
 const classNameEvent = (props:any) => {
@@ -34,21 +24,28 @@ console.log('data',data);
   //  return props;
 };
 
-export default function ListEvents(params:any)  {
+export default function ListEvents(props:any)  {
 
-  const instrument = params.instrument;
- 
-  console.log('params',params.ticker)
+
+  console.log('params.news',props.news);
+
+  const instrument = props.instrument; 
  
   const getUrl = (props:any) => {
     return "/events/" + instrument.ticker + "/" + props.slug;
   };
 
   const changeDate = (date:any) => {
-    
     return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY") 
   };
 
+
+  useEffect(() => {  
+    console.log('============================');
+    console.log('props.news',props.news);
+  }, [props.news])
+
+  
 
  //const navigate = useNavigate();
  const router = useRouter();
@@ -89,7 +86,7 @@ export default function ListEvents(params:any)  {
  // if (isLoading) return <div > `Loading...`</div>;
  
    return <div >
-    {params && params.news && params.news.map((item:any, i:any) => (
+    {props && props.news && props.news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
    </div>;

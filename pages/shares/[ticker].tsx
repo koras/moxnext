@@ -70,6 +70,12 @@ export default function Index() {
     onSuccess: async (data:any) => {
       console.log('data',data)
        setDataInfoParams(data);
+
+       const events = data.filter((item: any) => {
+        return item.title !=""
+      })
+      setNews(events);
+
      },
     } );
 // const { isLoading, error, data, status } = instrumentStore.getChart(ticker);
@@ -93,6 +99,12 @@ export default function Index() {
       console.log('Ноль');
       console.log(dataInfoParams);
       setPeriod(params);
+
+      const events = dataInfoParams.filter((item: any) => {
+          return  item.title !== ""
+        })
+        
+    setNews(events);
       return;
     }
     console.log('handleTimeChange', params);
@@ -101,17 +113,18 @@ export default function Index() {
     var CurrentDate = moment().subtract('seconds', params);
     const info = CurrentDate.format("YYYY-MM-DD");
 
-    const dataParam = dataInfo.filter((item: any) => {
+    const dataParam = dataInfoParams.filter((item: any) => {
       return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
     })
 
-    const events = dataInfo.filter((item: any) => {
+    const events = dataInfoParams.filter((item: any) => {
+    // console.log( moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title !="", item.title !="" );
       return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title !=""
     })
-
-
-    setNews(events);
+ 
     setDataInfoParams(dataParam);
+    console.log(events);
+    setNews(events);
     console.log('dataInfoParams');
     console.log(dataInfoParams);
 
