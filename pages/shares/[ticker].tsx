@@ -65,7 +65,6 @@ export default function Index() {
     router.push("/event/create/" + ticker + "/")
   };
 
-  //console.log('ticker',ticker);
 
   const { isLoading, error, data, status,isFetching } = useQuery({
     queryKey: ["chart", ticker],
@@ -91,12 +90,12 @@ export default function Index() {
  
 
 
-  const handleTimeChange = (params: any) => {
+  const handleTimeChange = (params: any, typeDate: any) => {
+    console.log(typeDate)
     setPeriod(params);
   }
 
- 
-  console.log(data.price);
+
     let tabTime  = {
       all:[],
       year:[],
@@ -119,7 +118,7 @@ export default function Index() {
 
   // надо определить сколько табов показывать в инструменете
   //  for (const tab of data.price) {
-  //     console.log(tab );
+
       tabTime.all = data.price.filter((item: any) => {
         return moment(item.date, 'YYYY-MM-DD').isAfter(periodAll)
       })
@@ -132,7 +131,7 @@ export default function Index() {
       tabTime.week = data.price.filter((item: any) => {
          return moment(item.date, 'YYYY-MM-DD').isAfter(periodWeek)
        })
-   console.log(tabTime);
+
 
 
   let objects = [ 
@@ -188,15 +187,11 @@ export default function Index() {
       })
       objects[3].changes =  getPercent(dataYears[0].price, data.instrument.price);
  
-      console.log(objects);
 
   }
   
-  console.log(getDateState(data.price, data.instrument.price))
-  console.log(data.instrument.price)
-   
-
-  const infoBox = { title: 'Изменение цены', hintInfo: 'в течении суток', changes: '+212' };
+  getDateState(data.price, data.instrument.price)
+ 
 
   return (
     <ContentBox title="" hideBorder={true}>
@@ -208,8 +203,7 @@ export default function Index() {
       </div>
       <div className={stylesHome.boxContent}>
         <div className={styles.graphicTab}>
-        
-          <Tabs onTimeChange={handleTimeChange} objects={objects} infoBox={infoBox} />
+          <Tabs onTimeChange={handleTimeChange} objects={objects}  />
           <div className={styles.graphicTabBox}>
              <EchartsInfo
               instrument={instrument}

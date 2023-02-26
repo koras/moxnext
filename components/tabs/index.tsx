@@ -6,8 +6,8 @@ import { useState } from "react";
 function Tabs(props: any) {
 
     const [activeTab, setActiveTab] = useState(1);
-    const [hintInfo, setHintInfo] = useState('Время изменения');
-    const [changes, setСhanges] = useState("--");
+    const [hintInfo, setHintInfo] = useState(null);
+    const [changes, setСhanges] = useState(null);
 
 
 
@@ -21,8 +21,10 @@ function Tabs(props: any) {
         })
         setСhanges(info[0].changes);
         setHintInfo(info[0].hintInfo);
-        props.onTimeChange(info[0].time);
+        props.onTimeChange(info[0].time,info[0].typeTime);
     }
+
+    
     const activeNav = (id: number) => {
         if (id === activeTab) {
             return styles.active;
@@ -32,10 +34,20 @@ function Tabs(props: any) {
     }
 
     const getChanges = () => {
-        return props.objects[0].change;
-    }
-    console.log('props.objects[0]',props.objects[0]);
- 
+        if(!changes){  
+               return props.objects[0].changes;
+           }
+       return changes;
+       }
+
+       const getTimeChanges = () => {
+        if(!hintInfo){  
+               return props.objects[0].hintInfo;
+           }
+       return hintInfo;
+       }
+      
+
 
     const titleClass = (props: any) => {
         return (props.hint && props.hint !== "") ? styles.tabButton__title : styles.tabButton__titleOne + " ";
@@ -61,11 +73,11 @@ function Tabs(props: any) {
     function Info() {
         return <div className={styles.tabInfoBlock}>
             <div className={styles.tabInfo}>
-                <div className={styles.tabInfoName}>{props.infoBox.title}</div>
-                <div className={styles.tabInfoHint}>{hintInfo}</div>
+                <div className={styles.tabInfoName}>Изменение цены</div>
+                <div className={styles.tabInfoHint}>{getTimeChanges()}</div>
             </div>
             <div className={styles.tabInfoPrice}>
-                <div className={styles.tabInfoBlockName + " minus"}>{()=>getChanges()}%</div>
+                <div className={styles.tabInfoBlockName + " minus"}>{getChanges()}%</div>
             </div>
         </div>;
     }
