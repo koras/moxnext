@@ -62,22 +62,27 @@ export default function Index() {
     router.push("/event/create/" + ticker + "/")
   };
 
-  const { isLoading, error, data, status } = useQuery({
+  console.log('ticker',ticker);
+
+  const { isLoading, error, data, status,isFetching } = useQuery({
     queryKey: ["chart", ticker],
     queryFn: async () =>  instrumentStore.getChart(ticker) ,
-    staleTime: 1 * 60 * 1000,
-    cacheTime: 5 * 60 * 1000,
+  //  staleTime: 1 * 60 * 1000,
+   // cacheTime: 5 * 60 * 1000,
     enabled: ticker !== undefined,
     onSuccess: async (data:any) => {
+      console.log('||||============================')
       console.log('data',data)
        setDataInfoParams(data);
        setPriceAndEvents(data);
+        setPeriod(0);
        const events = data.filter((item: any) => {
         return item.title !=""
       })
       setNews(events);
      },
     } );
+    console.log(11111,isLoading, error, data, status,isFetching );
 // const { isLoading, error, data, status } = instrumentStore.getChart(ticker);
 
   if (isLoading) return <p>Загрузка...</p>;
@@ -90,7 +95,7 @@ export default function Index() {
   console.log(data);
   let dataInfo = data;
  
-
+ 
 
 
   const handleTimeChange = (params: any) => {
@@ -130,8 +135,10 @@ export default function Index() {
     setPeriod(params);
   }
 
+ 
 
 
+  console.log(222222,isLoading, error, data, status,dataInfoParams,isFetching );
 
  // console.log('dataInfoParams');
 //  console.log(dataInfoParams);

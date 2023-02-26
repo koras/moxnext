@@ -33,12 +33,11 @@ export default () => {
  
   const ObjectRow   = (props: any)  => {
     if(+props.item.price === 0){
-      console.log(props.item.instrument_name,props.item.price);
+     // console.log(props.item.instrument_name,props.item.price);
       return;
     }
     const logo = props.item.logo;
     const name = props.item.instrument_name;
-    //   console.log(props.item.images.logo);
 
     const getPriceChange = (item: any) => {
       const price = +item.change;
@@ -130,7 +129,7 @@ export default () => {
     return <div>load</div>;
   }  
 
-  console.log(data);
+
 
   return (
         <ContentBox hideBorder={true}>
