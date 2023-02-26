@@ -27,8 +27,9 @@ console.log('data',data);
 export default function ListEvents(props:any)  {
 
 
-  console.log('params.news',props.news);
+  const [news, setNews] = useState<any | null>(null);
 
+   
   const instrument = props.instrument; 
  
   const getUrl = (props:any) => {
@@ -39,12 +40,28 @@ export default function ListEvents(props:any)  {
     return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY") 
   };
 
+  const updateNews = () => {
+    let dataNews = [] ;
+    
+    if( props.data.price &&  props.data.price){ 
+    console.log('props.period', props.period);
 
+      if( props.period !== 0){ 
+        var CurrentDate = moment().subtract('seconds', props.period);
+            dataNews = props.data.price.filter((item: any) => {
+            return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) &&  item.title !=""
+          })
+        }else{ 
+            dataNews = props.data.price.filter((item: any) =>    item.title !="")
+          
+        }
+      }
+
+      setNews(dataNews)
+  }
   useEffect(() => {  
-
-    console.log('============================',props.news.length);
-    console.log('props.news',props.news);
-  }, [props.news, props.period])
+    updateNews();
+  }, [props.period])
 
   
 
@@ -53,9 +70,7 @@ export default function ListEvents(props:any)  {
   const getUrlEdit = (hash:string) => { 
     router.push("/event/change/" + hash) 
   }; 
-
   const ObjectRow = (props:any) => {
-    
     return (
       <div className={style.newsItem}> 
         <div className={style.newsItemHead}>
@@ -80,17 +95,10 @@ export default function ListEvents(props:any)  {
       </div>
     );
   }; 
-
- 
-
- // console.log('storeNews',isLoading,error);
- // if (isLoading) return <div > `Loading...`</div>;
- 
    return <div>
-    {props && props.news && props.news.map((item:any, i:any) => (
+    {news && news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
    </div>;
  
-
 };

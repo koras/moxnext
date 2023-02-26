@@ -22,7 +22,7 @@ export function EchartsInfo(props: any) {
 
 
   const onClick = (params: any) => {
-   // console.log('mey onClick', params)
+    // console.log('mey onClick', params)
   }
   const getMarksConst = (item: any) => {
     const dataColor = eventsName.filter((el) => el.value === +item.typeId);
@@ -30,14 +30,24 @@ export function EchartsInfo(props: any) {
   }
 
   const reloadDataChart = () => {
-   console.log(' reloadDataChart');
- //  console.log('props.dataInfo');
- //  console.log(props.dataInfo);
+    let dataParam = [];
+    if (props.dataInfo && props.dataInfo.price) {
+      if (props.period !== 0) { 
+          var CurrentDate = moment().subtract('seconds', props.period);
+
+          dataParam = props.dataInfo.price.filter((item: any) => {
+            return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
+          })
+
+        } else {
+          dataParam = props.dataInfo.price;
+        }
+    }
 
     xAxisTMP = [];
     yAxisTMP = [];
     markEvent = [];
-    for (const item of props.dataInfo) {
+    for (const item of dataParam) {
       xAxisTMP.push(item.price);
       yAxisTMP.push(item.date);
       if (item.typeId && +item.typeId !== 0) {
@@ -53,18 +63,20 @@ export function EchartsInfo(props: any) {
             color: dataMark.color
           }
         }
-        markEvent.push(tmp) 
+        markEvent.push(tmp)
       }
     }
     setMarkEvents(markEvent)
     setXAxis(xAxisTMP);
     setYAxis(yAxisTMP)
-  } 
-  useEffect(() => { 
+  }
+
+
+  useEffect(() => {
     reloadDataChart();
-    const options = getOption(); 
-    if (eChartsRef && eChartsRef.current){ 
-    }
+    // const options = getOption(); 
+    // if (eChartsRef && eChartsRef.current){ 
+    // }
   }, [props.period])
 
 
@@ -77,9 +89,8 @@ export function EchartsInfo(props: any) {
   }
 
   const getOption = () => {
-    console.log('markEvents',markEvents);
     const data = {
-      blur:{
+      blur: {
         areaStyle: {
           shadowColor: 'rgba(0, 0, 0, 0.5)',
           shadowBlur: 10
@@ -91,11 +102,11 @@ export function EchartsInfo(props: any) {
         bottom: '10%',
         containLabel: false
       },
-      style:{ 
-        height: '500', 
-        width: '100%' 
+      style: {
+        height: '500',
+        width: '100%'
       },
-      title: false, 
+      title: false,
       tooltip: {
 
       },
@@ -126,7 +137,7 @@ export function EchartsInfo(props: any) {
           show: true, //false 时隐藏
           lineStyle: {
             // текст
-            color: 'rgb(106,104,103)', 
+            color: 'rgb(106,104,103)',
             width: 1
           }
         },
@@ -188,7 +199,7 @@ export function EchartsInfo(props: any) {
             //    silent :true,
             label: {
               formatter: (param: any) => {
-           //     console.log("test");
+                //     console.log("test");
                 //    console.log(param);
                 // return "asdfasdf";
                 //    return param != null ? Math.round(param.value) + '' : '';
@@ -198,7 +209,7 @@ export function EchartsInfo(props: any) {
             tooltip: {
               formatter: (param: any) => {
                 //  console.log(param);
-           //     console.log('asdad');
+                //     console.log('asdad');
                 return param.name + '<br>' + (param.data.coord || '');
               }
             }
@@ -212,7 +223,7 @@ export function EchartsInfo(props: any) {
 
 
   const onChartClick = (params: any) => {
-   // console.log('mey', params)
+    // console.log('mey', params)
   }
   const onEvents = {
     'click': onChartClick,
@@ -228,9 +239,9 @@ export function EchartsInfo(props: any) {
     option={getOption()}
     notMerge={true}
 
-    style={{ 
-      height: 350, 
-      width: '100%' 
+    style={{
+      height: 350,
+      width: '100%'
     }}
 
     lazyUpdate={true}
