@@ -13,7 +13,8 @@ export function EchartsInfo(props: any) {
   const [xAxis, setXAxis] = useState<any | null>(null);
   const [yAxis, setYAxis] = useState<any | null>(null);
   const [markEvents, setMarkEvents] = useState<any | null>(null);
-
+  const [rotate, setRotate] = useState(-50);
+  
   let xAxisTMP: string[] = [];
   let yAxisTMP: string[] = [];
 
@@ -36,19 +37,34 @@ export function EchartsInfo(props: any) {
             return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
           })
     }
-
     xAxisTMP = [];
     yAxisTMP = [];
     markEvent = [];
-    for (const item of dataParam) {
+
+    // старая дата
+    let dtOld = '';
+    let dtOldMonth = ''
+    let dtOldDay = ''
+   
+    for (const index in dataParam) {
+
+      const item = dataParam[index];
+
+    //  console.log(index)
       xAxisTMP.push(item.price);
-      yAxisTMP.push(item.date);
+ 
+
       if (item.typeId && +item.typeId !== 0) {
+        console.log(item.price, index )
+
         const dataMark = getMarksConst(item);
         let tmp = {
-          name: item.title,
-          coord: [item.date, item.price],
+          name: item.title, 
+       //   coord: [item.date, item.price],
+          xAxis:  (+index),
+          yAxis:item.price,
           symbol: 'circle',
+          dataIndex: 100 ,
           symbolSize: dataMark.symbolSize,
           silent: true,
           click: () => onClick,
@@ -58,19 +74,89 @@ export function EchartsInfo(props: any) {
         }
         markEvent.push(tmp)
       }
+
+
+      if(props.periodName === "all"){ 
+        const dt = moment(item.date, 'YYYY-MM-DD').format('YYYY');
+        if(dtOld === dt){
+          yAxisTMP.push(" ");
+        }else{  
+          yAxisTMP.push(dt);
+        }
+       // console.log(dtOld, dt);
+        dtOld = dt;
+
+        
+
+      }else if(props.periodName === "year"){ // month
+        const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
+        const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
+        if(dtOldMonth == dtMonth){
+          yAxisTMP.push(" ");
+        }else{  
+          if( dtOld === dtYears){ 
+            yAxisTMP.push(dtMonth);
+          }else{
+            yAxisTMP.push(dtMonth+"/"+dtYears);
+          }
+        }
+       dtOld = dtYears;
+       dtOldMonth = dtMonth;
+
+      }else if(props.periodName === "month"  || props.periodName === "week"){ 
+        const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
+        const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
+        const dtDay = moment(item.date, 'YYYY-MM-DD').format('DD');
+        if(dtOldDay === dtDay){
+          yAxisTMP.push(" ");
+        }else{
+          if(dtMonth === dtOldMonth){
+
+            yAxisTMP.push(dtDay);
+          }else{
+            
+            yAxisTMP.push(dtDay + "/"+dtOldMonth);
+          }
+        }
+
+       dtOld = dtYears;
+       dtOldMonth = dtMonth;
+       dtOldDay = dtDay;
+      }    
+      else{
+        yAxisTMP.push(item.date);
+      }
     }
     setMarkEvents(markEvent)
+ 
+    
+  //  setXAxis(xAxisTMP);
     setXAxis(xAxisTMP);
+  //  console.log(yAxisTMP);
     setYAxis(yAxisTMP)
+
+
+    if(props.periodName === "all"){ 
+        setRotate(-50);
+    }else if(props.periodName === "year"){ // month
+     
+      setRotate(-50);
+    }else if(props.periodName === "month"){ 
+      setRotate(0);
+    }  else{
+  
+      setRotate(0);
+   }
+
+  //  rotate, setRotate] = useState(-50);
   }
 
 
   useEffect(() => {
     reloadDataChart();
    
-  }, [props.period])
-
-
+  }, [props.period,props.periodName])
+ 
 
 
 
@@ -88,9 +174,9 @@ export function EchartsInfo(props: any) {
         }
       },
       grid: {
-        left: '5%',
+        left: '6%',
         right: '2%',
-        bottom: '10%',
+        bottom: '20%',
         containLabel: false
       },
       style: {
@@ -121,6 +207,9 @@ export function EchartsInfo(props: any) {
         axisLabel: {
           //x轴上标签
           show: true,
+          interval: 0,
+          rotate: rotate,
+          width: 1, 
         },
 
         axisLine: {
@@ -128,7 +217,7 @@ export function EchartsInfo(props: any) {
           show: true, //false 时隐藏
           lineStyle: {
             // текст
-            color: 'rgb(106,104,103)',
+            color: 'rgb(106,104,103)', 
             width: 1
           }
         },

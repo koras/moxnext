@@ -211,6 +211,7 @@ export default function Index() {
               instrument={instrument}
               dataInfo={data}
               period={period}
+              periodName={periodName} 
               ticker={ticker} />
           </div>
         </div>
