@@ -15,22 +15,14 @@ import {  useQuery} from 'react-query'
 import { useRouter } from 'next/router'
 import { getInstruments } from './../hooks/index'
 import { instrumentStore } from './../stories/storeInstrument'
+import EchartsMini from './../components/charts/EchartsMini'
 
+import { getPercent } from './../components/general/functions'
 
 export default () => {
    
 
   const router = useRouter(); 
- //api/instruments/list
-// https://habr.com/ru/post/495324/
-
-// https://iss.moex.com/iss/history/engines/stock/markets/shares/boardgroups/57/securities.jsonp?iss.meta=off&iss.json=extended&lang=ru&security_collection=3&date=2022-02-08&start=200&limit=100&sort_column=VALUE&sort_order=des
-
- // короткие имена акций
-// https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,SECNAME
-
-//Узнавать текущую цену для конкретной ценной бумаги
-//http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE
  
   const ObjectRow   = (props: any)  => {
     if(+props.item.price === 0){
@@ -48,9 +40,9 @@ export default () => {
         return price;
       }
     };
-    const getChangeColor = (item: any) => {
-      const price = +item.change;
-        return (price >= 0)? styles.dashboardCostPlus:styles.dashboardCostMinus;
+    const getChangeColor = (p1: any,p2: any) => {
+      //const price = p2 > p1;
+        return (p2 > p1)? styles.dashboardCostPlus:styles.dashboardCostMinus;
     
     };
 
@@ -66,8 +58,7 @@ export default () => {
           <Link href={"/"+props.item.type+"/"+props.item.ticker}>{name}</Link></div>
 
             <div className={styles.dashboardItemDescriptionHead__price}>
-              {props.item.price}
-              {props.item.currency}
+              {props.item.price} {props.item.mark}
             </div> 
           </div>
 
@@ -76,7 +67,10 @@ export default () => {
           </div>
 
           <div className={styles.dashboardItemDescriptionControll}>
-            <Link href={"/instrument/edit/"+props.item.instrument_id}>Редактировать</Link> <Link href="#">Следить за тикером</Link>
+{/*             
+            <Link href={"/instrument/edit/"+props.item.instrument_id}>Редактировать</Link> */}
+            
+             <Link href="#">Следить за тикером</Link>
           </div>
         </div>
 
@@ -86,22 +80,22 @@ export default () => {
         <div className={styles.dashboardItemChange}>
           <div className={styles.dashboardItemChang__chartInfo}>
             <div className={styles.dashboardItemChang__chartInfo__title}>
-              Изменение цены
+              {/* Изменение цены */}
             </div> 
 
             <div className={styles.dashboardItemChang__chartInfo__price}>
               <div
                 className={
-                  styles.dashboardChartInfo__cost + " " + getChangeColor(props.item)
+                  styles.dashboardChartInfo__cost + " " + getChangeColor(props.item.price_year, props.item.price)
                 }
               >
-                {getPriceChange(props.item)}%
+                { getPercent (props.item.price_year, props.item.price)}%
               </div>
               <div className={styles.dashboardChartInfo__costTime}>за год</div>
             </div>
           </div>
           <div className={styles.dashboardItemChang__chart}>
-            {/* <LineMiniTicker /> */}
+             <EchartsMini prices={props.item.prices} />
           </div>
         </div>
         </Link>
@@ -127,7 +121,7 @@ export default () => {
     return <div>load</div>;
   }  
 
-
+  console.log( data);
 
   return (
         <ContentBox hideBorder={true}>

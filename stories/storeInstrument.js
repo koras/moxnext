@@ -30,7 +30,8 @@ class storeInstrument {
         }
         
         for (let  instrument of data.instrument) {
-         instrument['prices'] = prices[instrument.ticker]
+          instrument['prices'] = prices[instrument.ticker]
+          instrument['price_year'] = prices[instrument.ticker][0].price;
          instruments.push(instrument);
         }
 //        console.log(instruments);
