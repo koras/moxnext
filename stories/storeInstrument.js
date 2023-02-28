@@ -6,20 +6,44 @@ import { dataBitcoin } from "./bitcoinData";
 import { useQuery, useQueries } from "react-query";
 //import _ from "lodash";
 
+const headers = {
+  Accept: "application/json",
+  "Content-Type": "application/json, text/plain, */*",
+};
 class storeInstrument {
   constructor() {
     makeAutoObservable(this);
   }
 
+  getDashboard(ticker) {
+    return fetch(`http://localhost:8083/api/instruments/list`, { headers })
+      .then((res) => res.json())
+      .then((data) => {
+        let prices = {};
+        let instruments = [];
+        
+        for (const price of data.prices) {
+          if (!prices[price.name]) {
+            prices[price.name] = [];
+          }
+          prices[price.name].push(price);
+        }
+        
+        for (let  instrument of data.instrument) {
+         instrument['prices'] = prices[instrument.ticker]
+         instruments.push(instrument);
+        }
+//        console.log(instruments);
+        return instruments;
+      });
+  }
+
   getChart(ticker) {
     console.log(" ticker", ticker);
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json, text/plain, */*",
-    };
+
     return fetch(`http://localhost:8083/api/data/${ticker}`, { headers })
-    .then((res) => res.json())
-    .catch((error) => console.log(ticker));
+      .then((res) => res.json())
+      .catch((error) => console.log(ticker));
   }
 
   getAll() {

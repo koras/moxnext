@@ -14,6 +14,7 @@ import {  useQuery} from 'react-query'
 
 import { useRouter } from 'next/router'
 import { getInstruments } from './../hooks/index'
+import { instrumentStore } from './../stories/storeInstrument'
 
 
 export default () => {
@@ -109,16 +110,13 @@ export default () => {
   };
 
 
-  const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json, text/plain, */*',
-  }
+   
 
   const { data, isLoading } = useQuery({
     queryKey: ['instruments_list'],
     queryFn: async () => {
       //   if(!router.isReady) return
-      return fetch(`http://localhost:8083/api/instruments/list`, { headers }).then((res) => res.json())
+      return instrumentStore.getDashboard()
     },
     staleTime: 1 * 60 * 1000,
     cacheTime: 5 * 60 * 1000,
@@ -134,9 +132,9 @@ export default () => {
   return (
         <ContentBox hideBorder={true}>
               <div>
-               {data && data.map((item:object, i:number) => (
+                {data && data.map((item:object, i:number) => (
                         <ObjectRow key={i} item={item} />
-              ))} 
+              ))}  
             </div>
         </ContentBox>
   )
