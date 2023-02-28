@@ -39,7 +39,8 @@ export default function Index() {
     all: 3155692600,
     year: 31556926,
     month: 2629743,
-    week: 86400,
+    week: 604800,
+    day: 86400,
   }
 
   const router: any = useRouter();

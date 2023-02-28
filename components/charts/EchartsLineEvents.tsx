@@ -33,6 +33,7 @@ export function EchartsInfo(props: any) {
     let dataParam = [];
     if (props.dataInfo && props.dataInfo.price) {
           var CurrentDate = moment().subtract('seconds', props.period);
+          console.log(CurrentDate.format('YYYY-MM-DD'))
           dataParam = props.dataInfo.price.filter((item: any) => {
             return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
           })
@@ -103,7 +104,7 @@ export function EchartsInfo(props: any) {
        dtOld = dtYears;
        dtOldMonth = dtMonth;
 
-      }else if(props.periodName === "month"  || props.periodName === "week"){ 
+      }else if(props.periodName === "month"  ){ 
         const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
         const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
         const dtDay = moment(item.date, 'YYYY-MM-DD').format('DD');
@@ -122,6 +123,25 @@ export function EchartsInfo(props: any) {
        dtOld = dtYears;
        dtOldMonth = dtMonth;
        dtOldDay = dtDay;
+      } else if(props.periodName === "week"){ 
+        const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
+        const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
+        const dtDay = moment(item.date, 'YYYY-MM-DD').format('DD');
+      //  if(dtOldDay === dtDay){
+          yAxisTMP.push(" ");
+      //  }else{
+        //  if(dtMonth === dtOldMonth){
+
+         //   yAxisTMP.push(dtDay);
+      //    }else{
+            
+            yAxisTMP.push(dtDay + " "+dtMonth);
+        //  }
+     //   }
+
+      // dtOld = dtYears;
+      // dtOldMonth = dtMonth;
+      // dtOldDay = dtDay;
       }    
       else{
         yAxisTMP.push(item.date);
