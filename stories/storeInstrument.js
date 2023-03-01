@@ -28,10 +28,15 @@ class storeInstrument {
           }
           prices[price.name].push(price);
         }
-        
+        console.log(data.instrument,prices);
         for (let  instrument of data.instrument) {
           instrument['prices'] = prices[instrument.ticker]
-          instrument['price_year'] = prices[instrument.ticker][0].price;
+          if(prices[instrument.ticker] && prices[instrument.ticker][0] && prices[instrument.ticker][0].price){ 
+            instrument['price_year'] = prices[instrument.ticker][0].price;
+          }else{
+            console.error('не найден инструмент',instrument.ticker)
+          }
+
          instruments.push(instrument);
         }
 //        console.log(instruments);

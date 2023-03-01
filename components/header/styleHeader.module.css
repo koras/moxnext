@@ -25,3 +25,16 @@
 { 
   color:#222121;  
 }
+
+@media (max-width: 480px) {
+  .head
+  {
+    display: flex;
+    width: auto;
+    margin: auto;
+    flex-direction: row;
+    height: 50px;  
+  }
+
+    
+}

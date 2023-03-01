@@ -137,3 +137,17 @@
 .moex-button-profile:hover {
   border: 1px solid #919191;
 }
+
+@media (max-width: 480px) {
+  .article {
+      float: none;
+      width: auto;
+  }
+
+  .aside {
+      position: static;
+      float: none;
+      background: pink;
+      margin-left: 5px;
+  }
+}

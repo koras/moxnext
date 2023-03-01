@@ -26,8 +26,10 @@ export default function EchartsMini(props: any) {
   //  yAxis = []; 
 
   // старая дата  
-  for (const item of props.prices) {
-    yAxis.push(item.price)
+  if(props.prices){ 
+    for (const item of props.prices) {
+      yAxis.push(item.price)
+    }
   }
 
 

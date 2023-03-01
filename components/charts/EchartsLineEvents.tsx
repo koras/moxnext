@@ -88,6 +88,15 @@ export function EchartsInfo(props: any) {
         dtOld = dt;
 
         
+      }else if(props.periodName === "year5"){ // month
+        const dt = moment(item.date, 'YYYY-MM-DD').format('YYYY');
+        if(dtOld === dt){
+          yAxisTMP.push(" ");
+        }else{  
+          yAxisTMP.push(dt);
+        }
+       // console.log(dtOld, dt);
+        dtOld = dt;
 
       }else if(props.periodName === "year"){ // month
         const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
@@ -157,6 +166,9 @@ export function EchartsInfo(props: any) {
 
 
     if(props.periodName === "all"){ 
+        setRotate(-50);
+    }else if(props.periodName === "year5"){ // month
+       
         setRotate(-50);
     }else if(props.periodName === "year"){ // month
      
