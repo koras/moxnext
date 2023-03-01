@@ -26,6 +26,21 @@
   color:#222121;  
 }
 
+
+.header__burger{
+  
+  display: none;
+}
+.js-burger-to-sidebar{
+
+  display: none;
+}
+.header__burger-icon {
+
+  display: none;
+}
+/* Hamburger_icon*/
+
 @media (max-width: 480px) {
   .head
   {
@@ -35,6 +50,19 @@
     flex-direction: row;
     height: 50px;  
   }
-
+  .header__burger
+  {
+    display: block;
+     
+  }
     
+}
+
+@media (min-width: 480px) {
+  .header__burger
+  {
+    display: none;
+     
+  }
+  
 }
