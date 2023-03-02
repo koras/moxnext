@@ -48,7 +48,7 @@ export default () => {
       return (p2 > p1) ? styles.dashboardCostPlus : styles.dashboardCostMinus;
 
     };
-
+ 
     //  const logo = require(props.item.images.logo).default;
     return (
       <div className={styles.dashboardItem}>
@@ -76,10 +76,7 @@ export default () => {
             <Link href="#">Следить за тикером</Link>
           </div>
         </div>
-
-
         <Link href={"/" + props.item.type + "/" + props.item.ticker}>
-
           <div className={styles.dashboardItemChange}>
             <div className={styles.dashboardItemChang__chartInfo}>
               <div className={styles.dashboardItemChang__chartInfo__title}>
@@ -124,7 +121,6 @@ export default () => {
     return <div>load</div>;
   }
 
-  console.log(data);
 
   return (
     <ContentBox hideBorder={true}>

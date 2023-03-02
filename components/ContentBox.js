@@ -46,6 +46,9 @@ function ContentBox({ content="", children, ...params }) {
       <div className={styles.headerClass}>
         <Header />
       </div>
+      <div className={styles.headerClassMobile}>
+     
+      </div>
       <div className={styles.contentClass}>
         <div className={styles.mainClass}>
           <div className={styles.menuClass}>

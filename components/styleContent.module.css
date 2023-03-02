@@ -183,8 +183,18 @@
 
   }
 
-  @media (min-width:  900px) {
-  .headMobile {
-  display: none;
-  }
+  @media (max-width:  900px) {
+    .headMobile {
+    display: none;
+    }
+
+    .headerClassMobile {
+      position: initial;
+      width: 100%; 
+      height: 50px;
+    }
+    .headerClass {  
+        position: fixed;
+        z-index: 200;
+    } 
 } 

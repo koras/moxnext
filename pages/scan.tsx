@@ -20,17 +20,10 @@ export default () => {
    
 
   const router = useRouter(); 
- //api/instruments/list
 
-
-
-
-
- 
   const ObjectRow   = (props: any)  => {
     const logo = props.item.logo;
-    const name = props.item.instrument_name;
-    //   console.log(props.item.images.logo);
+    const name = props.item.instrument_name; 
 
     const getPriceChange = (item: any) => {
       const price = +item.change;
@@ -43,7 +36,6 @@ export default () => {
     const getChangeColor = (item: any) => {
       const price = +item.change;
         return (price >= 0)? styles.dashboardCostPlus:styles.dashboardCostMinus;
-    
     };
 
     //  const logo = require(props.item.images.logo).default;

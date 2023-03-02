@@ -21,12 +21,12 @@
   font-size: 16px;
   padding: 5px;
  } 
- .headerClass {  
+ /* .headerClass {  
   width: 100%;
   background: #ffffff;
   border-bottom: #eeeeee 1px solid; 
   margin: 0px auto 10px  auto;
-}
+} */
 
 .mainContent { 
   max-width: 955px;
@@ -148,4 +148,13 @@
 }
 .moexButtonProfile:hover {
   border: 1px solid #919191;
+}
+
+
+
+@media (max-width: 900px) {
+  .headerClass {  
+    position: fixed;
+  }
+
 }

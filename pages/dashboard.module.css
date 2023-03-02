@@ -214,4 +214,8 @@
     .dashboardItemChange { 
       width: 150px;
     }
+
+    .dashboardItemChang__chartInfo__title {
+      width: 150px; 
+    }
   }
