@@ -88,6 +88,14 @@ export default function EchartsMini(props: any) {
         },
       },
       yAxis: {
+        min: function (value:any) {
+            
+
+            return value.min - (value.min/100*10);
+        },
+        max: function (value:any) { 
+          return value.max + (value.max/100*5);
+        },
         splitLine: {
           show: false
         }

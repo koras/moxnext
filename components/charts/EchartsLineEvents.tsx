@@ -12,12 +12,16 @@ export function EchartsInfo(props: any) {
   let markEvent: object[] = [];
   const [xAxis, setXAxis] = useState<any | null>(null);
   const [yAxis, setYAxis] = useState<any | null>(null);
+  const [ yAxisLine, setYAxisLine] = useState<any | null>(null);
+
+  
   const [markEvents, setMarkEvents] = useState<any | null>(null);
   const [rotate, setRotate] = useState(-50);
   
   let xAxisTMP: string[] = [];
   let yAxisTMP: string[] = [];
-
+  let yAxisLineTMP: string[] = [];
+   
   const eChartsRef: any = useRef<ReactECharts>();
   const chart = useRef<ECharts>();
 
@@ -33,7 +37,7 @@ export function EchartsInfo(props: any) {
     let dataParam = [];
     if (props.dataInfo && props.dataInfo.price) {
           var CurrentDate = moment().subtract('seconds', props.period);
-          console.log(CurrentDate.format('YYYY-MM-DD'))
+
           dataParam = props.dataInfo.price.filter((item: any) => {
             return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate)
           })
@@ -41,7 +45,7 @@ export function EchartsInfo(props: any) {
     xAxisTMP = [];
     yAxisTMP = [];
     markEvent = [];
-
+    yAxisLineTMP = [];
     // старая дата
     let dtOld = '';
     let dtOldMonth = ''
@@ -51,12 +55,11 @@ export function EchartsInfo(props: any) {
 
       const item = dataParam[index];
 
-    //  console.log(index)
-      xAxisTMP.push(item.price);
- 
+      xAxisTMP.push(parseFloat(item.price));
+      yAxisLineTMP.push(parseFloat(item.price));
 
       if (item.typeId && +item.typeId !== 0) {
-        console.log(item.price, index )
+
 
         const dataMark = getMarksConst(item);
         let tmp = {
@@ -158,11 +161,21 @@ export function EchartsInfo(props: any) {
     }
     setMarkEvents(markEvent)
  
+    //yAxisLineTMP.push( Math.min(xAxisTMP));
     
-  //  setXAxis(xAxisTMP);
+    
+
+//
+//    yAxisLineTMP.push( Math.max(xAxisTMP));
+   // yAxisLineTMP.sort((a, b)=> {
+   //   return a - b;
+   // } );
+ //   console.log(xAxisTMP, Math.min(xAxisTMP)   ); 
+
     setXAxis(xAxisTMP);
   //  console.log(yAxisTMP);
     setYAxis(yAxisTMP)
+    setYAxisLine(yAxisLineTMP)
 
 
     if(props.periodName === "all"){ 
@@ -254,7 +267,82 @@ export function EchartsInfo(props: any) {
           }
         },
       },
-      yAxis: {},
+      yAxis: {
+        min: function (value:any) {
+          let min = (value.min/100*10);
+           min = value.min - min;
+          
+           if(min>1){
+               min =  +min.toFixed(2);
+           }
+
+           if(min>10){
+              min =  +min.toFixed(1);
+          }
+
+          if(min>100){
+            min = parseInt(min);
+          }
+          return min;
+      },
+      max: function (value:any) { 
+        let max = (value.max/100*5);
+        max = value.max + max;
+        if(max>10){
+
+        }
+        if(max>100){
+          max = parseInt(max);
+        }
+        console.log('max',max);
+        return  max ;
+      },
+      //  boundaryGap: ['20%', '20%'],
+        animation: false,
+        triggerEvent: false,
+        silent: false,
+        showGrid: true,
+      //  data: yAxisLine,  
+        nameLocation : 'middle',
+        nameGap: 0,
+        axisTick: {
+          // show: true, //为 false 时隐藏
+          // alignWithLabel: true,
+          // interval: 10, //可以设置成 0 强制显示所有tick, 不是 label
+          // length: 1, // tick 长度, 默认5
+          // lineStyle: {
+          //   color: 'rgb(106,104,103)',
+          //   width: 12 //tick 宽度
+          // }
+        },
+        axisLabel: {
+          //x轴上标签
+        //  verticalAlign: 'bottom',
+
+         // show: true,
+          //interval: 100,
+         // rotate: rotate,
+        //  width: 1, 
+         // shadowBlur: 3,
+          hideOverlap: true
+        },
+        // minorTick: {
+        //   show: true
+        // },
+        minorSplitLine: {
+          show: true
+        }, 
+
+        // axisLine: {
+        //   //轴线
+        //   show: true, //false 时隐藏
+        //   lineStyle: {
+        //     // текст
+        //     color: 'rgb(106,104,103)', 
+        //     width: 1
+        //   }
+        // },
+      },
       series: [
         {
           animation: false,

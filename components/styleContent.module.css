@@ -138,16 +138,53 @@
   border: 1px solid #919191;
 }
 
+.contentClass  {
+  align-items: center;
+  width: 1200px;
+  margin: auto;
+};
+
+.menuClass {
+  width: 245px;
+  padding: 0px 5px 0px 0px;
+}
+
+
+.mainClass {
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+}
+
+
 @media (max-width: 480px) {
-  .article {
-      float: none;
-      width: auto;
+    /* nobile */
+
+  
+ 
+  
+}
+@media (max-width: 900px) {
+  /* ipad */
+  .menuClass
+  {
+  display: none;
   }
 
-  .aside {
-      position: static;
-      float: none;
-      background: pink;
-      margin-left: 5px;
+  .mainClass,
+  .contentClass,
+  .footerContent {
+    width: auto;
   }
-}
+  
+  .headMobile {
+  display: flex;
+  }
+
+  }
+
+  @media (min-width:  900px) {
+  .headMobile {
+  display: none;
+  }
+} 

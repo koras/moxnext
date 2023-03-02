@@ -10,11 +10,7 @@ const searchStyle = {
   color: "blue",
   flexGrow: 1,
 };
-
-const lk = {
-  color: "blue",
-  width: "250px",
-};
+ 
 
 function Menu() {
   const myLoader = ({ src, width, quality, height }) => {
@@ -30,11 +26,38 @@ function Menu() {
          <div style={searchStyle} >
             <Search />
           </div> 
-        <div style={lk}>
+        <div className={style.headLK}>
           <LKHeader />
         </div>
       </div>
 
+      <div className={style.headMobile}>
+        <div className={style.logoMobile}>
+          <div className={style.headMenu}>
+            <button
+                className={style.header__burger}
+                type="button"
+              >
+                <Image
+                  loader={myLoader}
+                  src="./images/Hamburger_icon.svg"
+                  alt="search"
+                  width={50}
+                  height={50}
+                />
+              </button>
+          </div>
+          
+          <div className={style.headLink}> 
+            <Link href="/">MoexBox</Link>
+          </div>
+
+        </div>
+         
+        <div className={style.headLKMobile}>
+          <LKHeader />
+        </div>
+      </div>
       {/* <div className={style.MobileHead}>
         
       <div className={style.headMenu}>

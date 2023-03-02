@@ -1,17 +1,28 @@
-.head
+.head, .headMobile
 {
   display: flex;
-  width: 1200px;
-  margin: auto;
   flex-direction: row;
+  width: 1200px;
+  margin: auto; 
   height: 50px;  
+}
+.headMobile
+{
+  width: auto;
+  justify-content: space-between;
+ 
+  flex-direction: row;
 }
 .logo
 { 
-  width: 250px;    
+  width: 250px;   
 }
 
-.logo a 
+.logoMobile { 
+  display: inline-flex;
+}
+
+.logo a , .logoMobile a
 { 
   display: block;
   color: #657f8a;
@@ -21,16 +32,46 @@
   font-size: 26px; 
   height: 40px;
 }
+.headLink {
+
+}
+
 .logo a:hover
 { 
   color:#222121;  
 }
 
+.headLK, .headLKMobile { 
+  width: 250px;
+}
+.headLKMobile { 
+  background: #614161;
+  display: inline-flex;
+}
 
 .header__burger{
-  
-  display: none;
+  width: 70px;  
+  height: 50px;
+  border:0px;
+  display: block;
+  background: #fff;
 }
+.headMenu {
+  width: 50px;
+  height: 50px;
+  background: #49d426;
+  display: inline-flex;
+}
+#headerMain_top { 
+  position: fixed;
+  z-index: 99;
+  background-image: url(/image/cloud_960_720.png);
+  background-repeat: repeat-x;
+  background-position-x: -17px;
+  background-position-y: -127px;
+}
+
+ 
 .js-burger-to-sidebar{
 
   display: none;
@@ -40,29 +81,41 @@
   display: none;
 }
 /* Hamburger_icon*/
+ 
+
+
+
 
 @media (max-width: 480px) {
+    /* nobile */
   .head
   {
-    display: flex;
-    width: auto;
-    margin: auto;
-    flex-direction: row;
-    height: 50px;  
-  }
-  .header__burger
-  {
-    display: block;
-     
-  }
-    
-}
-
-@media (min-width: 480px) {
-  .header__burger
-  {
     display: none;
-     
   }
+  .headMobile {
+   display: flex;
+  }
+   
+}
+@media (max-width: 900px) {
+  /* ipad */
+ .head
+ {
+   display: none;
+ }
+   
+ .headMobile {
+  display: flex;
+ }
   
 }
+
+@media (min-width:  900px) {
+  
+ .headMobile {
+  display: none;
+ }
+  
+} 
+
+

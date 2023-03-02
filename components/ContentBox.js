@@ -7,22 +7,8 @@ import Header from "./header/Header";
 import Head from 'next/head'
 import styles from "./styleContent.module.css";
 
-const contentClass = {
-  alignItems: "center",
-  width: "1200px",
-  margin: "auto",
-};
+ 
 
-const mainClass = {
-  width: "1200px",
-  display: "flex",
-  flexDirection: "row",
-};
-
-const menuClass = {
-  width: "245px",
-  padding: "0px 5px 0px 0px",
-};
 
 function ContentBox({ content="", children, ...params }) {
   let className = styles.boxContent;
@@ -60,9 +46,9 @@ function ContentBox({ content="", children, ...params }) {
       <div className={styles.headerClass}>
         <Header />
       </div>
-      <div style={contentClass}>
-        <div style={mainClass}>
-          <div style={menuClass}>
+      <div className={styles.contentClass}>
+        <div className={styles.mainClass}>
+          <div className={styles.menuClass}>
             <Menu />
             <div className={styles.blockHr}></div>
           </div>
