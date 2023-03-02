@@ -206,7 +206,7 @@
     }
       
     .dashboardItemDescription { 
-      width: 500px;
+      /* width: 500px; */
       display: block;
       padding: 10px;
     }
