@@ -72,7 +72,6 @@ export default () => {
           <div className={styles.dashboardItemDescriptionControll}>
                         
             <Link href={"/instrument/edit/"+props.item.instrument_id}>Редактировать</Link> 
-
             <Link href="#">Следить за тикером</Link>
           </div>
         </div>
@@ -103,7 +102,9 @@ export default () => {
     );
   };
 
-
+  const onChangeTypeList = (params:any) => {
+    console.log(params);
+  }
 
 
   const { data, isLoading } = useQuery({
@@ -125,7 +126,7 @@ export default () => {
   return (
     <ContentBox hideBorder={true}>
       <div>
-          <DashboardControll />
+          <DashboardControll onChangeType={onChangeTypeList}/>
       </div>
 
       <div>

@@ -208,9 +208,12 @@ export default function Index() {
     getDateState(data.price, data.instrument.price)
   }
 
+  const getPageTitle = (instrument:any) => {
+    return  "События и новости на графике " + instrument.instrument_name 
+  }
 
   return (
-    <ContentBox title="" hideBorder={true}>
+    <ContentBox title="" hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
       <div className={styles.graphicHead}>
         <div className={styles.title}>{getNameInstrument(data)} : график событий</div>
         <div className={styles.button}>

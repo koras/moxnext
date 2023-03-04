@@ -48,19 +48,16 @@ export default () => {
           <div className={styles.dashboardItemDescriptionHead}>
             <div className={styles.dashboardItemDescriptionHead__name}>
           <Link href={"/"+props.item.type+"/"+props.item.ticker}>{name}</Link></div>
-
             <div className={styles.dashboardItemDescriptionHead__price}>
               {props.item.price}
               {props.item.currency}
             </div> 
           </div>
-
           <div className={styles.dashboardItemDescriptionText}>
             {props.item.description}
           </div>
-
           <div className={styles.dashboardItemDescriptionControll}>
-          <Link href="#">Следить за тикером</Link>
+          <Link href="#">Добавить в избранное</Link>
           </div>
         </div>
 

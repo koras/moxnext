@@ -72,7 +72,6 @@ export default function TickerUrlIndex() {
 
     const res = eventsName.filter((option: any) => {
       if (getData) {
-
         return option.value === +getData.typeId;
       }
     })
@@ -374,10 +373,7 @@ export default function TickerUrlIndex() {
 
   // меняем тип события
   const changeTypeEvent = (value: any) => {
-   // console.log(value);
     setData({ ...getData, typeId: value.value });
-    //  setTypeId(value.value);
-
   }
 
   const setDateEvent = (value: any) => {

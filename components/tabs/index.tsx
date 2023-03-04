@@ -21,7 +21,7 @@ function Tabs(props: any) {
         })
         setСhanges(info[0].changes);
         setHintInfo(info[0].hintInfo);
-        props.onTimeChange(info[0].time,info[0].typeName);
+        props.onTimeChange(info[0].time, info[0].typeName);
     }
 
 
@@ -34,19 +34,19 @@ function Tabs(props: any) {
     }
 
     const getChanges = () => {
-        if(!changes){  
-               return props.objects[0].changes;
-           }
-       return changes;
-       }
+        if (!changes) {
+            return props.objects[0].changes;
+        }
+        return changes;
+    }
 
-       const getTimeChanges = () => {
-        if(!hintInfo){  
-               return props.objects[0].hintInfo;
-           }
-       return hintInfo;
-       }
-      
+    const getTimeChanges = () => {
+        if (!hintInfo) {
+            return props.objects[0].hintInfo;
+        }
+        return hintInfo;
+    }
+
 
 
     const titleClass = (props: any) => {

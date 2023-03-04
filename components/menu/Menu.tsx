@@ -3,11 +3,11 @@
 //   useLocation,    matchPath
 // } from "react-router-dom"; 
 import style from './styleMenu.module.css';
+import { useSession, signIn, signOut } from "next-auth/react";
  
 
 import Link from 'next/link'
- 
-
+{/* <button onClick={() => signOut()}>Sign out</button> */}
 
 function Menu() { 
   return ( 
@@ -20,19 +20,19 @@ function Menu() {
           <li>
             <Link href="/inspects">Модерировать</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/#">Отслеживать</Link>
-          </li>
+          </li> */}
         </ul> 
       </div> 
       
-      <div className={style.menu +" "+style.adminMenu}> 
+      {/* <div className={style.menu +" "+style.adminMenu}> 
       <ul>
           <li>
             <Link href="/users">Пользователи</Link>
           </li> 
         </ul> 
-      </div> 
+      </div>  */}
      </div>
   );
 }

@@ -4,6 +4,9 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import Image from "next/image";
 import GoogleProvider from "next-auth/providers/google";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Link from 'next/link'
+import Router from 'next/router'
+import { redirect } from 'next/navigation';
 //import { gapi } from 'gapi-script';
 //import { useNavigate } from "react-router-dom";
 
@@ -46,15 +49,7 @@ var SCOPES = "https://accounts.google.com/o/oauth2/auth";
 export default () => {
   //const navigate = useNavigate();
   const { data: session } = useSession();
-
-  // providers: [
-  //   GoogleProvider({
-  //     clientId: clientId,
-  //     clientSecret: ClientSecret,
-  //     authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
-
-  //   })
-  // ]
+ 
 
   const [profile, setProfile] = useState([]);
   //   useEffect(() => {
@@ -71,7 +66,7 @@ export default () => {
     //  console.log('onSuccess', res);
     setProfile(res.profileObj);
   };
-
+ 
   const onFailure = (err) => {
     //  console.log('failed', err);
   };
@@ -89,17 +84,18 @@ export default () => {
   const myLoader = ({ src, width, quality, height }) => {
     return `${src}?w=${width}&h=${height}&q=${quality || 75}`;
   };
-  const toProfile = () => {
-    // navigate("/profile" );
+
+  const toProfile = () => { 
+    Router.push('/profile')
   };
 
   //  if(profile && profile.name status === 'authenticated'){
   const GetProfile = () => {
     if (session) {
-      return (
+      return ( 
         <>
           <div  className={style.headerProfileAuth}>
-            <div  className={style.headerProfile}>Кабинет</div>
+            <div onClick={() => toProfile()} className={style.headerProfile}> Кабинет</div>
             <div className={style.headerlogo}>
               <Image
                 loader={myLoader}
@@ -109,58 +105,33 @@ export default () => {
                 height={28}
               />
             </div>
+
+            <div className={style.headerButtonExit} >
+              <Image
+                onClick={() => signOut()}
+                title="Выход"
+                loader={myLoader}
+                src={'/images/exit.png'}
+                alt="search"
+                width={28}
+                height={28}
+              />
+            </div>
+ 
           </div>
           {/* <button onClick={() => signOut()}>Sign out</button> */}
         </>
       );
     }
     return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+      <>  
+          <div  className={style.headerProfileAuth}>
+            <div   onClick={() => signIn()}>Войти через google</div>
+          </div>
       </>
     );
     if (status === "authenticated") {
-      // console.log('user image',profile);
-      // return  <div className={style.profileBox} >
-      //         <div  onClick={toProfile} className={style.moexButtonProfile}> Кабинет (0)</div>
-      //         <GoogleLogout clientId={clientId}
-      //              render={renderProps => (
-      //               <div className={style.profileBox}>
-      //                 <div
-      //                 type="submit"
-      //                 color="primary"
-      //                 className={style.authGoogle}
-      //                 onClick={renderProps.onClick}
-      //               >
-      //                 {iconGoogle}
-      //                <span>Выйти</span>
-      //                </div>
-      //                </div>
-      //             )}
-      //         className={customStyle}
-      //         onLogoutSuccess={logOut} />
-      //     </div>
-      // } else {
-      //   return <div><GoogleLogin
-      //           render={renderProps => (
-      //              <div
-      //               type="submit"
-      //               color="primary"
-      //               className={style.authGoogle}
-      //               onClick={renderProps.onClick}
-      //             >
-      //               {iconGoogle}
-      //              <span>Войти в профиль</span>
-      //           </div>
-      //           )}
-      //         clientId={clientId}
-      //         buttonText="Войти "
-      //         onSuccess={onSuccess}
-      //         onFailure={onFailure}
-      //         cookiePolicy={'single_host_origin'}
-      //         isSignedIn={true}
-      //     /></div>
+ 
     }
   };
 

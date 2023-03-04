@@ -32,7 +32,6 @@ export function EchartsInfo(props: any) {
     const dataColor = eventsName.filter((el) => el.value === +item.typeId);
     return dataColor[0];
   }
-
   const reloadDataChart = () => {
     let dataParam = [];
     if (props.dataInfo && props.dataInfo.price) {
@@ -52,12 +51,9 @@ export function EchartsInfo(props: any) {
     let dtOldDay = ''
    
     for (const index in dataParam) {
-
       const item = dataParam[index];
-
       xAxisTMP.push(parseFloat(item.price));
       yAxisLineTMP.push(parseFloat(item.price));
-
       if (item.typeId && +item.typeId !== 0) {
 
 
@@ -139,39 +135,15 @@ export function EchartsInfo(props: any) {
         const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
         const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
         const dtDay = moment(item.date, 'YYYY-MM-DD').format('DD');
-      //  if(dtOldDay === dtDay){
-          yAxisTMP.push(" ");
-      //  }else{
-        //  if(dtMonth === dtOldMonth){
-
-         //   yAxisTMP.push(dtDay);
-      //    }else{
-            
+          yAxisTMP.push(" "); 
             yAxisTMP.push(dtDay + " "+dtMonth);
-        //  }
-     //   }
-
-      // dtOld = dtYears;
-      // dtOldMonth = dtMonth;
-      // dtOldDay = dtDay;
       }    
       else{
         yAxisTMP.push(item.date);
       }
     }
     setMarkEvents(markEvent)
- 
-    //yAxisLineTMP.push( Math.min(xAxisTMP));
-    
-    
-
-//
-//    yAxisLineTMP.push( Math.max(xAxisTMP));
-   // yAxisLineTMP.sort((a, b)=> {
-   //   return a - b;
-   // } );
- //   console.log(xAxisTMP, Math.min(xAxisTMP)   ); 
-
+  
     setXAxis(xAxisTMP);
   //  console.log(yAxisTMP);
     setYAxis(yAxisTMP)

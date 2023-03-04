@@ -12,7 +12,9 @@
  
 
 .formControll25 {
-  width: 50%;
+ 
+  min-width: 340px;
+  max-width: 400px;
   /* justify-content: flex-start;*/
   display: inline;  
   /* flex-direction: row; */
