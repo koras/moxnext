@@ -36,7 +36,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Index() {
 
   const periods = {
-    all: 3155692600,
+    all: 31556926000,
     year5: 157784630,
     year: 31556926,
     month: 2629743,
@@ -145,15 +145,7 @@ export default function Index() {
 
   }
 
-  let objects = [
-    { name: 'Всё время', typeTime: 1, typeName: 'all', id: 1, hint: '', hintInfo: 'За всю историю', changes: '0', price: 0, time: periods.all },
-    { name: '5 лет', typeTime: 2, typeName: 'year5', id: 2, hint: '', hintInfo: 'за 5 лет', changes: '0', price: 0, time: periods.year5 },
-    { name: 'Год', typeTime: 3, typeName: 'year', id: 3, hint: '', hintInfo: 'за последний год', changes: '0', price: 0, time: periods.year },
-    { name: 'Mесяц', typeTime: 4, typeName: 'month', id: 4, hint: '', hintInfo: 'за последний месяц', changes: '0', price: 0, time: periods.month },
-  //  { name: 'Неделя', typeTime: 4, typeName: 'week', id: 4, hint: '', hintInfo: 'за неделю', changes: '0', price: 0, time: periods.week },
-    // { name: 'День', typeTime: 5, id: 5, hint: '', hintInfo: 'в течении суток', changes: '+25', time: 86400 },
-  ]
-
+ 
 
   const getPercent = (_priceDate: any, _priceCurrent: any) => {
     if (_priceCurrent >= _priceDate) {
@@ -165,14 +157,16 @@ export default function Index() {
     } else {
       // цена упала
       if (_priceDate != 0) {
-
         const mount = (_priceDate - _priceCurrent) / (_priceDate / 100);
-
         return '-' + parseInt(mount)
       }
     }
     return "0";
   }
+
+
+
+
   const getNameInstrument = (data:any) => {
       if(data && data.instrument && data.instrument.instrument_name){
         return data.instrument.instrument_name;
@@ -180,26 +174,35 @@ export default function Index() {
       return '';
   }
 
-  const getDateState = (_data: any, _priceCurent: any) => {
-    objects[0].changes = getPercent(_data[0].price, data.instrument.price);
 
+  let objects = [
+    { name: 'Всё время', typeTime: 1, typeName: 'all', id: 1, hint: '', hintInfo: 'За всю историю', changes: '0', price: 0, time: periods.all },
+    { name: '5 лет', typeTime: 2, typeName: 'year5', id: 2, hint: '', hintInfo: 'за 5 лет', changes: '0', price: 0, time: periods.year5 },
+    { name: 'Год', typeTime: 3, typeName: 'year', id: 3, hint: '', hintInfo: 'за последний год', changes: '0', price: 0, time: periods.year },
+    { name: 'Mесяц', typeTime: 4, typeName: 'month', id: 4, hint: '', hintInfo: 'за последний месяц', changes: '0', price: 0, time: periods.month },
+  ]
+
+  const getDateState = (_data: any, _priceCurent: any) => {
+    objects[0].changes = getPercent(_data[0].price, _priceCurent);
+    var currentDateYears5 = moment().subtract('seconds', periods.year5);
+    const dataYears5 = _data.filter((item: any) => {
+      return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateYears5)
+    })
+    objects[1].changes = getPercent(dataYears5[0].price, _priceCurent);
     var currentDateYears = moment().subtract('seconds', periods.year);
     const dataYears = _data.filter((item: any) => {
       return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateYears)
     })
-    objects[1].changes = getPercent(dataYears[0].price, data.instrument.price);
+    objects[2].changes = getPercent(dataYears[0].price, _priceCurent);
     var currentDateMonth = moment().subtract('seconds', periods.month);
     const dataMonth = _data.filter((item: any) => {
       return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateMonth)
     })
-    objects[2].changes = getPercent(dataMonth[0].price, data.instrument.price);
-
-    var currentDateWeek = moment().subtract('seconds', periods.month);
-    const dataWeek = _data.filter((item: any) => {
-      return moment(item.date, 'YYYY-MM-DD').isAfter(currentDateWeek)
-    })
-    objects[3].changes = getPercent(dataYears[0].price, data.instrument.price);
+    objects[3].changes = getPercent(dataMonth[0].price, _priceCurent);
   }
+
+
+
 
   if(data.instrument && data.instrument.price && data.price ){ 
     getDateState(data.price, data.instrument.price)

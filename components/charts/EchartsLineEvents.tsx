@@ -294,7 +294,7 @@ export function EchartsInfo(props: any) {
         if(max>100){
           max = parseInt(max);
         }
-        console.log('max',max);
+      //  console.log('max',max);
         return  max ;
       },
       //  boundaryGap: ['20%', '20%'],
