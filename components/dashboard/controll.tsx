@@ -65,11 +65,9 @@ export default function DashboardControll(props:any) {
     const getShareLevel  = () => {
     
         const type = getType();
-        console.log('getType()',getType());
 
         if(type && type[0] && type[0].type && type[0].type == "shares"){ 
-                
-            return <></>
+
                 return  <div className={styles.formControll25}>
                         <div className={styles.controllTitle} >
                             <label>Эшелон</label>
