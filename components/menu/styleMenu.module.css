@@ -3,6 +3,7 @@
   display: block; 
   padding: 0px 0px ;
   margin: 20px 0px 0px 0px;
+  width: 240px;
 }
 .menu ul 
 { 
@@ -39,3 +40,6 @@
 .adminMenu  li a {
   background: #fff2f6;;
 }
+
+
+ 

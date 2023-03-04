@@ -13,16 +13,6 @@ import Button from "@mui/material/Button";
 
 import React, { useState, useEffect } from "react";
 
-import { getNews } from './../../hooks/index'
-
-
-//import { useNavigate } from "react-router-dom";
-// event: "Новости",
-// type: "news",
-// ticker: 'btc',
-// title_url: 'kurs-ruble',
-// instrumentId: 1111,
-// date: "12.12.2022",
 
  
 const classNameEvent = (props:any) => {
@@ -34,32 +24,52 @@ console.log('data',data);
   //  return props;
 };
 
-export default function ListEvents(params:any)  {
+export default function ListEvents(props:any)  {
 
-  const instrument = params.instrument;
- 
-  console.log('params',params.ticker)
+
+  const [news, setNews] = useState<any | null>(null);
+
+  const instrument = props.instrument; 
  
   const getUrl = (props:any) => {
     return "/events/" + instrument.ticker + "/" + props.slug;
   };
 
   const changeDate = (date:any) => {
-    
     return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY") 
   };
 
+  const updateNews = () => {
+    let dataNews = [] ;
+    
+    if( props.data.price &&  props.data.price){  
+     // if( props.period !== 0){ 
+        var CurrentDate = moment().subtract('seconds', props.period);
+            dataNews = props.data.price.filter((item: any) => {
+            return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) &&  item.title !=""
+          })
+     //   }else{ 
+      //      dataNews = props.data.price.filter((item: any) =>    item.title !="")
+          
+      //  }
+      }
+
+      setNews(dataNews)
+  }
+  useEffect(() => {  
+    updateNews();
+  }, [props.period])
+
+  
 
  //const navigate = useNavigate();
  const router = useRouter();
   const getUrlEdit = (hash:string) => { 
     router.push("/event/change/" + hash) 
   }; 
-
   const ObjectRow = (props:any) => {
-    
     return (
-      <div className={style.newsItem}>
+      <div className={style.newsItem}> 
         <div className={style.newsItemHead}>
           <div
             className={style.date}
@@ -82,17 +92,10 @@ export default function ListEvents(params:any)  {
       </div>
     );
   }; 
-
- 
-
- // console.log('storeNews',isLoading,error);
- // if (isLoading) return <div > `Loading...`</div>;
- 
-   return <div >
-    {params && params.news && params.news.map((item:any, i:any) => (
+   return <div>
+    {news && news.map((item:any, i:any) => (
          <ObjectRow key={i} item={item} />
       ))}
    </div>;
  
-
 };

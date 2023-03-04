@@ -1,0 +1,90 @@
+.formContent {
+  padding: 20px 20px 20px 20px;
+}
+
+
+.controll {
+  padding: 0px 0px 50px 0px;
+  display: flex; 
+}
+
+ 
+ 
+
+.formControll25 {
+ 
+  min-width: 340px;
+  max-width: 400px;
+  /* justify-content: flex-start;*/
+  display: inline;  
+  /* flex-direction: row; */
+}
+.ormControll25 label {
+  display: block;
+  width: 200px;
+  text-align: right;
+  padding: 7px 10px 0px 10px;
+  font-size: 15px;
+}
+
+.formBlock100 {
+  width: 100%;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+}
+
+.formBlock100 label {
+  display: inline;
+  width: 250px;
+  text-align: right;
+  padding: 5px 10px 0px 10px;
+  font-size: 15px;
+}
+
+.formBlock100 input {
+  width: 100%;
+  font-size: 17px;
+}
+
+.formBlock100 label,
+.ormControll25 label {
+  font-weight: 600;
+}
+
+
+
+.buttonRight {
+  
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+}
+
+
+.formSelect {
+  width:70%; 
+  z-index: 10;
+}
+
+
+.readOnly input:read-only {
+  background: #e5e5e5;
+}
+
+.controllSearch {
+  display: block;
+}
+
+.controllTitle {
+  display: block;
+}
+.controllTitle label{
+  display: block;
+  color: #6a6867;
+  padding: 10px 0px 0px 1px;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 14px;
+  border: 1px solid #fff;
+}

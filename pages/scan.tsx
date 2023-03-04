@@ -20,17 +20,10 @@ export default () => {
    
 
   const router = useRouter(); 
- //api/instruments/list
 
-
-
-
-
- 
   const ObjectRow   = (props: any)  => {
     const logo = props.item.logo;
-    const name = props.item.instrument_name;
-    //   console.log(props.item.images.logo);
+    const name = props.item.instrument_name; 
 
     const getPriceChange = (item: any) => {
       const price = +item.change;
@@ -43,7 +36,6 @@ export default () => {
     const getChangeColor = (item: any) => {
       const price = +item.change;
         return (price >= 0)? styles.dashboardCostPlus:styles.dashboardCostMinus;
-    
     };
 
     //  const logo = require(props.item.images.logo).default;
@@ -56,19 +48,16 @@ export default () => {
           <div className={styles.dashboardItemDescriptionHead}>
             <div className={styles.dashboardItemDescriptionHead__name}>
           <Link href={"/"+props.item.type+"/"+props.item.ticker}>{name}</Link></div>
-
             <div className={styles.dashboardItemDescriptionHead__price}>
               {props.item.price}
               {props.item.currency}
             </div> 
           </div>
-
           <div className={styles.dashboardItemDescriptionText}>
             {props.item.description}
           </div>
-
           <div className={styles.dashboardItemDescriptionControll}>
-          <Link href="#">Следить за тикером</Link>
+          <Link href="#">Добавить в избранное</Link>
           </div>
         </div>
 

@@ -137,3 +137,64 @@
 .moex-button-profile:hover {
   border: 1px solid #919191;
 }
+
+.contentClass  {
+  align-items: center;
+  width: 1200px;
+  margin: auto;
+};
+
+.menuClass {
+  width: 245px;
+  padding: 0px 5px 0px 0px;
+}
+
+
+.mainClass {
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+}
+
+
+@media (max-width: 480px) {
+    /* nobile */
+
+  
+ 
+  
+}
+@media (max-width: 900px) {
+  /* ipad */
+  .menuClass
+  {
+  display: none;
+  }
+
+  .mainClass,
+  .contentClass,
+  .footerContent {
+    width: auto;
+  }
+  
+  .headMobile {
+  display: flex;
+  }
+
+  }
+
+  @media (max-width:  900px) {
+    .headMobile {
+    display: none;
+    }
+
+    .headerClassMobile {
+      position: initial;
+      width: 100%; 
+      height: 50px;
+    }
+    .headerClass {  
+        position: fixed;
+        z-index: 200;
+    } 
+} 
