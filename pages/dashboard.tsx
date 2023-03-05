@@ -10,8 +10,11 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient, useMutation } from 'react-query'
 
+import {
+  useEffect, useState
+} from 'react'
 import { useRouter } from 'next/router'
 import { getInstruments } from './../hooks/index'
 import { instrumentStore } from './../stories/storeInstrument'
@@ -19,17 +22,63 @@ import EchartsMini from './../components/charts/EchartsMini'
 
 import { getPercent } from './../components/general/functions'
 import DashboardControll from './../components/dashboard/controll'
- 
+
 
 
 export default () => {
-
-
+  const queryClient = useQueryClient();
   const router = useRouter();
 
+  const [getParams, setParams] = useState({ typeId: 0, typeLevel: 0 });
+
+  const onChangeTypeList = (params: any) => {
+
+    setParams(params);
+  }
+  const query = useQuery({
+    queryKey: ['instruments_list'],
+    queryFn: async () => {
+      console.log('request 1');
+      return instrumentStore.getDashboard(getParams)
+    },
+    staleTime: 1 * 60 * 1000,
+    cacheTime: 5 * 60 * 1000,
+    enabled: router.isReady,
+  });
+
+  // useEffect(() => {
+  //   queryClient.prefetchQuery(['instruments_list', getParams?.typeId, getParams?.typeLevel], () => {
+  //     console.log('getParams', getParams)
+  //     return instrumentStore.getDashboard(getParams)
+  //   }
+  //   );
+  // }, [getParams, getParams?.typeId, getParams?.typeLevel]);
+
+
+  const changeParams = (props:any) => {
+    console.log('request 2');
+   // setParams(props);
+   console.log('getParams = 1 :', props)
+    queryClient.prefetchQuery(['instruments_list',props?.typeId, props?.level], () => {
+        console.log('getParams = 2 :', props)
+       const result =  instrumentStore.getDashboard(props);
+       console.log('result==');
+       console.log(result);
+        return result;
+      }
+    );
+  }
+
+
+  if (typeof query.data === 'undefined' || query.data === undefined) {
+    return <div>load</div>;
+  }
+
+
   const ObjectRow = (props: any) => {
+    console.log('ObjectRow');
     if (+props.item.price === 0) {
-      // console.log(props.item.instrument_name,props.item.price);
+      console.log(props.item.instrument_name,props.item.price);
       return;
     }
     const logo = props.item.logo;
@@ -48,7 +97,7 @@ export default () => {
       return (p2 > p1) ? styles.dashboardCostPlus : styles.dashboardCostMinus;
 
     };
- 
+
     //  const logo = require(props.item.images.logo).default;
     return (
       <div className={styles.dashboardItem}>
@@ -70,8 +119,8 @@ export default () => {
           </div>
 
           <div className={styles.dashboardItemDescriptionControll}>
-                        
-            <Link href={"/instrument/edit/"+props.item.instrument_id}>Редактировать</Link> 
+
+            <Link href={"/instrument/edit/" + props.item.instrument_id}>Редактировать</Link>
             <Link href="#">Следить за тикером</Link>
           </div>
         </div>
@@ -102,35 +151,14 @@ export default () => {
     );
   };
 
-  const onChangeTypeList = (params:any) => {
-    console.log(params);
-  }
-
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['instruments_list'],
-    queryFn: async () => {
-      //   if(!router.isReady) return
-      return instrumentStore.getDashboard()
-    },
-    staleTime: 1 * 60 * 1000,
-    cacheTime: 5 * 60 * 1000,
-    enabled: router.isReady,
-  });
-
-  if (typeof data === 'undefined' || data === undefined) {
-    return <div>load</div>;
-  }
-
-
   return (
     <ContentBox hideBorder={true}>
       <div>
-          <DashboardControll onChangeType={onChangeTypeList}/>
+        <DashboardControll onChangeType={changeParams} />
       </div>
-
+         
       <div>
-        {data && data.map((item: object, i: number) => (
+        {query && query.data && query.data.map((item: object, i: number) => (
           <ObjectRow key={i} item={item} />
         ))}
       </div>

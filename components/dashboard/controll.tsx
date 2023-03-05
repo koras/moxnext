@@ -14,20 +14,24 @@ import  styles from './styleForm.module.css'
 export default function DashboardControll(props:any) {
     interface InstrumentType {
         typeId: number; 
-        typeLevel: number; 
+        level: number; 
       }
-
+       
+      const [typeId, setTypeId] = useState(0);
+      const [level, setLevel] = useState(0);
+      
     const [getData, setData] = useState<InstrumentType>({
         typeId: 0,  
-        typeLevel: 0,  
+        level: 0,  
       });
 
     const [writeForm, setWriteForm] = useState(false);
     const getType = () => {
         const res = controllTypeInstrument.filter((option: any) => {
-            if (getData) {
-                return option.value === +getData.typeId;
-              }
+          //  if (getData) {
+              //  return option.value === +getData.typeId;
+                return option.value === typeId
+           //   }
         })
  
         return (res) ? res : {};
@@ -37,9 +41,9 @@ export default function DashboardControll(props:any) {
     
     const getSharesLevel = () => {
         const res = controllSharesLevel.filter((option: any) => {
-            if (getData) {
-                return option.value === +getData.typeLevel;
-              }
+         //   if (getData) {
+                return option.value === +level;
+          //    }
         })
         return (res) ? res : {};
     };
@@ -53,12 +57,15 @@ export default function DashboardControll(props:any) {
         //   return getData.typeId != 0;
     }
     const changeTypeEvent = (value: any) => {
-        setData({ ...getData, typeId: value.value });
-        props.onChangeType(getData)
+        setTypeId(value.value)
+        console.log('alue.value',value.value);
+      //  setData({ ...getData, typeId: value.value });
+        props.onChangeType({typeId:value.value})
     }
     const changeTypeLevel = (value: any) => {
-        setData({ ...getData, typeLevel: value.value });
-        props.onChangeType(getData)
+        setLevel(value.value)
+        
+        props.onChangeType({typeId:typeId,level:value.value})
     }
 
   

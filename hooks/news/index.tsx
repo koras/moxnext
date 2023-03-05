@@ -69,7 +69,6 @@ const setEventFulltext = (text:string)  => {
 
  
   const getPost  = async (ticker: any, slug: any) => {
-    
       const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
@@ -77,7 +76,6 @@ const setEventFulltext = (text:string)  => {
 
       let urlRequest = `http://localhost:8083/api/event/get/${ticker}/${slug}`;
       console.log('news', ticker, slug)
-      
       return useQuery({
         queryKey: ['event', ticker, slug],
         queryFn: async () => {

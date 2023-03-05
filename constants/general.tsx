@@ -12,9 +12,9 @@ export const eventsName = [
 
 
 export const controllTypeInstrument = [
-  { value: 0, label: "Все инструменты", type: "all", color: "rgba(124, 0, 89, 0.5)" },
-  { value: 1, label: "Акции", type: "shares", color: "rgba(124, 0, 89, 0.5)" },
-  { value: 2, label: "Криптовалюты", type: "coin", color: "rgba(146, 126, 70, 0.5)"  }, 
+  { value: "all", label: "Все инструменты", type: "all", color: "rgba(124, 0, 89, 0.5)" },
+  { value: "shares", label: "Акции", type: "shares", color: "rgba(124, 0, 89, 0.5)" },
+  { value: "coin", label: "Криптовалюты", type: "coin", color: "rgba(146, 126, 70, 0.5)"  }, 
 ];
 
 export const controllSharesLevel = [

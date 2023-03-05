@@ -15,8 +15,10 @@ class storeInstrument {
     makeAutoObservable(this);
   }
 
-  getDashboard(ticker) {
-    return fetch(`http://localhost:8083/api/instruments/list`, { headers })
+  async getDashboard(params) {
+//{level:paramsLevel,type:getType}
+    
+     const result = await fetch(`http://localhost:8083/api/instruments/list?`+ new URLSearchParams(params) , { headers })
       .then((res) => res.json())
       .then((data) => {
         let prices = {};
@@ -28,7 +30,7 @@ class storeInstrument {
           }
           prices[price.name].push(price);
         }
-        console.log(data.instrument,prices);
+      //  console.log(data.instrument,prices);
         for (let  instrument of data.instrument) {
           instrument['prices'] = prices[instrument.ticker]
           if(prices[instrument.ticker] && prices[instrument.ticker][0] && prices[instrument.ticker][0].price){ 
@@ -39,9 +41,11 @@ class storeInstrument {
 
          instruments.push(instrument);
         }
-//        console.log(instruments);
+         console.log(instruments);
         return instruments;
       });
+      console.log('result',result);
+      return result;
   }
 
   getChart(ticker) {
