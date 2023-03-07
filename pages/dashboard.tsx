@@ -33,11 +33,13 @@ function MyComponent()  {
   const [getParams, setParams] = useState({ typeId: 'all', level: 0 });
 
   const [typeId, setTypeId] = useState( 'all');
+  const [level, setLevel] = useState( '0');
 
   const searchTermRef = useRef('all');
 
   const onChangeTypeList = (params: any) => {
     setTypeId(params.typeId);
+    setLevel(params.level)
     console.log('params.typeId',params.typeId);
  //   searchTermRef.current = params.typeId;
 //    setParams(params);
@@ -45,20 +47,24 @@ function MyComponent()  {
   }
 
 
-  const  { data,  isLoading, error,refetch }= useQuery(
-    ['instruments'],
+  const  { data: rawData,  isLoading, error,refetch }= useQuery(
+    ['instruments',typeId,level ],
    // ['instruments',typeId],
     () => {
       console.log('request 1');
-      return instrumentStore.getDashboard({typeId:searchTermRef.current},'tp1')
+      return instrumentStore.getDashboard({typeId:typeId,level:level},'tp1')
     },
     {
   //  staleTime: 1 * 60 * 1000,
   //  cacheTime: 5 * 60 * 1000,
-    enabled: router.isReady &&  !!searchTermRef.current,
+    enabled: router.isReady ,
     }
   );
 
+  
+  const data = useMemo(() => {
+    return rawData ? rawData : null;
+  }, [rawData]);
 
  
 
