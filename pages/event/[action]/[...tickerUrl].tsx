@@ -213,17 +213,6 @@ export default function TickerUrlIndex() {
   const getDate = () => {
     if (getData) {
       return moment(getData.date, 'DD/MM/YYYY').toDate()
-      //   return moment().toDate()  ;
-      if (news.id) {
-        return moment(news.eventDate, 'DD/MM/YYYY').toDate();
-      }
-
-      if (news.eventDate == undefined) {
-
-        return moment().toDate();
-      } else {
-        return moment(news.eventDate, 'DD/MM/YYYY').toDate();
-      }
     }
   }
   // ПРоверяем условия
@@ -310,10 +299,10 @@ export default function TickerUrlIndex() {
 
     const fulltext = textareaEl.current.currentContent
     setData({ ...getData, fulltext: fulltext });
-    // if(news.eventNew.id === undefined){
-    //   news.eventNew.date = news.eventDate
-    // }
+ 
 
+    console.log(getData,instrument)
+    
     if (validation()) {
       //   const hash = news.saveEvent(news.eventNew);
       console.log('getData')

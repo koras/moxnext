@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ['latin'] })
 import { useQuery, useQueryClient, useMutation } from 'react-query'
 
 import {
-  useEffect, useState
+  useEffect, useState,useRef, useMemo
 } from 'react'
 import { useRouter } from 'next/router'
 import { getInstruments } from './../hooks/index'
@@ -22,146 +22,94 @@ import EchartsMini from './../components/charts/EchartsMini'
 
 import { getPercent } from './../components/general/functions'
 import DashboardControll from './../components/dashboard/controll'
+import DashboardRows from './../components/dashboard/dashboardRows'
 
 
 
-export default () => {
+function MyComponent()  {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const [getParams, setParams] = useState({ typeId: 0, typeLevel: 0 });
+  const [getParams, setParams] = useState({ typeId: 'all', level: 0 });
+
+  const [typeId, setTypeId] = useState( 'all');
+
+  const searchTermRef = useRef('all');
 
   const onChangeTypeList = (params: any) => {
-
-    setParams(params);
+    setTypeId(params.typeId);
+    console.log('params.typeId',params.typeId);
+ //   searchTermRef.current = params.typeId;
+//    setParams(params);
+    console.log('searchTermRef',searchTermRef.current,router.isReady &&  !!searchTermRef.current,router.isReady ,   !!searchTermRef.current,);
   }
-  const query = useQuery({
-    queryKey: ['instruments_list'],
-    queryFn: async () => {
-      console.log('request 1');
-      return instrumentStore.getDashboard(getParams)
-    },
-    staleTime: 1 * 60 * 1000,
-    cacheTime: 5 * 60 * 1000,
-    enabled: router.isReady,
-  });
 
-  // useEffect(() => {
-  //   queryClient.prefetchQuery(['instruments_list', getParams?.typeId, getParams?.typeLevel], () => {
+
+  const  { data,  isLoading, error,refetch }= useQuery(
+    ['instruments'],
+   // ['instruments',typeId],
+    () => {
+      console.log('request 1');
+      return instrumentStore.getDashboard({typeId:searchTermRef.current},'tp1')
+    },
+    {
+  //  staleTime: 1 * 60 * 1000,
+  //  cacheTime: 5 * 60 * 1000,
+    enabled: router.isReady &&  !!searchTermRef.current,
+    }
+  );
+
+
+ 
+
+  //  useEffect(() => {
+  //   queryClient.prefetchQuery(['instruments_list', getParams?.typeId, getParams?.level], () => {
   //     console.log('getParams', getParams)
   //     return instrumentStore.getDashboard(getParams)
   //   }
   //   );
-  // }, [getParams, getParams?.typeId, getParams?.typeLevel]);
+
+  //  }, [getParams, getParams?.typeId, getParams?.level]);
 
 
   const changeParams = (props:any) => {
-    console.log('request 2');
-   // setParams(props);
+    console.log('request 2'); 
    console.log('getParams = 1 :', props)
+
+
+   //setParams(props);
     queryClient.prefetchQuery(['instruments_list',props?.typeId, props?.level], () => {
         console.log('getParams = 2 :', props)
-       const result =  instrumentStore.getDashboard(props);
+       const result =  instrumentStore.getDashboard(props,'tp2');
        console.log('result==');
        console.log(result);
         return result;
       }
     );
+
+   // refetch();
   }
 
 
-  if (typeof query.data === 'undefined' || query.data === undefined) {
+  if (typeof data === 'undefined' || data === undefined) {
     return <div>load</div>;
   }
 
-
-  const ObjectRow = (props: any) => {
-    console.log('ObjectRow');
-    if (+props.item.price === 0) {
-      console.log(props.item.instrument_name,props.item.price);
-      return;
-    }
-    const logo = props.item.logo;
-    const name = props.item.instrument_name;
-
-    const getPriceChange = (item: any) => {
-      const price = +item.change;
-      if (price >= 0) {
-        return "+" + price;
-      } else {
-        return price;
-      }
-    };
-    const getChangeColor = (p1: any, p2: any) => {
-      //const price = p2 > p1;
-      return (p2 > p1) ? styles.dashboardCostPlus : styles.dashboardCostMinus;
-
-    };
-
-    //  const logo = require(props.item.images.logo).default;
-    return (
-      <div className={styles.dashboardItem}>
-        <div className={styles.dashboardItemImage}>
-          <img alt="" src={"/img/logo/" + `${logo}`} />
-        </div>
-        <div className={styles.dashboardItemDescription}>
-          <div className={styles.dashboardItemDescriptionHead}>
-            <div className={styles.dashboardItemDescriptionHead__name}>
-              <Link href={"/" + props.item.type + "/" + props.item.ticker}>{name}</Link></div>
-
-            <div className={styles.dashboardItemDescriptionHead__price}>
-              {props.item.price} {props.item.mark}
-            </div>
-          </div>
-
-          <div className={styles.dashboardItemDescriptionText}>
-            {props.item.description}
-          </div>
-
-          <div className={styles.dashboardItemDescriptionControll}>
-
-            <Link href={"/instrument/edit/" + props.item.instrument_id}>Редактировать</Link>
-            <Link href="#">Следить за тикером</Link>
-          </div>
-        </div>
-        <Link href={"/" + props.item.type + "/" + props.item.ticker}>
-          <div className={styles.dashboardItemChange}>
-            <div className={styles.dashboardItemChang__chartInfo}>
-              <div className={styles.dashboardItemChang__chartInfo__title}>
-                {/* Изменение цены */}
-              </div>
-
-              <div className={styles.dashboardItemChang__chartInfo__price}>
-                <div
-                  className={
-                    styles.dashboardChartInfo__cost + " " + getChangeColor(props.item.price_year, props.item.price)
-                  }
-                >
-                  {getPercent(props.item.price_year, props.item.price)}%
-                </div>
-                <div className={styles.dashboardChartInfo__costTime}>за год</div>
-              </div>
-            </div>
-            <div className={styles.dashboardItemChang__chart}>
-              <EchartsMini prices={props.item.prices} />
-            </div>
-          </div>
-        </Link>
-      </div>
-    );
-  };
-
+ 
   return (
     <ContentBox hideBorder={true}>
       <div>
-        <DashboardControll onChangeType={changeParams} />
+        <DashboardControll onChangeType={onChangeTypeList} />
       </div>
          
       <div>
-        {query && query.data && query.data.map((item: object, i: number) => (
-          <ObjectRow key={i} item={item} />
+         {data &&  data.map((item: object, i: number) => (
+          <DashboardRows key={i} item={item} />
         ))}
       </div>
     </ContentBox>
   )
 }
+
+
+export default (MyComponent);

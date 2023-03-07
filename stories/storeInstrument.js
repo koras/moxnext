@@ -15,8 +15,9 @@ class storeInstrument {
     makeAutoObservable(this);
   }
 
-  async getDashboard(params) {
+  async getDashboard(params,info) {
 //{level:paramsLevel,type:getType}
+console.log('info',info)
     
      const result = await fetch(`http://localhost:8083/api/instruments/list?`+ new URLSearchParams(params) , { headers })
       .then((res) => res.json())
