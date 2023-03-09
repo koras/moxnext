@@ -13,7 +13,8 @@ import { createEvent } from './../../../hooks/index'
 import 'moment/locale/ru';
 
 import { Editor } from "@tinymce/tinymce-react";
-
+import { Editor as TinyMCEEditor } from 'tinymce';
+ 
 import styles from './../styleform.module.css'
 import React, { useState, useEffect, useRef } from "react";
 
@@ -49,7 +50,7 @@ export default function TickerUrlIndex() {
     date: string;
     source: string;
     shorttext: string;
-    fulltext: string;
+    fulltext: string|undefined;
     instrument_id: string;
   }
 
@@ -64,7 +65,7 @@ export default function TickerUrlIndex() {
   });
 
 
-  const textareaEl = useRef(null);
+  const textareaEl = useRef<Editor | null>(null);
 
 
 
@@ -218,7 +219,7 @@ export default function TickerUrlIndex() {
   // ПРоверяем условия
   const validation = () => {
 
-    const fulltext = textareaEl.current.currentContent
+    const fulltextLocal = textareaEl?.current?.editor?.getContent()
 
     setWriteForm(true);
     setIsInvalidTitle(false);
@@ -256,12 +257,12 @@ export default function TickerUrlIndex() {
 
     //   console.log('fulltext',fulltext);
 
-    setData({ ...getData, fulltext: fulltext });
+    setData({ ...getData, fulltext: fulltextLocal });
 
-    if (!fulltext || (fulltext && fulltext.length < 190)) {
+    if (!fulltextLocal || (fulltextLocal && fulltextLocal.length < 190)) {
       isInvalidFulltext = false;
       setErrorFulltext(true);
-      console.log('bug 5 ', fulltext);
+      console.log('bug 5 ', fulltextLocal);
       console.log
     }
 
@@ -292,14 +293,25 @@ export default function TickerUrlIndex() {
 
 
 
-  const sendEvent = async () => {
-    const current = textareaEl.current.elementRef.current;
+  const sendEvent = async () => { 
+    const current = textareaEl?.current?.editor?.container;
 
-    current.style.border = "1px solid red";
+    if(current && current.style){ 
+      current.style.border = "1px solid red";
+    }
+  //  console.log('textareaEl.current');
+ //   console.log(textareaEl.current.editor);
 
-    const fulltext = textareaEl.current.currentContent
-    setData({ ...getData, fulltext: fulltext });
+  //  if(textareaEl && textareaEl.current && textareaEl.current.currentContent){
+
+      // console.log('textareaEl.current');
+      // console.log(textareaEl.current.editor?.getContent());
+      // console.log(textareaEl.current.currentContent);
+    const fulltextLocal = textareaEl?.current?.editor?.getContent()
+      setData({ ...getData, fulltext: fulltextLocal});
+  //  } 
  
+
 
     console.log(getData,instrument)
     
@@ -344,7 +356,7 @@ export default function TickerUrlIndex() {
 
     //  const response = await createEvent(getData)
   
-      console.log(serverResponse.hash);
+      console.log(serverResponse);
       
     }
   };

@@ -14,7 +14,7 @@ import { instrumentStore } from "../../stories/storeInstrument";
 import moment from 'moment';
 
 import ContentBox from "../../components/ContentBox";
-import { LineTicker } from "../../components/charts/LineEvents";
+//import { LineTicker } from "../../components/charts/LineEvents";
 import { EchartsInfo } from "../../components/charts/EchartsLineEvents";
 
 
@@ -152,13 +152,13 @@ export default function Index() {
       // цена выросла
       if (_priceCurrent != 0) {
         const mount = (_priceCurrent - _priceDate) / (_priceCurrent / 100);
-        return '+' + parseInt(mount);
+        return '+' + parseInt(mount.toString());
       }
     } else {
       // цена упала
       if (_priceDate != 0) {
         const mount = (_priceDate - _priceCurrent) / (_priceDate / 100);
-        return '-' + parseInt(mount)
+        return '-' + parseInt(mount.toString())
       }
     }
     return "0";

@@ -23,8 +23,8 @@ const fetchPosts = async (ticker:any,limit:any = 10) => {
     'Accept': 'application/json',
     'Content-Type': 'application/json, text/plain, */*',
   }
-  let urlRequest = `http://localhost:8083/api/events/${tickers}`;
-    console.log( urlRequest);
+  let urlRequest = `http://localhost:8083/api/events/${ticker}`;
+   
   return   fetch(urlRequest, { headers })
     .then((response: any) => {
       console.log('fetch', response);

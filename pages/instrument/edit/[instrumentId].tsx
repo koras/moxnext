@@ -58,13 +58,17 @@ export default function TickerUrlIndex() {
     site:  string; 
     price:  string; 
     isin:  string; 
+    description:  string; 
     currency:  string; 
     INSTRUMENT_CATEGORY: string; 
     LIST_SECTION: string; 
     CURRENCY_MOEX: string; 
+    [key: string]: any;
   }
 
-  const [getData, setData] = useState<InfoType>({
+ 
+//  const [getData, setData] = useState<InfoType>({
+  const [getData, setData] = useState<InfoType >({
     instrument_id: "",
     instrument_name: "",
     instrument_full_name: "",
@@ -74,9 +78,10 @@ export default function TickerUrlIndex() {
     site: "",
     isin:  "",
     currency:  "",
+    description:  "",
     INSTRUMENT_CATEGORY:  "",
     LIST_SECTION:  "",
-    CURRENCY_MOEX:  "",
+    CURRENCY_MOEX:  "", 
   });
 
 
@@ -86,13 +91,12 @@ export default function TickerUrlIndex() {
 
   const getType = () => {
 
-    const res = eventsName.filter((option: any) => {
-      if (getData) {
-
-        return option.value === +getData.typeId;
-      }
-    })
-    return (res) ? res : {};
+    // const res = eventsName.filter((option: any) => {
+    //   if (getData) {
+    //     return option.value === +getData.typeId;
+    //   }
+    // })
+ //   return (res) ? res : {};
 
   }; 
 
@@ -157,7 +161,7 @@ export default function TickerUrlIndex() {
     if (!writeForm) {
       return true;
     }
-    return getData.typeId != 0;
+  //  return getData.typeId != 0;
   }
   const handleDateSelect = (info: any) => {
 
@@ -184,8 +188,11 @@ export default function TickerUrlIndex() {
       const formData = new FormData(); 
       console.log(getData);
 
-      for(const name in getData) {
-        formData.append(name, getData[name]);
+      for(const names in getData) {
+
+        const ar = getData[names];
+ 
+        formData.append(names, ar);
       }
 
       formData.append("industry_id", "0");
@@ -295,7 +302,7 @@ export default function TickerUrlIndex() {
                 <div className={styles.formBlock25}>
                   <label>Отрасль:</label>
              
-                  <Select
+                  {/* <Select
                     styles={{
                       control: (baseStyles, state) => ({
                         ...baseStyles,
@@ -309,7 +316,7 @@ export default function TickerUrlIndex() {
                     placeholder={"Что произошло?"}
                     onChange={(value) => changeTypeEvent(value)}
                     options={eventsName}
-                  />
+                  /> */}
                 </div>
 
               </div>

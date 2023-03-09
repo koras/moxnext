@@ -23,7 +23,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient()
 
-export default function App({ Component, pageProps: { session, ...pageProps }  }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps }  }: any) {
  
  
   return  <SessionProvider session={session}>

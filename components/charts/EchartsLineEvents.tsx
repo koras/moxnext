@@ -12,7 +12,7 @@ export function EchartsInfo(props: any) {
   let markEvent: object[] = [];
   const [xAxis, setXAxis] = useState<any | null>(null);
   const [yAxis, setYAxis] = useState<any | null>(null);
-  const [ yAxisLine, setYAxisLine] = useState<any | null>(null);
+ // const [ yAxisLine, setYAxisLine] = useState<any | null>(null);
 
   
   const [markEvents, setMarkEvents] = useState<any | null>(null);
@@ -20,7 +20,7 @@ export function EchartsInfo(props: any) {
   
   let xAxisTMP: string[] = [];
   let yAxisTMP: string[] = [];
-  let yAxisLineTMP: string[] = [];
+ // let yAxisLineTMP: string[] = [];
    
   const eChartsRef: any = useRef<ReactECharts>();
   const chart = useRef<ECharts>();
@@ -44,7 +44,7 @@ export function EchartsInfo(props: any) {
     xAxisTMP = [];
     yAxisTMP = [];
     markEvent = [];
-    yAxisLineTMP = [];
+  //  yAxisLineTMP = [];
     // старая дата
     let dtOld = '';
     let dtOldMonth = ''
@@ -52,8 +52,12 @@ export function EchartsInfo(props: any) {
    
     for (const index in dataParam) {
       const item = dataParam[index];
-      xAxisTMP.push(parseFloat(item.price));
-      yAxisLineTMP.push(parseFloat(item.price));
+      const price =  item.price.toString() ;
+      const float =  parseFloat( price) ;
+
+      xAxisTMP.push(float.toString() );
+
+     // yAxisLineTMP.push(parseFloat(item.price.toString()));
       if (item.typeId && +item.typeId !== 0) {
 
 
@@ -147,7 +151,7 @@ export function EchartsInfo(props: any) {
     setXAxis(xAxisTMP);
   //  console.log(yAxisTMP);
     setYAxis(yAxisTMP)
-    setYAxisLine(yAxisLineTMP)
+   // setYAxisLine(yAxisLineTMP)
 
 
     if(props.periodName === "all"){ 
@@ -253,7 +257,7 @@ export function EchartsInfo(props: any) {
           }
 
           if(min>100){
-            min = parseInt(min);
+            min = parseInt(min.toString());
           }
           return min;
       },
@@ -264,7 +268,7 @@ export function EchartsInfo(props: any) {
 
         }
         if(max>100){
-          max = parseInt(max);
+          max = parseInt(max.toString());
         }
       //  console.log('max',max);
         return  max ;

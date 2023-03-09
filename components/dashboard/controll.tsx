@@ -34,7 +34,7 @@ export default function DashboardControll(props:any) {
            //   }
         })
  
-        return (res) ? res : {};
+        return (res) ? res : [];
         
     };
 

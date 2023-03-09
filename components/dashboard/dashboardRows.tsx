@@ -25,11 +25,11 @@ import DashboardControll from './../dashboard/controll'
 
 
 
-function MyComponent(props:any)  {
+function MyComponent(props:any): JSX.Element    {
 
     if (+props.item.price === 0) {
         console.log(props.item.instrument_name,props.item.price);
-        return;
+        return <></>;
       }
 
     const getChangeColor = (p1: any, p2: any) => {

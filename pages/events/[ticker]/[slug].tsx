@@ -7,11 +7,11 @@ import React, { useState } from "react";
 import parse from 'html-react-parser';
 
 import { observer } from "mobx-react-lite";
-//import moment from 'moment';
-import { instrument } from "../../../stories/storeInstrument";
 import { news } from "../../../stories/storeNews";
 
-import { fetchPosts, getEvent, getPost } from '../../../hooks'
+import { 
+  fetchPosts, 
+  getPost } from '../../../hooks'
 
 import ContentBox from "../../../components/ContentBox";
 
@@ -34,19 +34,6 @@ import {
 
 
  
-
-// const usePost = async (ticker: any, slug: any) => {
-//   let urlRequest = `http://localhost:8083/api/event/get/${ticker}/${slug}`;
-//   return useQuery({
-//     queryKey: ['news', ticker, slug],
-//     queryFn: async () => {
-//       //   if(!router.isReady) return
-//       return fetch(urlRequest, { headers }).then((res) => res.json())
-//     },
-
-//     enabled: ticker !== undefined && slug !== undefined,
-//   })
-// }
 const headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json, text/plain, */*',

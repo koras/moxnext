@@ -5,7 +5,7 @@
       // цена выросла
       if (_priceCurrent != 0) {
         const mount = (_priceCurrent - _priceDate) / (_priceCurrent / 100);
-        return '+' + parseInt(mount);
+        return '+' + parseInt(mount.toString());
       }
     } else {
       // цена упала
@@ -13,7 +13,7 @@
 
         const mount = (_priceDate - _priceCurrent) / (_priceDate / 100);
 
-        return '-' + parseInt(mount)
+        return '-' + parseInt(mount.toString())
       }
     }
     return "+0";
