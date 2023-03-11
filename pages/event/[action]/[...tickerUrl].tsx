@@ -8,14 +8,13 @@ import Select from "react-select";
 import moment from 'moment';
 //  
 
-import { createEvent } from './../../../hooks/index'
 
 import 'moment/locale/ru';
 
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from 'tinymce';
  
-import styles from './../styleform.module.css'
+import styles from './../style_form.module.css'
 import React, { useState, useEffect, useRef } from "react";
 
 import Datetime from 'react-datetime';

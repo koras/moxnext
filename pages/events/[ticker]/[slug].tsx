@@ -1,33 +1,15 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
+
 import styles from './Slug.module.css'
-import { useParams } from "react-router-dom";
-import React, { useState } from "react";
+import React from "react";
 import parse from 'html-react-parser';
-
-import { observer } from "mobx-react-lite";
-import { news } from "../../../stories/storeNews";
-
-import { 
-  fetchPosts, 
-  getPost } from '../../../hooks'
-
 import ContentBox from "../../../components/ContentBox";
 
 
 import {
   useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
 } from 'react-query'
 
 
-import {
-  useEffect
-} from 'react'
 import {
   useRouter
 } from 'next/router'

@@ -16,7 +16,7 @@ import 'moment/locale/ru';
 
 import { Editor } from "@tinymce/tinymce-react";
 
-import styles from '../../event/styleform.module.css'
+import styles from '../../event/style_form.module.css'
 import React, { useState, useEffect, useRef } from "react";
 
 import Datetime from 'react-datetime';
