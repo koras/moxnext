@@ -40,10 +40,8 @@ function MyComponent()  {
   const onChangeTypeList = (params: any) => {
     setTypeId(params.typeId);
     setLevel(params.level)
-    console.log('params.typeId',params.typeId);
  //   searchTermRef.current = params.typeId;
 //    setParams(params);
-    console.log('searchTermRef',searchTermRef.current,router.isReady &&  !!searchTermRef.current,router.isReady ,   !!searchTermRef.current,);
   }
 
 

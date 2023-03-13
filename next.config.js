@@ -33,7 +33,15 @@ const nextConfig = {
   // Important: return the modified config
   return config
 },
+  env: {
+    GREETING: process.env.GREETING,
+    API: "test",
+     },
 }
-
-module.exports = nextConfig
+// module.exports = {
+//   env: {
+//     GREETING: process.env.GREETING,
+//   },
+// };
+// module.exports = nextConfig
  
