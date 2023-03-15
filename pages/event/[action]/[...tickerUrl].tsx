@@ -105,7 +105,7 @@ export default function TickerUrlIndex() {
       }
       console.log('action', action)
 
-        urlRequest = `http://localhost:8083/api/event/${action}/${tickers}`;
+        urlRequest = process.env.NEXT_PUBLIC_SERVER_URL +`/event/${action}/${tickers}`;
 
       console.log('urlRequest ', urlRequest);
       fetch(urlRequest, { headers })
@@ -321,7 +321,7 @@ export default function TickerUrlIndex() {
  
       console.log(getData,instrument)
 
-      const responses = await fetch(`http://localhost:8083/api/event/save`, {
+      const responses = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/event/save`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
       //  mode: 'cors', // no-cors, *cors, same-origin
      //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

@@ -19,10 +19,10 @@ class storeInstrument {
 //{level:paramsLevel,type:getType}
  
     // process.env.SERVER_URL
-    console.log('process', process) ;
-    console.log('process.env', process.env) ;
-    console.log('process.env.SERVER_URL', process.env.SERVER_URL) ;
-     const result = await fetch(process.env.SERVER_URL + `/instruments/list?`+ new URLSearchParams(params) , { headers })
+
+    
+  
+     const result = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/instruments/list?`+ new URLSearchParams(params) , { headers })
       .then((res) => res.json())
       .then((data) => {
         let prices = {};
@@ -55,7 +55,7 @@ class storeInstrument {
   getChart(ticker) {
     console.log(" ticker", ticker);
 
-    return fetch(process.env.SERVER_URL + `/data/${ticker}`, { headers })
+    return fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/data/${ticker}`, { headers })
       .then((res) => res.json())
       .catch((error) => console.log(ticker));
   }

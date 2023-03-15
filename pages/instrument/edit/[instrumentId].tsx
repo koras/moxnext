@@ -113,7 +113,7 @@ export default function TickerUrlIndex() {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
       }
-      fetch(`http://localhost:8083/api/instrument/get/${instrumentId}`, { headers })
+      fetch(process.env.NEXT_PUBLIC_SERVER_URL +`/instrument/get/${instrumentId}`, { headers })
         .then((response: any) => {
           return response.json()
         })
@@ -206,7 +206,7 @@ export default function TickerUrlIndex() {
  
       console.log(getData,instrument)
 
-      const responses = await fetch(`http://localhost:8083/api/instrument/update`, {
+      const responses = await fetch(process.env.NEXT_PUBLIC_SERVER_URL +`/instrument/update`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
       //  mode: 'cors', // no-cors, *cors, same-origin
      //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

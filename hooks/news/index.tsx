@@ -23,7 +23,7 @@ const fetchPosts = async (ticker:any,limit:any = 10) => {
     'Accept': 'application/json',
     'Content-Type': 'application/json, text/plain, */*',
   }
-  let urlRequest = `http://localhost:8083/api/events/${ticker}`;
+  let urlRequest = process.env.NEXT_PUBLIC_SERVER_URL +`/events/${ticker}`;
    
   return   fetch(urlRequest, { headers })
     .then((response: any) => {
@@ -74,7 +74,7 @@ const setEventFulltext = (text:string)  => {
         'Content-Type': 'application/json, text/plain, */*',
       }
 
-      let urlRequest = `http://localhost:8083/api/event/get/${ticker}/${slug}`;
+      let urlRequest = process.env.NEXT_PUBLIC_SERVER_URL +`/event/get/${ticker}/${slug}`;
       console.log('news', ticker, slug)
       return useQuery({
         queryKey: ['event', ticker, slug],

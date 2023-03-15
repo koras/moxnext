@@ -31,7 +31,7 @@ export default () => {
     queryKey: ['event', ticker, slug],
     queryFn: async () => {
       //   if(!router.isReady) return
-      return fetch(`http://localhost:8083/api/event/get/${ticker}/${slug}`, { headers }).then((res) => res.json())
+      return fetch(process.env.NEXT_PUBLIC_SERVER_URL +`/event/get/${ticker}/${slug}`, { headers }).then((res) => res.json())
     },
     staleTime: 1 * 60 * 1000,
     cacheTime: 5 * 60 * 1000,

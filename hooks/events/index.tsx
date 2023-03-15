@@ -22,7 +22,7 @@ const createEvent = async (data: News) => {
   // Default options are marked with *
   
  
-  const response:any = await fetch(`http://localhost:8083/api/event/save`, {
+  const response:any = await fetch(process.env.NEXT_PUBLIC_SERVER_URL +`/event/save`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
   //  mode: 'cors', // no-cors, *cors, same-origin
  //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
