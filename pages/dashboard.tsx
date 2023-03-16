@@ -50,7 +50,7 @@ function MyComponent()  {
    // ['instruments',typeId],
     () => {
       console.log('request 1');
-      return instrumentStore.getDashboard({typeId:typeId,level:level},'tp1')
+      return instrumentStore.getDashboard({typeId:typeId,level:level})
     },
     {
   //  staleTime: 1 * 60 * 1000,
@@ -84,8 +84,8 @@ function MyComponent()  {
    //setParams(props);
     queryClient.prefetchQuery(['instruments_list',props?.typeId, props?.level], () => {
         console.log('getParams = 2 :', props)
-       const result =  instrumentStore.getDashboard(props,'tp2');
-       console.log('result==');
+       const result =  instrumentStore.getDashboard(props);
+ 
        console.log(result);
         return result;
       }

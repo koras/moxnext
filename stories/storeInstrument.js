@@ -15,13 +15,7 @@ class storeInstrument {
     makeAutoObservable(this);
   }
 
-  async getDashboard(params,info) {
-//{level:paramsLevel,type:getType}
- 
-    // process.env.SERVER_URL
-
-    
-  
+  async getDashboard(params) {
      const result = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/instruments/list?`+ new URLSearchParams(params) , { headers })
       .then((res) => res.json())
       .then((data) => {
