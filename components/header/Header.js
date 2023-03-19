@@ -4,6 +4,7 @@ import style from "./styleHeader.module.css";
 import Image from "next/image";
 import Search from "./../search/Search";
 import LKHeader from "./../LKHeader/LKHeader";
+import {names} from "./../../constants/general";
 
 const searchStyle = {
   display: "flex",
@@ -21,7 +22,7 @@ function Menu() {
     <>
       <div className={style.head}>
         <div className={style.logo}>
-          <Link href="/">MoexBox</Link>
+          <Link href="/">{names.siteName}</Link>
         </div>
          <div style={searchStyle} >
             <Search />
@@ -49,7 +50,7 @@ function Menu() {
           </div>
           
           <div className={style.headLink}> 
-            <Link href="/">MoexBox</Link>
+            <Link href="/">{names.siteName}</Link>
           </div>
 
         </div>
@@ -76,7 +77,7 @@ function Menu() {
         </div>
 
         <div className={style.logo}>
-          <Link href="/">MoexBox</Link>
+          <Link href="/">{names.siteName}</Link>
         </div>
         <div style={lk}>
           <LKHeader />

@@ -39,7 +39,7 @@ class storeInstrument {
 
          instruments.push(instrument);
         }
-         console.log(instruments);
+      //   console.log(instruments);
         return instruments;
       });
       console.log('result',result);

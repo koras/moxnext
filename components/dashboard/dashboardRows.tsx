@@ -56,12 +56,12 @@ function MyComponent(props:any): JSX.Element    {
     return (
       <div className={styles.dashboardItem}>
         <div className={styles.dashboardItemImage}>
-          <img alt="" src={"/img/logo/" + `${logo}`} />
+          <img alt="" src={process.env.NEXT_PUBLIC_IMG_LOGO + `${logo}`} />
         </div>
         <div className={styles.dashboardItemDescription}>
           <div className={styles.dashboardItemDescriptionHead}>
             <div className={styles.dashboardItemDescriptionHead__name}>
-              <Link href={"/" + props.item.type + "/" + props.item.ticker}>{name}</Link></div>
+              <Link href={`/${props.item.type}/${props.item.ticker}`}>{name}</Link></div>
 
             <div className={styles.dashboardItemDescriptionHead__price}>
               {props.item.price} {props.item.mark}
@@ -104,8 +104,5 @@ function MyComponent(props:any): JSX.Element    {
       </div>
     );
   }
-
-
-
 
 export default (MyComponent);

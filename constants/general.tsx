@@ -1,3 +1,7 @@
+export const names = {
+  siteName: "BoxInvesting",
+};
+
 export const eventsName = [
   { value: 1,symbolSize:5, label: "Новости", type: "news", color: "rgba(124, 0, 89, 0.5)" },
   { value: 2,symbolSize:10, label: "Девиденды", type: "dividends", color: "rgba(146, 126, 70, 0.5)"  },
@@ -18,6 +22,7 @@ export const controllTypeInstrument = [
 ];
 
 export const controllSharesLevel = [
+  { value: 0, label: "Все типы акций", type: "0", color: "rgba(124, 0, 89, 0.5)" },
   { value: 1, label: "Голубые фишки", type: "1", color: "rgba(124, 0, 89, 0.5)" },
   { value: 2, label: "Второй эшелон", type: "2", color: "rgba(146, 126, 70, 0.5)"  }, 
   { value: 3, label: "Третий эшелон", type: "3", color: "rgba(146, 126, 70, 0.5)"  }, 

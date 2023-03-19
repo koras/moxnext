@@ -28,10 +28,7 @@ export default function DashboardControll(props:any) {
     const [writeForm, setWriteForm] = useState(false);
     const getType = () => {
         const res = controllTypeInstrument.filter((option: any) => {
-          //  if (getData) {
-              //  return option.value === +getData.typeId;
                 return option.value === typeId
-           //   }
         })
  
         return (res) ? res : [];
@@ -58,13 +55,18 @@ export default function DashboardControll(props:any) {
     }
     const changeTypeEvent = (value: any) => {
         setTypeId(value.value)
-        console.log('alue.value',value.value);
-      //  setData({ ...getData, typeId: value.value });
+        console.log('changeTypeEvent ',value.value);
+
+        if(value.value != "shares"){
+            setLevel(0)
+            props.onChangeType({typeId:typeId,level:0})
+        }
         props.onChangeType({typeId:value.value})
     }
     const changeTypeLevel = (value: any) => {
         setLevel(value.value)
-        
+ 
+        console.log('changeTypeLevel ',value.value);
         props.onChangeType({typeId:typeId,level:value.value})
     }
 

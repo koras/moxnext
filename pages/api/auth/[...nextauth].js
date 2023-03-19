@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
-
+// https://console.cloud.google.com/apis/credentials?project=boxinvesting
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -13,9 +13,9 @@ export default NextAuth({
 
 
       
-      clientId: "854331110586-ams6lqojo4dc3buer6ia5ov7jtjo92ca.apps.googleusercontent.com",
-      clientSecret: "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",
-      callbackURL: "/api/profiles/google/callback",
+      clientId:  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL,
       authorization: {
         params: {
           prompt: "consent",
@@ -36,20 +36,14 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials,}) {
-      console.log('=========================================================================');
-      console.log('=========================================================================');
-      console.log('=========================================================================');
+      console.log('========================================================================='); 
  
     //  console.log( user, account, profile, email, credentials );
       console.log( ' user ',user  );
       console.log( ' account ',account  );
       console.log( 'email ',email  );
       console.log( 'profile ',profile);
-      console.log( 'credentials ',credentials);
-      console.log('--------------------------------------------------------------------------');
-      console.log('--------------------------------------------------------------------------');
-      console.log('--------------------------------------------------------------------------');
-      console.log('--------------------------------------------------------------------------');
+      console.log( 'credentials ',credentials); 
       return true
     },
     async redirect({ url, baseUrl }) {
