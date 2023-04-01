@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import Image from "next/image";
-import GoogleProvider from "next-auth/providers/google";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from 'next/link'
 import Router from 'next/router'
@@ -41,10 +41,7 @@ const iconGoogle = (
   </svg>
 );
 
-const clientId =
-  "854331110586-ams6lqojo4dc3buer6ia5ov7jtjo92ca.apps.googleusercontent.com";
-const ClientSecret = "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";
-var SCOPES = "https://accounts.google.com/o/oauth2/auth";
+
 // https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token
 export default () => {
   //const navigate = useNavigate();
@@ -126,7 +123,9 @@ export default () => {
     return (
       <>  
           <div  className={style.headerProfileAuth}>
-            <div   onClick={() => signIn()}>Войти через google</div>
+         
+            <div   onClick={() => signIn({provider:"/auth/signin"})}>Войти через google</div>
+
           </div>
       </>
     );

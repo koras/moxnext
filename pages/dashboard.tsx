@@ -45,6 +45,9 @@ function MyComponent()  {
   }
 
 
+  
+
+
   const  { data: rawData,  isLoading, error,refetch }= useQuery(
     ['instruments',typeId,level ],
    // ['instruments',typeId],
@@ -66,22 +69,10 @@ function MyComponent()  {
 
  
 
-  //  useEffect(() => {
-  //   queryClient.prefetchQuery(['instruments_list', getParams?.typeId, getParams?.level], () => {
-  //     console.log('getParams', getParams)
-  //     return instrumentStore.getDashboard(getParams)
-  //   }
-  //   );
-
-  //  }, [getParams, getParams?.typeId, getParams?.level]);
-
 
   const changeParams = (props:any) => {
     console.log('request 2'); 
    console.log('getParams = 1 :', props)
-
-
-   //setParams(props);
     queryClient.prefetchQuery(['instruments_list',props?.typeId, props?.level], () => {
         console.log('getParams = 2 :', props)
        const result =  instrumentStore.getDashboard(props);
@@ -90,8 +81,7 @@ function MyComponent()  {
         return result;
       }
     );
-
-   // refetch();
+ 
   }
 
 

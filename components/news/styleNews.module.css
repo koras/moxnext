@@ -4,16 +4,7 @@
   padding: 0px 0px ;
   margin: 20px 0px 0px 0px; 
   border-top: 1px solid #eeeeee;
-}
-.newsItemHead
-{
-  display: flex;
-  padding: 2px 0px;
-  margin: 0px;
-  font-size: 18px;
-  border-bottom: 1px #eeeeee;
-  border-bottom-style: dashed;
-}
+} 
   
  
 .date, .event, .title {
@@ -79,3 +70,63 @@
   border-bottom: 1px solid #045474;
   background: #045474;
 }
+
+.newsInspects
+{
+  display: block; 
+  padding: 0px 10px ;
+  margin: 20px 0px 0px 0px; 
+  border-top: 1px solid #eeeeee;
+}
+
+
+.inspectsTextshort
+{
+  display: block; 
+  padding: 0px 0px;
+  margin: 0px 0px 0px 0px; 
+  border-top: 0px solid #eeeeee;
+}
+
+
+.inspectsItemHead
+{
+  display: flex;
+  padding: 2px 0px;
+  margin: 0px;
+  font-size: 18px;
+  border-bottom: 0px #eeeeee;
+  border-bottom-style: dashed;
+}
+
+
+
+.inspectsTitle {
+  font-size: 18px;
+  padding: 10px 10px 10px 0px;
+ }
+  
+ .inspectsTitle a {
+  font-size: 20px;
+  text-decoration: none;
+  border-bottom: 1px solid #6a68675e;
+  color: #6a6867;
+}
+.inspectsTitle a:hover { 
+  border-bottom: 1px solid #6a6867; 
+}
+ 
+ .inspectsTitle {
+   font-size: 20px;
+   padding: 0px;
+   font-weight: 600;
+ }
+ 
+.eventCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  margin: 14px 15px 0px 0px;
+  border: 1px solid; 
+  display: block;
+ }

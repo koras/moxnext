@@ -31,7 +31,7 @@ export default NextAuth({
 
     }),
   ],
-  //  secret: process.env.SECRET,
+   secret: process.env.SECRET,
    secret: "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",
 
   callbacks: {

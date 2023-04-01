@@ -4,6 +4,10 @@ import { makeAutoObservable } from "mobx";
 
 import moment from "moment";
 
+const headers = {
+  Accept: "application/json",
+  "Content-Type": "application/json, text/plain, */*",
+};
 //import _ from "lodash";
 //let md5 = require('md5');
 class storeNews {
@@ -166,14 +170,7 @@ class storeNews {
     return this.eventNew.hash;
     //return md5(this.eventNew.text +  Math.floor(Math.random()));
   };
-  getInspectEvent(hash) {
-    // сперва пытаемся получить новость по хэшу
-    const event = this.news.filter((item) => {
-      return item.hash === hash;
-    });
-    this.eventNew = Object.assign({}, event[0]);
-    return event[0];
-  }
+ 
 
   getNew(ticker, url) {
     // сперва пытаемся получить новость по хэшу
@@ -200,8 +197,16 @@ class storeNews {
   getNews() {
     return this.news;
   }
+  async getInspect() {
+
+     let data = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/inspected`, { headers })
+      .then((res) => res.json())
+      .catch((error) => console.log(ticker));
+        console.log('data',data);
+      return data;
+  }
 }
 
-export { storeNews };
+export { storeNews};
 
 export const news = new storeNews();
