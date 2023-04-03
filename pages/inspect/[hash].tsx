@@ -6,8 +6,14 @@ import Popup from 'reactjs-popup';
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
 import moment from 'moment';
-//  
+//  https://www.npmjs.com/package/react-diff-viewer
+//import  { diffWordsWithSpace, diffChars, diffWords } from "react-diff-viewer";
+import  ReactDiffViewer,{  DiffMethod,  } from "react-diff-viewer";
 
+
+import  { diffWordsWithSpace, diffChars, diffWords } from "diff";
+
+import parse from "html-react-parser";
 
 import 'moment/locale/ru';
 
@@ -15,6 +21,10 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from 'tinymce';
  
 import styles from './../event/style_form.module.css'
+
+import stylesInspect from './styleInspect.module.css'
+
+ 
 import React, { useState, useEffect, useRef } from "react";
 
 import Datetime from 'react-datetime';
@@ -40,9 +50,9 @@ export default function Index() {
  
   const [title, setTitle] = useState("События графика");
 
-
-  const [eventNew, setEventNew] = useState(true); 
-  const [eventOld, setEventOld] = useState(true); 
+ 
+  const [storeNew, setEventNew] = useState(); 
+  const [storeOld, setEventOld] = useState(); 
 
   interface InfoType {
     title: string;
@@ -67,6 +77,28 @@ export default function Index() {
 
   const textareaEl = useRef<Editor | null>(null);
 
+ 
+
+  const diffViewer  = (textNew:string,textOld:string) => {
+ 
+    let diffTexts = diffWords(textNew,textOld)
+
+    let result = "";
+    if (diffTexts.length > 1) {
+      result += `<span class="diffAdded">${textOld}</span><br>`;
+      result += `<span class="diffRemove">${textNew}</span>`;
+    } else {
+      result = `<span class="diffDefault">${textOld}</span>`;
+    }
+    return parse(result);
+  }
+  
+  const getFullText = ()  => {
+     let textNew2 = storeNew.Fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
+      let  textOld2 = storeOld.Fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
+    const diffTexts = diffWords(textNew2, textOld2);
+    return updateText(diffTexts);
+  };
 
 
   const getType = () => {
@@ -79,12 +111,8 @@ export default function Index() {
     return (res) ? res : {};
 
   };
-  let ticker: any = null;
-  let url: any = null;
-
 
   const router = useRouter(); 
-
   console.log(' router.query', router.query);
   const { hash } = router.query
 
@@ -99,36 +127,16 @@ export default function Index() {
         'Accept': 'application/json',
         'Content-Type': 'application/json, text/plain, */*',
       }
-      console.log('action', hash)
-
         urlRequest = process.env.NEXT_PUBLIC_SERVER_URL +`/event/inspect/${hash}`;
- 
       fetch(urlRequest, { headers })
         .then((response: any) => {
           return response.json()
         })
-        .then((data: any) => {
-       //   console.log(data);
-
-      //    console.log( data.data.date);
-
-       //   setData({ ...data.data, instrument_id: data.instrument.instrument_id });
-          // отдельно
-
-           
+        .then((data: any) => {           
           setEventOld(data.event_old) 
           setEventNew(data.event_new) 
-
-  //        setFullText(data.data.fulltext);
           setInstrument(data.instrument);
           setLoad(true);
-      //    updateTitle(hash, data.instrument)
-          
-        //  let chartDate = [];
-        //  for(const dt of data.date ){
-       // //    chartDate.push(dt.Date);
-        //  }
-     //     setPricesDate(chartDate) 
 
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ", error);
@@ -144,9 +152,38 @@ export default function Index() {
   });
 
 
+
+  const getDate = () => {
+    const diffTexts = diffChars(storeNew.date, storeOld.date);
+    return updateText(diffTexts);
+  };
+
+  const updateText = (diffTexts:any) => {
+    let result = "";
+      console.log(storeOld,diffTexts[0].value,diffTexts.length);
+    if( diffTexts.length === 1  ){
+      console.log(diffTexts[0].value);
+      result = `<span class="diffDefault">${diffTexts[0].value}</span>`;
+    }else{ 
+      for (const item of diffTexts) {
+   
+        if (item.added) {
+          result += `<span class="diffAdded">${item.value}</span>`;
+        } else if (item.removed) {
+          result += `<span class="diffRemove">${item.value}</span>`;
+        } else {
+          result += `<span class="diffDefault">${item.value}</span>`;
+        }
+      }
+      result = result.replace(/\n/g, "<br/>");
+    }
+    return parse(result);
+  };
+
+
   const changeStatePopup =(params:boolean)=>{
 
-  setOpen(params);
+  //setOpen(params);
   }
 
 
@@ -170,25 +207,14 @@ export default function Index() {
         element.style.border = "1px solid #ced4da";
       }
     }
-
   };
 
   const updateTitle = (action: any) => {
-
-
-
     return 'События ';
   }
-
-
-
-
-
   let news: any = {};
-
-
   const closeModal = () => {
-    setOpen(false)
+    //setOpen(false)
   };
 
   const getValidateType = () => {
@@ -197,17 +223,8 @@ export default function Index() {
     }
     return getData.typeId != 0;
   }
-  const handleDateSelect = (info: any) => {
-
-
-  }
-
-
-  const getDate = () => {
-    if (getData) {
-      return moment(getData.date, 'DD/MM/YYYY').toDate()
-    }
-  }
+  
+ 
   // ПРоверяем условия
   const validation = () => {
 
@@ -259,7 +276,7 @@ export default function Index() {
     }
 
     if (isInvalidTitle && isInvalidSource && isInvalidText && isInvalidFulltext) {
-      setShowSendButton(false);
+
       console.log('bug 5');
       return true;
     }
@@ -291,14 +308,8 @@ export default function Index() {
     if(current && current.style){ 
       current.style.border = "1px solid red";
     }
-  //  console.log('textareaEl.current');
- //   console.log(textareaEl.current.editor);
-
-  //  if(textareaEl && textareaEl.current && textareaEl.current.currentContent){
-
-      // console.log('textareaEl.current');
-      // console.log(textareaEl.current.editor?.getContent());
-      // console.log(textareaEl.current.currentContent);
+ 
+    
     const fulltextLocal = textareaEl?.current?.editor?.getContent()
       setData({ ...getData, fulltext: fulltextLocal});
   //  } 
@@ -315,17 +326,12 @@ export default function Index() {
       console.log(getData,instrument)
 
       const responses = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/event/save`, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      //  mode: 'cors', // no-cors, *cors, same-origin
-     //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-     //   credentials: 'same-origin', // include, *same-origin, omit
+        method: 'POST', 
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-      //  redirect: 'follow', // manual, *follow, error
-       // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(getData) // body data type must match "Content-Type" header
       }) 
       
@@ -336,7 +342,7 @@ export default function Index() {
      //   console.log(json);
       //  return json;
         setServerResponse(json);
-        setOpen(true)
+       
       } else {
         alert("Ошибка HTTP: " + responses.status);
     
@@ -402,10 +408,28 @@ export default function Index() {
     return pricesDate.includes(dt);
     return current.day() == 0 && current.day() != 8;
   };
-
-
-
-
+ 
+  const getText = () => {
+    const diffTexts = diffWordsWithSpace(storeNew.shorttext, storeOld.shorttext);
+    return updateText(diffTexts);
+  };
+  const getTitle = () => {
+    const diffTexts = diffWords(storeNew.title, storeOld.title);
+    return updateText(diffTexts);
+  };
+  const getSource = () => {
+    const textOld = storeNew.source;
+    const textNew = storeOld.source;
+    const diffTexts = diffWords(textNew, textOld);
+    let result = "";
+    if (diffTexts.length > 1) {
+      result += `<span class="diffAdded">${textOld}</span><br>`;
+      result += `<span class="diffRemove">${textNew}</span>`;
+    } else {
+      result = `<span class="diffDefault">${textOld}</span>`;
+    }
+    return parse(result);
+  };
 
   if (router.isReady && isload) {
 //    open={open}
@@ -422,93 +446,92 @@ export default function Index() {
             instrument={instrument} />
           </Popup>
           
+          
+
+
+
           <Form className={styles.formContent}>
-            <div className={styles.rowForm}>
-              <div className={styles.rowFormLine}>
-                <div className={styles.formBlock25}>
-                  <label>Событие:</label>
-             
-                  <Select
-                    styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderColor: getValidateType() ? '#ced4da' : 'red',
-                      }),
-                    }}
-                    id={'id'}
-                    instanceId={'instanceId'}
-                    value={getType()}
-                    className={styles.formSelect}
-                    placeholder={"Что произошло?"}
-                    onChange={(value) => changeTypeEvent(value)}
-                    options={eventsName}
-                  />
-                </div>
-
-                <div className={styles.formBlock25}>
-                  <label>Дата события:</label>
-              
-              
-              
-                </div>
-              </div>
+        <div className={styles.rowForm}>
+          <div className={styles.rowFormLine}>
+            <div className={styles.formBlock25}>
+              <label>Событие:</label>
+               
+              <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getType()}</div>
             </div>
 
-            <div className={styles.rowForm}>
-              <div className={styles.formBlock100}>
-                <label>Короткое название:</label>
-                <Form.Control
-                  id={'text'}
-
-                  onChange={(text: any) => changeEventName(text.target.value)}
-                  value={getData.title}
-                  type="text"
-                  aria-errormessage="asdasd"
-                  maxLength={256}
-                  isInvalid={isInvalidTitle}
-                  placeholder="Сплит акций, выход отчётности за квартал, выплата девидендов" />
-              </div>
+            <div className={styles.formBlock25}>
+              <label>Дата события:</label>
+              <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getDate()}</div>
             </div>
+          </div>
+        </div>
 
-            <div className={styles.rowForm}>
-              <div className={styles.formBlock100}>
-                <label>Источник:</label>
-                <Form.Control
-                  isInvalid={isInvalidSource}
-                  onChange={(text: any) => changeEventSource(text.target.value)}
-                  value={getData.source}
-                  placeholder="http://" />
-              </div>
-            </div>
+        <div className={stylesInspect.rowForm}>
+          <div className={stylesInspect.formBlock100}>
+            <label>Короткое название:</label>
+            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getTitle()}</div>
+          </div>
+        </div>
 
-            <div className={styles.rowForm}>
-              <div className={styles.formBlock100}>
-                <label>Короткое описание:</label>
-                <Form.Control
-                  value={getData.shorttext}
-                  isInvalid={isInvalidText}
-                  onChange={(text: any) => changeEventText(text.target.value)}
+        <div className={stylesInspect.rowForm}>
+          <div className={stylesInspect.formBlock100}>
+            <label>Источник:</label>
+            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getSource()}</div>
+          </div>
+        </div>
 
-                  as="textarea"
-                  rows={3}
-                  placeholder="Объявление девидендов в 135 рублей на акцию"
-                />
-              </div>
-            </div>
 
-            <div className={styles.rowForm}>
-              <div className={styles.formBlock100}>
-                <label>Полное описание:</label>
+
+        <div className={stylesInspect.rowForm}>
+          <div className={stylesInspect.formBlock100}>
+            <label>Короткое описание:</label>
+            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getText()}</div>
+          </div>
+        </div>
+
+        <div className={stylesInspect.rowForm}>
+          <div className={stylesInspect.formBlock100}>
+            <label>Полное описание:</label>
+            <div className={stylesInspect.rowFormFulltext}>{getFullText()}</div>
+          </div>
+        </div>
+       
+       
+       
+       
+        <div className={stylesInspect.rowForm}>
          
-         
-              </div>
-            </div>
-            <div className="row-form">
-              <div className={styles.formBlock100 + " " + styles.buttonRight}>
-                {getButton()}
-              </div>
-            </div>
-          </Form>
+          <div className={stylesInspect.formBlock100 +" "+stylesInspect.buttonRight+" "+stylesInspect.inspectButtons}>
+            <label>Ваше решение:</label>
+            <button
+              title="После нескольких жалоб текст будет скрыт"
+              type="button"
+              onClick={sendEvent}
+              className="btn btn-danger"
+            >
+              Пожаловаться
+            </button>
+            <button
+              type="button"
+              onClick={sendEvent}
+              title="Предложить автору доработать текст"
+              className="btn btn-warning"
+            >
+              На доработку
+            </button>
+            <button
+              title="Текст полностью готов для публикации"
+              type="button"
+              onClick={sendEvent}
+              className="btn btn-success"
+            >
+              Одобрить
+            </button>
+          </div>
+        </div>
+      </Form>
+
+
         </ContentBox>
       </>
     );

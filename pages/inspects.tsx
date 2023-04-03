@@ -69,7 +69,9 @@ export default function Inspects() {
         </div>
         <div> 
           <div className={style.inspectsTitle}>
+
             <Link href={getUrl(props.item)}>{props.item.title.slice(0, 80)}</Link>
+
           </div>
         </div>
         <div className="news-item-head__text">
