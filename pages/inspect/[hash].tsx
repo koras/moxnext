@@ -50,29 +50,36 @@ export default function Index() {
  
   const [title, setTitle] = useState("События графика");
 
- 
-  const [storeNew, setEventNew] = useState(); 
-  const [storeOld, setEventOld] = useState(); 
-
   interface InfoType {
-    title: string;
-    typeId: number;
-    date: string;
-    source: string;
-    shorttext: string;
-    fulltext: string|undefined;
-    instrument_id: string;
+    fulltext: string,
+    title: string,
+    type_id: string,
+    user_id: string,
+    hash: string,
+    event_id: string,
+    source: string,
+    slug: string,
+    instrument_id: string,
+    date: string,
+    shorttext: string,
+    parent_event_id: string, 
+    published: string,
   }
 
-  const [getData, setData] = useState<InfoType>({
-    title: "",
-    typeId: 0,
-    date: moment().format("DD/MM/YYYY"),
-    source: "",
-    shorttext: "",
-    fulltext: "",
-    instrument_id: "",
-  });
+  const [storeNew, setEventNew] = useState<InfoType | null>(null); 
+  const [storeOld, setEventOld] = useState<InfoType | null>(null); 
+
+ 
+
+  // const [getData, setData] = useState<InfoType>({
+  //   title: "",
+  //   typeId: 0,
+  //   date: moment().format("DD/MM/YYYY"),
+  //   source: "",
+  //   shorttext: "",
+  //   fulltext: "",
+  //   instrument_id: "",
+  // });
 
 
   const textareaEl = useRef<Editor | null>(null);
@@ -94,22 +101,24 @@ export default function Index() {
   }
   
   const getFullText = ()  => {
-     let textNew2 = storeNew.Fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
-      let  textOld2 = storeOld.Fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
-    const diffTexts = diffWords(textNew2, textOld2);
-    return updateText(diffTexts);
+    if(storeNew && storeNew.fulltext && storeOld && storeOld.fulltext){ 
+        let textNew2 = storeNew.fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
+          let  textOld2 = storeOld.fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
+        const diffTexts = diffWords(textNew2, textOld2);
+        return updateText(diffTexts);
+      }
   };
 
 
   const getType = () => {
 
-    const res = eventsName.filter((option: any) => {
-      if (getData) {
-        return option.value === +getData.typeId;
-      }
-    })
-    return (res) ? res : {};
-
+    // const res = eventsName.filter((option: any) => {
+    //   if (getData) {
+    //     return option.value === +getData.typeId;
+    //   }
+    // })
+    // return (res) ? res : {};
+    return null;
   };
 
   const router = useRouter(); 
@@ -154,8 +163,11 @@ export default function Index() {
 
 
   const getDate = () => {
-    const diffTexts = diffChars(storeNew.date, storeOld.date);
-    return updateText(diffTexts);
+    if(storeNew && storeNew.date && storeOld && storeOld.date){ 
+      const diffTexts = diffChars(storeNew.date, storeOld.date);
+      return updateText(diffTexts);
+    }
+    return "";
   };
 
   const updateText = (diffTexts:any) => {
@@ -186,107 +198,13 @@ export default function Index() {
   //setOpen(params);
   }
 
-
-  const handleEditorChange = (content: string, editor: any) => {
-    setData({ ...getData, fulltext: content });
-
-    if (!writeForm) {
-      return true;
-    }
-
-    setData({ ...getData, fulltext: content });
-
-
-
-    const element = editor.getContainer();
-    if (element) {
-      if (content.length < 200) {
-        element.style.border = "1px solid red";
-      } else {
-
-        element.style.border = "1px solid #ced4da";
-      }
-    }
-  };
-
-  const updateTitle = (action: any) => {
-    return 'События ';
-  }
   let news: any = {};
   const closeModal = () => {
     //setOpen(false)
   };
 
-  const getValidateType = () => {
-    if (!writeForm) {
-      return true;
-    }
-    return getData.typeId != 0;
-  }
+
   
- 
-  // ПРоверяем условия
-  const validation = () => {
-
-    const fulltextLocal = textareaEl?.current?.editor?.getContent()
-
-    setWriteForm(true);
-    setIsInvalidTitle(false);
-    setIsInvalidSource(false);
-    setIsInvalidText(false);
-
-
-    let isInvalidTitle = true;
-    let isInvalidSource = true;
-    let isInvalidText = true;
-    let isInvalidFulltext = true;
-
-
-    if (!getData.title || (getData.title && getData.title.length < 10)) {
-      setIsInvalidTitle(true);
-      console.log('bug 1');
-      isInvalidTitle = false;
-    }
-
-    if (getData.typeId === 0) {
-
-      console.log('bug 2');
-    }
-
-    if (!getData.source || (getData.source && getData.source.length < 10)) {
-      isInvalidSource = false;
-      setIsInvalidSource(true);
-      console.log('bug 3');
-    }
-    if (!getData.shorttext || (getData.shorttext && getData.shorttext.length < 10)) {
-      setIsInvalidText(true);
-      isInvalidText = false;
-      console.log('bug 4');
-    }
-
-    //   console.log('fulltext',fulltext);
-
-    setData({ ...getData, fulltext: fulltextLocal });
-
-    if (!fulltextLocal || (fulltextLocal && fulltextLocal.length < 190)) {
-      isInvalidFulltext = false;
-      setErrorFulltext(true);
-      console.log('bug 5 ', fulltextLocal);
-      console.log
-    }
-
-    if (isInvalidTitle && isInvalidSource && isInvalidText && isInvalidFulltext) {
-
-      console.log('bug 5');
-      return true;
-    }
-    return false;
-
-  };
-
-
-
-
 
 
   const getValidFullContent = (editor: any) => {
@@ -311,124 +229,51 @@ export default function Index() {
  
     
     const fulltextLocal = textareaEl?.current?.editor?.getContent()
-      setData({ ...getData, fulltext: fulltextLocal});
-  //  } 
+
+   } 
  
 
 
-    console.log(getData,instrument)
-    
-    if (validation()) {
-      //   const hash = news.saveEvent(news.eventNew);
-      console.log('getData')
-
- 
-      console.log(getData,instrument)
-
-      const responses = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/event/save`, {
-        method: 'POST', 
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify(getData) // body data type must match "Content-Type" header
-      }) 
-      
-     
-      if (responses.ok) { // если HTTP-статус в диапазоне 200-299
-        // получаем тело ответа (см. про этот метод ниже)
-        let json = await responses.json();
-     //   console.log(json);
-      //  return json;
-        setServerResponse(json);
-       
-      } else {
-        alert("Ошибка HTTP: " + responses.status);
-    
-        
-      } 
-
-
-
-
-    //  const response = await createEvent(getData)
   
-      console.log(serverResponse);
-      
-    }
-  };
+
 
   const textButton = () => {
     return 'Предложить изменение';
   }
+ 
 
-  const getButton = () => {
-    //  if (showSendButton) {
-    return <button type="button" onClick={sendEvent} className="btn btn-primary">{textButton()}</button>
-    //  }
-    return <></>;
-  }
-
-  // меняем тип события
-  const changeTypeEvent = (value: any) => {
-    setData({ ...getData, typeId: value.value });
-  }
-
-  const setDateEvent = (value: any) => {
-    news.eventDate = moment(value).format("DD/MM/YYYY");
-    const eventDate = moment(value).format("DD/MM/YYYY");
-    setData({ ...getData, date: eventDate });
-  }
-
-
-  const changeEventSource = (value: string) => {
-    // setSource(value);
-    setData({ ...getData, source: value });
-  }
-  // устанавливаем название события
-  const changeEventText = (value: string) => {
-
-    setData({ ...getData, shorttext: value });
-  }
-
-  const isValidDate = (status: boolean) => {
-    //   console.log(status);
-    return status;
-    //   setData({...getData, title:text});
-  }
-
-  const changeEventName = (value: any) => {
-    setData({ ...getData, title: value });
-  }
-
-  var valid = (current: any) => {
-    // выбрать можно только день торгов.
-    const dt = current.format("YYYY-MM-DD")
-    return pricesDate.includes(dt);
-    return current.day() == 0 && current.day() != 8;
-  };
+ 
  
   const getText = () => {
-    const diffTexts = diffWordsWithSpace(storeNew.shorttext, storeOld.shorttext);
-    return updateText(diffTexts);
+    if(storeNew && storeNew.shorttext && storeOld && storeOld.shorttext){ 
+      const diffTexts = diffWordsWithSpace(storeNew.shorttext, storeOld.shorttext);
+      return updateText(diffTexts);
+    }
+    return "";
   };
+
   const getTitle = () => {
-    const diffTexts = diffWords(storeNew.title, storeOld.title);
-    return updateText(diffTexts);
+    if(storeNew && storeNew.title && storeOld && storeOld.title){ 
+      const diffTexts = diffWords(storeNew.title, storeOld.title);
+      return updateText(diffTexts);
+    }
+    return "";
   };
   const getSource = () => {
-    const textOld = storeNew.source;
-    const textNew = storeOld.source;
-    const diffTexts = diffWords(textNew, textOld);
-    let result = "";
-    if (diffTexts.length > 1) {
-      result += `<span class="diffAdded">${textOld}</span><br>`;
-      result += `<span class="diffRemove">${textNew}</span>`;
-    } else {
-      result = `<span class="diffDefault">${textOld}</span>`;
+    if(storeNew && storeNew.source && storeOld && storeOld.source){ 
+      const textOld = storeNew.source;
+      const textNew = storeOld.source;
+      const diffTexts = diffWords(textNew, textOld);
+      let result = "";
+      if (diffTexts.length > 1) {
+        result += `<span class="diffAdded">${textOld}</span><br>`;
+        result += `<span class="diffRemove">${textNew}</span>`;
+      } else {
+        result = `<span class="diffDefault">${textOld}</span>`;
+      }
+      return parse(result);
     }
-    return parse(result);
+    return "";
   };
 
   if (router.isReady && isload) {
@@ -436,7 +281,7 @@ export default function Index() {
     return (
       <>
         <ContentBox title={title} ticker="">
-          <Popup open={open}
+          {/* <Popup open={open}
             closeOnDocumentClick={false}
             onClose={closeModal}>
             <AddEvent 
@@ -446,7 +291,7 @@ export default function Index() {
             instrument={instrument} />
           </Popup>
           
-          
+           */}
 
 
 
