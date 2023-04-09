@@ -30,7 +30,7 @@
 
 [/profile](/profile "Профиль пользователя") - Профиль пользователя
  
- pm2 restart all
+pm2 restart all
 
 
 

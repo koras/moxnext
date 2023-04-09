@@ -30,9 +30,9 @@
 } 
 
 .formBlock100 label, .formBlock25 label{ 
-font-weight: 600;
-}
-
+  font-weight: 600;
+  }
+  
 
 
 .rowFormFulltext {
@@ -258,4 +258,7 @@ font-weight: 600;
 }
 .inspectButtons label {
   margin: 0px 0px 0px 10px;
+}
+.rowFormEvent label {
+ min-width: 200px; 
 }

@@ -11,7 +11,7 @@ import moment from 'moment';
 import  ReactDiffViewer,{  DiffMethod,  } from "react-diff-viewer";
 
 
-import  { diffWordsWithSpace, diffChars, diffWords } from "diff";
+import  { diffWordsWithSpace, diffChars, diffWords,diffLines } from "diff";
 
 import parse from "html-react-parser";
 
@@ -70,17 +70,7 @@ export default function Index() {
   const [storeOld, setEventOld] = useState<InfoType | null>(null); 
 
  
-
-  // const [getData, setData] = useState<InfoType>({
-  //   title: "",
-  //   typeId: 0,
-  //   date: moment().format("DD/MM/YYYY"),
-  //   source: "",
-  //   shorttext: "",
-  //   fulltext: "",
-  //   instrument_id: "",
-  // });
-
+ 
 
   const textareaEl = useRef<Editor | null>(null);
 
@@ -88,7 +78,7 @@ export default function Index() {
 
   const diffViewer  = (textNew:string,textOld:string) => {
  
-    let diffTexts = diffWords(textNew,textOld)
+    let diffTexts = diffLines(textNew,textOld)
 
     let result = "";
     if (diffTexts.length > 1) {
@@ -100,29 +90,49 @@ export default function Index() {
     return parse(result);
   }
   
+
+
   const getFullText = ()  => {
     if(storeNew && storeNew.fulltext && storeOld && storeOld.fulltext){ 
         let textNew2 = storeNew.fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
           let  textOld2 = storeOld.fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
-        const diffTexts = diffWords(textNew2, textOld2);
+        const diffTexts = diffLines(textNew2, textOld2);
         return updateText(diffTexts);
-      }
+      }else if(storeNew && storeNew.fulltext){ 
+        let textNew2 = storeNew.fulltext.replace(/<\/p>/g, "</p>\n").replace(/<\/?[^>]+(>|$)/g, "");
+       
+        const diffTexts = diffLines(textNew2, "");
+        return updateText(diffTexts);
+      } 
+      
+      return "";
   };
 
 
   const getType = () => {
+    const tipeOld = eventsName.find((option: any) => {
+      if (storeOld) {
+        return option.value === +storeOld.type_id;
+      }
+    })
+    const tipeNew = eventsName.find((option: any) => {
+      if (storeNew) {
+        return option.value === +storeNew.type_id;
+      }
+    })
 
-    // const res = eventsName.filter((option: any) => {
-    //   if (getData) {
-    //     return option.value === +getData.typeId;
-    //   }
-    // })
-    // return (res) ? res : {};
+    if(tipeOld && tipeOld.label && tipeNew && tipeNew.label){ 
+      const diffTexts = diffLines(tipeOld.label,tipeNew.label);
+        return updateText(diffTexts);
+    }else if( tipeNew && tipeNew.label){ 
+      const diffTexts = diffLines(tipeNew.label,"");
+      return updateText(diffTexts);
+    } 
     return null;
   };
 
   const router = useRouter(); 
-  console.log(' router.query', router.query);
+  
   const { hash } = router.query
 
   if (router.isReady) {
@@ -150,21 +160,22 @@ export default function Index() {
         }).catch(function (error) {
           console.log("Ошибка обработана, продолжить работу ", error);
         });
-      console.log('result');
+
     };
 
     if (router.isReady && !isload) {
       getEvent( hash);
     }
- 
-  
   });
 
 
 
   const getDate = () => {
     if(storeNew && storeNew.date && storeOld && storeOld.date){ 
-      const diffTexts = diffChars(storeNew.date, storeOld.date);
+      const diffTexts = diffLines(storeNew.date, storeOld.date);
+      return updateText(diffTexts);
+    }else  if(storeNew && storeNew.date){ 
+      const diffTexts = diffLines(storeNew.date, "");
       return updateText(diffTexts);
     }
     return "";
@@ -172,9 +183,8 @@ export default function Index() {
 
   const updateText = (diffTexts:any) => {
     let result = "";
-      console.log(storeOld,diffTexts[0].value,diffTexts.length);
+
     if( diffTexts.length === 1  ){
-      console.log(diffTexts[0].value);
       result = `<span class="diffDefault">${diffTexts[0].value}</span>`;
     }else{ 
       for (const item of diffTexts) {
@@ -193,32 +203,6 @@ export default function Index() {
   };
 
 
-  const changeStatePopup =(params:boolean)=>{
-
-  //setOpen(params);
-  }
-
-  let news: any = {};
-  const closeModal = () => {
-    //setOpen(false)
-  };
-
-
-  
-
-
-  const getValidFullContent = (editor: any) => {
-    editor.on("click", (e: any) => {
-      const element = editor.getContainer();
-      if (element) {
-        if (errorFulltext) {
-          element.style.border = "1px solid green";
-        }
-      }
-    });
-  }
-
-
 
   const sendEvent = async () => { 
     const current = textareaEl?.current?.editor?.container;
@@ -226,45 +210,40 @@ export default function Index() {
     if(current && current.style){ 
       current.style.border = "1px solid red";
     }
- 
-    
     const fulltextLocal = textareaEl?.current?.editor?.getContent()
-
    } 
- 
-
-
-  
-
-
-  const textButton = () => {
-    return 'Предложить изменение';
-  }
- 
-
- 
  
   const getText = () => {
     if(storeNew && storeNew.shorttext && storeOld && storeOld.shorttext){ 
-      const diffTexts = diffWordsWithSpace(storeNew.shorttext, storeOld.shorttext);
+      const diffTexts = diffLines(storeNew.shorttext, storeOld.shorttext);
+      return updateText(diffTexts);
+    }else 
+    if(storeNew && storeNew.shorttext ){ 
+      const diffTexts = diffLines(storeNew.shorttext, "");
       return updateText(diffTexts);
     }
     return "";
   };
 
   const getTitle = () => {
+
     if(storeNew && storeNew.title && storeOld && storeOld.title){ 
-      const diffTexts = diffWords(storeNew.title, storeOld.title);
+      const diffTexts = diffLines(storeNew.title, storeOld.title);
       return updateText(diffTexts);
-    }
+    }else if(storeNew && storeNew.title ){ 
+      const diffTexts = diffLines(storeNew.title, "");
+      return updateText(diffTexts);
+    } 
+
     return "";
   };
   const getSource = () => {
+    let result = "";
+    
     if(storeNew && storeNew.source && storeOld && storeOld.source){ 
       const textOld = storeNew.source;
       const textNew = storeOld.source;
-      const diffTexts = diffWords(textNew, textOld);
-      let result = "";
+      const diffTexts = diffLines(textNew, textOld);
       if (diffTexts.length > 1) {
         result += `<span class="diffAdded">${textOld}</span><br>`;
         result += `<span class="diffRemove">${textNew}</span>`;
@@ -272,6 +251,8 @@ export default function Index() {
         result = `<span class="diffDefault">${textOld}</span>`;
       }
       return parse(result);
+    }else if(storeNew && storeNew.source ){ 
+      return parse(storeNew.source);
     }
     return "";
   };
@@ -298,9 +279,8 @@ export default function Index() {
           <Form className={styles.formContent}>
         <div className={styles.rowForm}>
           <div className={styles.rowFormLine}>
-            <div className={styles.formBlock25}>
+            <div className={styles.formBlock25 +" "+ stylesInspect.rowFormEvent}>
               <label>Событие:</label>
-               
               <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getType()}</div>
             </div>
 
