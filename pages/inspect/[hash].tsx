@@ -257,6 +257,17 @@ export default function Index() {
     return "";
   };
 
+  // отправка на доработку
+  const sendToRevision = () => {
+
+  };
+  // одобренный материал
+  const sendApprove = () => {
+    
+  };
+   
+
+
   if (router.isReady && isload) {
 //    open={open}
     return (
@@ -277,86 +288,58 @@ export default function Index() {
 
 
           <Form className={styles.formContent}>
-        <div className={styles.rowForm}>
-          <div className={styles.rowFormLine}>
-            <div className={styles.formBlock25 +" "+ stylesInspect.rowFormEvent}>
-              <label>Событие:</label>
-              <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getType()}</div>
+            <div className={styles.rowForm}>
+              <div className={styles.rowFormLine}>
+                <div className={styles.formBlock25 +" "+ stylesInspect.rowFormEvent}>
+                  <label>Событие:</label>
+                  <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getType()}</div>
+                </div>
+                <div className={styles.formBlock25}>
+                  <label>Дата события:</label>
+                  <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getDate()}</div>
+                </div>
+              </div>
             </div>
-
-            <div className={styles.formBlock25}>
-              <label>Дата события:</label>
-              <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getDate()}</div>
+            <div className={stylesInspect.rowForm}>
+              <div className={stylesInspect.formBlock100}>
+                <label>Короткое название:</label>
+                <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getTitle()}</div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div className={stylesInspect.rowForm}>
-          <div className={stylesInspect.formBlock100}>
-            <label>Короткое название:</label>
-            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getTitle()}</div>
-          </div>
-        </div>
-
-        <div className={stylesInspect.rowForm}>
-          <div className={stylesInspect.formBlock100}>
-            <label>Источник:</label>
-            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getSource()}</div>
-          </div>
-        </div>
-
-
-
-        <div className={stylesInspect.rowForm}>
-          <div className={stylesInspect.formBlock100}>
-            <label>Короткое описание:</label>
-            <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getText()}</div>
-          </div>
-        </div>
-
-        <div className={stylesInspect.rowForm}>
-          <div className={stylesInspect.formBlock100}>
-            <label>Полное описание:</label>
-            <div className={stylesInspect.rowFormFulltext}>{getFullText()}</div>
-          </div>
-        </div>
-       
-       
-       
-       
-        <div className={stylesInspect.rowForm}>
-         
-          <div className={stylesInspect.formBlock100 +" "+stylesInspect.buttonRight+" "+stylesInspect.inspectButtons}>
-            <label>Ваше решение:</label>
-            <button
-              title="После нескольких жалоб текст будет скрыт"
-              type="button"
-              onClick={sendEvent}
-              className="btn btn-danger"
-            >
-              Пожаловаться
-            </button>
-            <button
-              type="button"
-              onClick={sendEvent}
-              title="Предложить автору доработать текст"
-              className="btn btn-warning"
-            >
-              На доработку
-            </button>
-            <button
-              title="Текст полностью готов для публикации"
-              type="button"
-              onClick={sendEvent}
-              className="btn btn-success"
-            >
-              Одобрить
-            </button>
-          </div>
-        </div>
-      </Form>
-
-
+            <div className={stylesInspect.rowForm}>
+              <div className={stylesInspect.formBlock100}>
+                <label>Источник:</label>
+                <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getSource()}</div>
+              </div>
+            </div>
+            <div className={stylesInspect.rowForm}>
+              <div className={stylesInspect.formBlock100}>
+                <label>Короткое описание:</label>
+                <div className={stylesInspect.rowFormFulltext +" "+ stylesInspect.rowFormText}>{getText()}</div>
+              </div>
+            </div>
+            <div className={stylesInspect.rowForm}>
+              <div className={stylesInspect.formBlock100}>
+                <label>Полное описание:</label>
+                <div className={stylesInspect.rowFormFulltext}>{getFullText()}</div>
+              </div>
+            </div>
+            <div className={stylesInspect.rowForm}>
+              <div className={stylesInspect.formBlock100 +" "+stylesInspect.buttonRight+" "+stylesInspect.inspectButtons}>
+                <label>Ваше решение:</label>
+                <button
+                  title="После нескольких жалоб текст будет скрыт"
+                  type="button"
+                  onClick={sendToRevision}
+                  className="btn btn-danger">На доработку</button>
+                <button
+                  title="Текст полностью готов для публикации"
+                  type="button"
+                  onClick={sendApprove}
+                  className="btn btn-success">Одобрить</button>
+              </div>
+            </div>
+          </Form>
         </ContentBox>
       </>
     );
