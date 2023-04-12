@@ -239,7 +239,6 @@ export default function Index() {
   };
   const getSource = () => {
     let result = "";
-    
     if(storeNew && storeNew.source && storeOld && storeOld.source){ 
       const textOld = storeNew.source;
       const textNew = storeOld.source;
@@ -263,7 +262,7 @@ export default function Index() {
   };
   // одобренный материал
   const sendApprove = () => {
-    
+
   };
    
 

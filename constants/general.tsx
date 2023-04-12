@@ -3,15 +3,15 @@ export const names = {
 };
 // https://www.khroma.co/train/
 export const eventsName = [
-  { value: 1, symbolSize: 5, label: "Новости", type: "news", color: "rgba(84,92,110, 0.5)" },
-  { value: 2, symbolSize: 10, label: "Девиденды", type: "dividends", color: "rgba(63,128,160, 0.5)" },
+  { value: 1, symbolSize: 5, label: "Новости", type: "news", color: "rgba(109,117,225,0.9)" },
+  { value: 2, symbolSize: 10, label: "Девиденды", type: "dividends", color: "rgba(80,160,63, 0.8)" },
   { value: 3, symbolSize: 10, label: "Отчётность", type: "reporting", color: "rgba(86,66,66)" },
   { value: 4, symbolSize: 10, label: "Поглощение", type: "absorption", color: "rgba(199,187,214, 0.5)" },
-  { value: 5, symbolSize: 15, label: "Назначения", type: "appointments", color: "rgba(73,137,169, 0.5)" },
+  { value: 5, symbolSize: 10, label: "Назначения", type: "appointments", color: "rgba(73,137,169, 0.5)" },
   { value: 6, symbolSize: 10, label: "Делистинг", type: "delisting", color: "rgba(186,168,224, 0.5)" },
-  { value: 7, symbolSize: 15, label: "Листинг на бирже", type: "exchangeListing", color: "rgba(48,62,60, 0.5)" },
-  { value: 8, symbolSize: 15, label: "Сплит акций", type: "split", color: "rgba(49,93,86, 0.5)" },
-  { value: 9, symbolSize: 15, label: "Санкции", type: "sanctions", color: "rgba(91,93,68, 0.5)" },
+  { value: 7, symbolSize: 10, label: "Листинг на бирже", type: "exchangeListing", color: "rgba(48,62,60, 0.5)" },
+  { value: 8, symbolSize: 10, label: "Сплит акций", type: "split", color: "rgba(239,255, 30,0.67)" },
+  { value: 9, symbolSize: 10, label: "Санкции", type: "sanctions", color: "rgba(220,53,69,0.83)" },
 ];
 
 

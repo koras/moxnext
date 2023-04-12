@@ -108,12 +108,7 @@ export default function Index() {
     week: [],
   };
 
-  // const periods = {
-  //   all: 3155692600,
-  //   year:31556926,
-  //   month:2629743,
-  //   week:86400,
-  // }
+
   const periodAll = moment().subtract('seconds', periods.all);
    
   const periodYear5 = moment().subtract('seconds', periods.year5);

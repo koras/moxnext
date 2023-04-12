@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 
 import { useQuery, useQueryClient, useMutation } from 'react-query'
+import { useSession, getSession } from "next-auth/react"
 
 import {
   useEffect, useState,useRef, useMemo
@@ -26,9 +27,10 @@ import DashboardControll from './../dashboard/controll'
 
 
 function MyComponent(props:any): JSX.Element    {
+  const { data: session } = useSession();
 
     if (+props.item.price === 0) {
-        console.log(props.item.instrument_name,props.item.price);
+      //  console.log(props.item.instrument_name,props.item.price);
         return <></>;
       }
 
@@ -49,6 +51,15 @@ function MyComponent(props:any): JSX.Element    {
       }
     };
 
+    const getEditInstrument = () => {
+      if (session && session.uid === "111147924830957442272") {
+        return <Link href={"/instrument/edit/" + props.item.instrument_id}>Редактировать</Link>
+      }else{
+        return <></>
+      }
+    }
+     
+
      // const logo = require(props.item.images.logo).default;
     ///  const logo = require(props.item.images.logo);
 
@@ -66,7 +77,7 @@ function MyComponent(props:any): JSX.Element    {
             <div className={styles.dashboardItemDescriptionHead__price}>
               {props.item.price} {props.item.mark}
             </div>
-          </div>
+          </div> 
 
           <div className={styles.dashboardItemDescriptionText}>
             {props.item.description}
@@ -74,7 +85,7 @@ function MyComponent(props:any): JSX.Element    {
 
           <div className={styles.dashboardItemDescriptionControll}>
 
-            <Link href={"/instrument/edit/" + props.item.instrument_id}>Редактировать</Link>
+             {getEditInstrument()}
             <Link href="#">Следить за тикером</Link>
           </div>
         </div>

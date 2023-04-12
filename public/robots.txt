@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /inspect/
+Disallow: /api/
+Disallow: /inspects
+
+Sitemap: https://boxinvesting.ru/sitemap_event.xml
+Sitemap: https://boxinvesting.ru/sitemap_instruments.xml

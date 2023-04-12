@@ -36,8 +36,10 @@ console.log('status',status);
       </Head> 
 
   
-        <ContentBox title="Главная страница">
-  
+        <ContentBox  hideBorder={true}  pageTitle={"BoxInvesting - анализ инструментов, акций для инвестирования"}>
+          
+
+
         </ContentBox>
     </>
   )
