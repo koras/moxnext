@@ -16,7 +16,20 @@ class storeInstrument {
   }
 
   async getDashboard(params) {
-     const result = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/instruments/list?`+ new URLSearchParams(params) , { headers })
+      console.log(params);
+    let request  = {
+      typeId: "all",
+      level: 0,
+    }
+    if(params.typeId){
+      request.typeId  = params.typeId;
+    }
+    if(params.level){
+      request.level  = params.level;
+    }
+
+
+     const result = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/instruments/list?`+ new URLSearchParams(request) , { headers })
       .then((res) => res.json())
       .then((data) => {
         let prices = {};

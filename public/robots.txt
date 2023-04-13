@@ -3,5 +3,12 @@ Disallow: /inspect/
 Disallow: /api/
 Disallow: /inspects
 
+Disallow: /en/
+Disallow: /uk/
+Disallow: /es/
+Disallow: /gazel-next/
+Disallow: /solaris/
+Disallow: /mazda-6/ 
+ 
 Sitemap: https://boxinvesting.ru/sitemap_event.xml
 Sitemap: https://boxinvesting.ru/sitemap_instruments.xml

@@ -17,18 +17,16 @@ export default function DashboardControll(props:any) {
         level: number; 
       }
        
-      const [typeId, setTypeId] = useState(0);
-      const [level, setLevel] = useState(0);
+      const [typeId, setTypeId] = useState(props.typeId);
+      const [level, setLevel] = useState(props.level);
       
-    const [getData, setData] = useState<InstrumentType>({
-        typeId: 0,  
-        level: 0,  
-      });
+
+      
 
     const [writeForm, setWriteForm] = useState(false);
     const getType = () => {
         const res = controllTypeInstrument.filter((option: any) => {
-                return option.value === typeId
+                return option.value === typeId || option.value === props.typeId
         })
  
         return (res) ? res : [];
@@ -38,9 +36,7 @@ export default function DashboardControll(props:any) {
     
     const getSharesLevel = () => {
         const res = controllSharesLevel.filter((option: any) => {
-         //   if (getData) {
-                return option.value === +level;
-          //    }
+                return option.value === +level  || option.value === +props.level;
         })
         return (res) ? res : {};
     };
@@ -115,7 +111,7 @@ export default function DashboardControll(props:any) {
                     <div className={styles.controllTitle} >
                         <label>Тип инструмента</label>
                     </div>
-                    <div className={styles.controllSearch} >
+                    <div className={styles.controllSearch}>
                         <Select
                             styles={{
                                 control: (baseStyles, state) => ({
