@@ -1,37 +1,50 @@
-
-import styles from './Slug.module.css'
-import React from "react";
+import { useRouter } from 'next/router';
+import React from 'react';
+import { useQuery } from 'react-query';
+import moment from 'moment';
 import parse from 'html-react-parser';
-import ContentBox from "../../../components/ContentBox";
+import ContentBox from '../../../components/ContentBox'; 
+import { eventsName } from '../../../constants/general';
+import styles from './Slug.module.css';
+import stylesNews from '../../../components/news/styleNews.module.css';
 
-
-import {
-  useQuery,
-} from 'react-query'
-
-
-import {
-  useRouter
-} from 'next/router'
-
-
- 
-const headers = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json, text/plain, */*',
+interface EventType {
+  value: any;
+  label: string;
+  color: string;
 }
 
-export default () => {
-  const router = useRouter();
-  const {ticker, slug } = router.query;
+const headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json, text/plain, */*',
+};
+ 
 
- 
- 
+const getEventClassName = (typeId: any) => {
+  const color: EventType | undefined = eventsName.find((item) => item.value === typeId);
+  console.log(color?.color);
+  return { backgroundColor: color?.color };
+};
+
+const formatDate = (date: any) => {
+  return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+};
+
+const getEventName = (typeId: any) => {
+  const type: EventType | undefined = eventsName.find((item) => item.value === typeId);
+  return type?.label;
+};
+
+export default function Slug() {
+  const router = useRouter();
+  const { ticker, slug } = router.query;
+
   const { data, isLoading } = useQuery({
     queryKey: ['event', ticker, slug],
     queryFn: async () => {
-      //   if(!router.isReady) return
-      return fetch(process.env.NEXT_PUBLIC_SERVER_URL +`/event/get/${ticker}/${slug}`, { headers }).then((res) => res.json())
+      return fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/event/get/${ticker}/${slug}`, { headers }).then((res) =>
+        res.json()
+      );
     },
     staleTime: 1 * 60 * 1000,
     cacheTime: 5 * 60 * 1000,
@@ -41,36 +54,22 @@ export default () => {
   console.log('isLoading', isLoading);
   if (typeof data === 'undefined' || data === undefined) {
     return <div>load</div>;
-  } else {
-    // changeLoad();
   }
 
   console.log(data);
 
-  const getTypeId = (typeId: any) => {
-    return "сплит акций";
-  }
-  const getStyleType = (typeId: any) => {
-    margin: "0px 0px 10px 0px"
-  }
-
   return (
-    <ContentBox title={data.data.title} pageTitle={data.data.title} hideBorder={true} >
+    <ContentBox hideBorder={true}>
+      <div className={styles.title}>{data.data.title}</div>
 
-      <div className={styles.panelInfo}>
-        <div className={styles.styleTypeEvent + " " + getStyleType(data.data.typeId)}></div>
-        <div className={styles.panelInfoTypeEvent}> {getTypeId(data.data.typeId)}</div>
-        <div className={styles.panelInfoDate}> {data.data.date}</div>
-
+      <div className={stylesNews.currentInfo + " " + styles.infoType}>
+        <div className={stylesNews.eventCircle} style={getEventClassName(data.data.typeId)}></div>
+        <div className={stylesNews.dateLineEvent}>{formatDate(data.data.date)}</div>
+        <div className={stylesNews.defaultTypeClassEvent}>{getEventName(data.data.typeId)}</div>
       </div>
 
-      <div className={styles.shorttext}>
-        {data.data.shorttext}
-      </div>
-
-      <div className={styles.fulltext}>
-        {parse(data.data.fulltext)}
-      </div>
-    </ContentBox>);
+      <div className={styles.shorttext}>{data.data.shorttext}</div>
+      <div className={styles.fulltext}>{parse(data.data.fulltext)}</div>
+    </ContentBox>
+  );
 }
-

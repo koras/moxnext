@@ -6,9 +6,13 @@ Disallow: /inspects
 Disallow: /en/
 Disallow: /uk/
 Disallow: /es/
+Disallow: /kk/
+Disallow: /uk/
 Disallow: /gazel-next/
 Disallow: /solaris/
+Disallow: /dvigateli/
 Disallow: /mazda-6/ 
- 
+Disallow: /solaris/
+
 Sitemap: https://boxinvesting.ru/sitemap_event.xml
 Sitemap: https://boxinvesting.ru/sitemap_instruments.xml

@@ -21,31 +21,36 @@ import { eventsName } from "../../constants/general";
 
 
 
-const checkChart = (data: any) => {
+export async function checkChart (data: any){
   console.log('data', data);
 
 
   //  return props;
 };
 
+interface EventType {
+  value: any;
+  label: string;
+  color: string;
+}
+
+export async function classNameEvent(typeId: any) {
+
+  const color: EventType | undefined = eventsName.find(item => item.value === typeId)
+  console.log(color?.color);
+  return  {backgroundColor: color?.color };
+  
+};
+
+
 export default function ListEvents(props: any) {
 
+   
 
-  interface EventType {
-    value: any;
-    label: string;
-    color: string;
-  }
-  const getNameEvent = (typeId: any) => {
-    const type: EventType | undefined = eventsName.find(item => item.value === typeId)
-    return type?.label;
+  const changeDate = (date: any)=>{
+    return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY")
   };
-
-  const classNameEvent = (typeId: any) => {
-    const color: EventType | undefined = eventsName.find(item => item.value === typeId)
-    console.log(color?.color);
-    return  {backgroundColor: color?.color };
-  };
+ 
   
 
   const [news, setNews] = useState<any | null>(null);
@@ -55,11 +60,12 @@ export default function ListEvents(props: any) {
   const getUrl = (props: any) => {
     return "/events/" + instrument.ticker + "/" + props.slug;
   };
+ 
 
-  const changeDate = (date: any) => {
-    return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY")
+  const getNameEvent = (typeId: any) => {
+    const type: EventType | undefined = eventsName.find(item => item.value === typeId)
+    return type?.label;
   };
-
   const updateNews = () => {
     let dataNews = [];
 
@@ -81,7 +87,13 @@ export default function ListEvents(props: any) {
     updateNews();
   }, [props.period])
 
+ const classNameEvent = (typeId: any)=> {
 
+    const color: EventType | undefined = eventsName.find(item => item.value === typeId)
+    console.log(color?.color);
+    return  {backgroundColor: color?.color };
+    
+  };
 
   //const navigate = useNavigate();
   const router = useRouter();

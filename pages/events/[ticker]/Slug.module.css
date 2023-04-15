@@ -1,13 +1,14 @@
 
 .shorttext {        
-    border: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+    border-top: 1px solid #eeeeee;
     padding: 10px 5px 10px 5px;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 0px 0px;
     font-size: 21px;
 }
 
 .fulltext {
-    border: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
     padding: 10px 5px 10px 5px; 
 }
 .fulltext, .fulltext p {
@@ -42,4 +43,13 @@
     height: 10px;
     display: inline-block;
     margin: 0px 10px 0px 0px;
+}
+
+.title {
+    font-size: 21px;
+    padding: 10px 0px 10px 0px;
+    font-weight: 700;
+}
+.infoType {
+    padding: 10px 0px 10px 0px;
 }
