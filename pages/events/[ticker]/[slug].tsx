@@ -60,8 +60,8 @@ export default function Slug() {
 
   return (
     <ContentBox hideBorder={true}>
-      <div className={styles.title}>{data.data.title}</div>
 
+      <div className={styles.title}>{data.data.title}</div>
       <div className={stylesNews.currentInfo + " " + styles.infoType}>
         <div className={stylesNews.eventCircle} style={getEventClassName(data.data.typeId)}></div>
         <div className={stylesNews.dateLineEvent}>{formatDate(data.data.date)}</div>
@@ -69,7 +69,10 @@ export default function Slug() {
       </div>
 
       <div className={styles.shorttext}>{data.data.shorttext}</div>
-      <div className={styles.fulltext}>{parse(data.data.fulltext)}</div>
+      <div className={styles.fulltext}>
+            <div className={styles.grafficNews}></div>
+            {parse(data.data.fulltext)}
+        </div>
     </ContentBox>
   );
 }

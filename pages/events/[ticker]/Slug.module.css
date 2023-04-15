@@ -53,3 +53,11 @@
 .infoType {
     padding: 10px 0px 10px 0px;
 }
+
+.grafficNews {
+    display: block;
+    background-color: #cccccc;
+    width: 50%;
+    height: 300px;
+    float: right;
+}
