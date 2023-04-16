@@ -55,8 +55,8 @@
 }
 
 .grafficNews {
-    display: block;
-    background-color: #cccccc;
+    display: block; 
+    border: 1px solid #dddddd;
     width: 50%;
     height: 300px;
     float: right;

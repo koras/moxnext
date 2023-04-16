@@ -19,7 +19,7 @@
     margin: 20px 0px 0px 0px;  
     left: 0;
     bottom: 0; 
-  }
+  } 
 
   .footerContent {  
     width: 1200px;
@@ -29,7 +29,14 @@
     border-top: 1px solid #eeeeee;
     padding: 20px 10px;
   }
-
+  .footerContentNotice {
+    width: 1200px;
+    margin: auto auto 20px auto;
+    flex-direction: row;
+    min-height: 100px; 
+    border: 2px solid #ac2626;
+    padding: 20px 10px;
+  }
 
   .boxContent {
     border: 1px solid #eeeeee;

@@ -5,6 +5,9 @@ import moment from 'moment';
 import parse from 'html-react-parser';
 import ContentBox from '../../../components/ContentBox'; 
 import { eventsName } from '../../../constants/general';
+
+import EchartsEvent from '../../../components/charts/EchartsEvent'; 
+ 
 import styles from './Slug.module.css';
 import stylesNews from '../../../components/news/styleNews.module.css';
 
@@ -56,7 +59,9 @@ export default function Slug() {
     return <div>load</div>;
   }
 
-  console.log(data);
+  console.log('data.data.price');
+
+  console.log(data.instrument);
 
   return (
     <ContentBox hideBorder={true}>
@@ -70,7 +75,14 @@ export default function Slug() {
 
       <div className={styles.shorttext}>{data.data.shorttext}</div>
       <div className={styles.fulltext}>
-            <div className={styles.grafficNews}></div>
+            <div className={styles.grafficNews}>
+              <EchartsEvent 
+               instrument={data.instrument}
+               dataInfo={data.price}
+                period={604800} 
+               />
+              
+            </div>
             {parse(data.data.fulltext)}
         </div>
     </ContentBox>

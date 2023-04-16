@@ -6,6 +6,7 @@ import Menu from "./../components/menu/Menu";
 import Header from "./header/Header";
 import Head from 'next/head'
 import styles from "./styleContent.module.css";
+import {notice} from "./../constants/general";
 
  
 
@@ -66,12 +67,14 @@ function ContentBox({ content="", children, ...params }) {
 
       <div className={styles.footer}>
         <div className={styles.footerContent}>
-        footer
-          
+
+        </div>
+        <div className={styles.footerContentNotice}>
+          {notice}
         </div>
       </div>
     </div>
   );
-}
+} 
 
 export default ContentBox;

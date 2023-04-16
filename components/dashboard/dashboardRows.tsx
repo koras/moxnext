@@ -96,7 +96,7 @@ function MyComponent(props: any): JSX.Element {
         <div className={styles.dashboardItemDescriptionControll}>
 
           {getEditInstrument()}
-          <Link href="#">Следить за тикером</Link>
+          {/* <Link href="#">Следить за тикером</Link> */}
         </div>
       </div>
       <Link href={"/" + props.item.type + "/" + props.item.ticker}>
