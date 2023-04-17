@@ -1,0 +1,84 @@
+.homeTable {
+  width: 100%;
+  display: inline-flex;
+}
+.trendTable {
+  width: 100%; 
+  border: 1px solid #dddddd;
+}
+.trendTableTr { 
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #eff2f5;
+}
+.trendTableTrTd {
+  display: inline-table;
+  padding: 5px 10px;  
+}
+
+.trendInstrumentName,
+.trendInstrumentPrice,
+.trendInstrumentPercent,
+.trendlogo,
+.trendInstrumentIndex {
+  height: 26px;
+  display: inherit; 
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.trendlogo { 
+  width: 26px;
+  text-align: center;
+}
+.trendlogo img {
+  width: 24px;
+  text-align: center;
+}
+.trendInstrumentName {
+  min-width: 200px;
+  color: rgb(88, 102, 126); 
+}
+
+.trendInstrumentPrice {
+  width: 107px; 
+}
+.trendInstrumentPrice,
+.trendInstrumentPercent {
+  display: inline-flex;
+  min-width: 110px;
+}
+.trendInstrumentPercentPrice{
+  color: #858585;
+  font-size: 8px;
+  padding: 12px 0px 0px 3px;
+}
+.trendInstrumentIndex {
+ 
+  min-width: 30px;
+}
+ 
+
+.triangleDown {
+  width: 0;
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #ED5860;
+}
+
+.triangleUp {
+  width: 0;
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #37CF95;
+}
+
+.instrumentPercent {
+  display: inline; 
+}
+
+.trianglePercent { 
+  padding: 12px 2px 0px 2px;
+}
