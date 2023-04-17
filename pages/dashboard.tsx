@@ -34,8 +34,6 @@ function MyComponent() {
 
 
   const onChangeTypeList = (params: any) => {
-
-
     router.push({
       pathname: '/dashboard',
       query: {

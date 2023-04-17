@@ -4,17 +4,47 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import stylesTrend from '../styles/Trend.module.css'
 const crypto = require('crypto');
+import { instrumentStore } from './../stories/storeInstrument'
 
 import ContentBox from "../components/ContentBox";
 import { getServerSession } from "next-auth";
 import { loadEnvConfig } from '@next/env'
 import { useSession, getSession } from "next-auth/react"
+import { useRouter } from 'next/router'
+
+import { useQuery, useQueryClient, useMutation } from 'react-query'
 
 const inter = Inter({ subsets: ['latin'] })
+import {
+  useEffect, useState, useRef, useMemo
+} from 'react'
 
 export default function Home(req: any, res: any) {
   const { data: session, status } = useSession()
 
+  const router = useRouter();
+
+
+
+
+  
+  const { data: rawData, isLoading, error, refetch } = useQuery(
+    ['instruments'],
+    // ['instruments',typeId],
+    () => {
+      console.log('request 1');
+      return instrumentStore.getTrendDashboard(
+        { typeId: 0, level: 0 }
+        )
+    },
+    {
+      //  staleTime: 1 * 60 * 1000,
+      //  cacheTime: 5 * 60 * 1000,
+      enabled: router.isReady,
+    }
+  );
+
+  //const { level, type: typeId } = router.query;
 
   // InstrumentID        string `json:"instrument_id"`
   // InstrumentName      string `json:"instrument_name"`
@@ -32,53 +62,32 @@ export default function Home(req: any, res: any) {
   // Site          string  `json:"site"`
   // Currency      string  `json:"currency"`
   // Logo          string  `json:"logo"`
-  const trentdSures = [
-    { ticker: "AFLT", type: "shares", logo: "5.png", instrument_name: "Газпром", price: 100, mark: "₽", prices: { 'years5': { price: 10, date: "2015-04-07" }, 'years': { price: 50, date: "2020-02-13" }, 'month': { price: 1000, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "3.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "4.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "3.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "4.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "3.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "4.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "3.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "4.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "3.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "4.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "AFLT", type: "shares", logo: "5.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-    { ticker: "OGKB", type: "shares", logo: "6.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
-  ]
+  // const trentdSures = [
+  //   { ticker: "AFLT", type: "shares", logo: "5.png", instrument_name: "Газпром", price: 100, mark: "₽", prices: { 'years5': { price: 10, date: "2015-04-07" }, 'years': { price: 50, date: "2020-02-13" }, 'month': { price: 1000, date: "2020-04-22" }, } },
+  //   { ticker: "OGKB", type: "shares", logo: "2.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "OGKB", type: "shares", logo: "3.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "AFLT", type: "shares", logo: "10.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "OGKB", type: "shares", logo: "5.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "AFLT", type: "shares", logo: "1.png", instrument_name: "Газпром", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  //   { ticker: "OGKB", type: "shares", logo: "6.png", instrument_name: "ОГК-2", price: 28, mark: "₽", prices: { 'years5': { price: 326.6, date: "2015-04-07" }, 'years': { price: 19.5, date: "2020-02-13" }, 'month': { price: 175.12, date: "2020-04-22" }, } },
+  // ]
   console.log('status', status);
+
+
+
+
+  const trentdSures = useMemo(() => {
+    return rawData ? rawData : null;
+  }, [rawData]);
+
+
+  if (typeof trentdSures === 'undefined' || trentdSures === undefined) {
+    return <div>load</div>;
+  }
+
+
+
 
   const getCost = (propsCost: number) => {
     return propsCost;
@@ -209,6 +218,7 @@ export default function Home(req: any, res: any) {
 
 
       <ContentBox hideBorder={true} pageTitle={"BoxInvesting - анализ инструментов, акций для инвестирования"}>
+       
 
 
         <div className={stylesTrend.homeTable}>
