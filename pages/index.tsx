@@ -74,10 +74,8 @@ export default function Home(req: any, res: any) {
 
 
   const trendSures = useMemo(() => {
-
     if (rawData) {
-
-      const sortedData = [...rawData].sort((a: any, b: any) => {
+      const sortedData = [...rawData].sort((a: any, b: any) : number => {
         switch (sortType) {
           case 'name': {
             if (a.ticker > b.ticker) {
@@ -125,11 +123,14 @@ export default function Home(req: any, res: any) {
             }
           }
         }
+        return 1
       }); 
 
       return sortedData.slice(0, 20);
-    }    //  arr.slice(0, 2);
-    return rawData ? rawData : null;
+    }else {
+      return null;
+    }
+  //  return rawData ? rawData : null;
   }, [rawData, sortOrderName]);
 
 
@@ -180,6 +181,9 @@ export default function Home(req: any, res: any) {
         {/* <script src="./datepicker/datepicker.min.css"></script> */}
       </Head>
       <ContentBox hideBorder={true} pageTitle={"BoxInvesting - анализ инструментов, акций для инвестирования"}>
+        
+        <div  className={stylesTrend.trendTitle}>Лидеры роста/падения</div>
+
         <div className={stylesTrend.homeTable}>
           <div className={stylesTrend.trendTable}>
             <DashboardTrendTitle />

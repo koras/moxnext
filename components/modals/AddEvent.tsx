@@ -10,7 +10,7 @@ import {
 export const AddEvent = (props:any) => { 
  const router:any = useRouter();
  
-  const toInstrument = () => {
+  const toInstrument = () => { 
     router.push("/" + props.instrument.type + "/" + props.instrument.ticker);
   };
 

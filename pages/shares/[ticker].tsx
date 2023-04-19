@@ -209,11 +209,22 @@ export default function Index() {
   }
 
   const getPageTitle = (instrument:any) => {
-    return  "События и новости на графике " + instrument.instrument_name 
+    return  "График событий акций: " +instrument.instrument_full_name
+  }
+  const getDescription = (instrument:any) => {
+    if(data && data.instrument && data.instrument.description){
+      return data.instrument.description;
+    }
+    
+    return  " "
   }
 
   return (
-    <ContentBox title="" hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
+    <ContentBox 
+    title=""
+    pageDescription={data}
+
+     hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
       <div className={styles.graphicHead}>
         <div className={styles.title}>{getNameInstrument(data)} : график событий</div>
         <div className={styles.button}>

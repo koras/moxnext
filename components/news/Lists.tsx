@@ -35,13 +35,11 @@ interface EventType {
 }
 
 export async function classNameEvent(typeId: any) {
-
   const color: EventType | undefined = eventsName.find(item => item.value === typeId)
   console.log(color?.color);
   return  {backgroundColor: color?.color };
   
 };
-
 
 export default function ListEvents(props: any) {
 

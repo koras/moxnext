@@ -485,7 +485,7 @@ export default function TickerUrlIndex() {
                   value={getData.title}
                   type="text"
                   aria-errormessage="asdasd"
-                  maxLength={256}
+                  maxLength={250}
                   isInvalid={isInvalidTitle}
                   placeholder="Сплит акций, выход отчётности за квартал, выплата девидендов" />
 

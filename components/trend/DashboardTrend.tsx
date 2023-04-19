@@ -113,7 +113,7 @@ export default function DashboardTrend(props: any) {
     const monthPercent = getCostRange(item.price, item.prices.month.price);
     const price = getCost(item.price);
 
-    return <div className={stylesTrend.trendTableTr}>
+    return   <div className={stylesTrend.trendTableTr+ " "+ stylesTrend.trendTrHover}>
       <div className={stylesTrend.trendTableTrTd}>
         <div className={stylesTrend.trendInstrumentIndex}>
           {props.index + 1}
@@ -126,9 +126,10 @@ export default function DashboardTrend(props: any) {
         </div>
       </div>
 
-      <div className={stylesTrend.trendTableTrTd}>
+      <div className={stylesTrend.trendTableTrTd + " "+ stylesTrend.trendTableTrTdName}>
     
-          <Link href={ props.item.type+"/"+ props.item.ticker}>  <div className={stylesTrend.trendInstrumentName}>
+      <Link href={ props.item.type+"/"+ props.item.ticker}> 
+            <div className={stylesTrend.trendInstrumentName}>
               {props.item.instrument_name}
             </div>
         </Link> 
@@ -147,7 +148,7 @@ export default function DashboardTrend(props: any) {
       <div className={stylesTrend.trendTableTrTd}>
         {GetPercentJSX(item, props.item.prices.month, monthPercent)}
       </div>
-    </div>
+    </div>   
 }
 
 
