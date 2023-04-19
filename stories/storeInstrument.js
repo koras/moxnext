@@ -89,7 +89,7 @@ class storeInstrument {
       for (const index in data.month) {
         
         const month = data.month[index];
-        console.log(pricesMonth,month);
+       
         pricesMonth[month.ticker] = month;
 
         const year= data.year[index];
@@ -117,22 +117,8 @@ class storeInstrument {
         )
         
       }
-
-    // //  console.log(data.instrument,prices);
-    //   for (let  instrument of data.instrument) {
-    //     instrument['prices'] = prices[instrument.ticker]
-    //     if(prices[instrument.ticker] && prices[instrument.ticker][0] && prices[instrument.ticker][0].price){ 
-    //       instrument['price_year'] = prices[instrument.ticker][0].price;
-    //     }else{
-    //       console.error('не найден инструмент',instrument.ticker)
-    //     }
-
-    //    instruments.push(instrument);
-    //   }
-    //   console.log(instruments);
       return instruments;
     });
-    console.log('result',result);
     return result;
 }
 

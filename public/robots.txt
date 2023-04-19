@@ -12,7 +12,13 @@ Disallow: /gazel-next/
 Disallow: /solaris/
 Disallow: /dvigateli/
 Disallow: /mazda-6/ 
+Disallow: /nissan-almera/
 Disallow: /solaris/
+Disallow: /duster
+Disallow: /dvigateli
+Disallow: /renault-arkana
+Disallow: /kpp
+Disallow: /gazel-next
 
 Sitemap: https://boxinvesting.ru/sitemap_event.xml
 Sitemap: https://boxinvesting.ru/sitemap_instruments.xml
