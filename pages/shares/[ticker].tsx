@@ -7,6 +7,7 @@ import styles from './style.module.css'
 import stylesHome from './../../components/styleContent.module.css'
 
 import Tabs from "../../components/tabs/index";
+import InfoBoxInstrument from '../../components/Infobox/Infobox'; 
 
 import Button from "@mui/material/Button";
 
@@ -94,6 +95,7 @@ export default function Index() {
 
 
   const handleTimeChange = (params: any, typeDateName: any) => {
+    console.log(typeDateName)
     setPeriod(params);
     setPeriodName(typeDateName);
   }
@@ -107,12 +109,6 @@ export default function Index() {
     week: [],
   };
 
-  // const periods = {
-  //   all: 3155692600,
-  //   year:31556926,
-  //   month:2629743,
-  //   week:86400,
-  // }
   const periodAll = moment().subtract('seconds', periods.all);
    
   const periodYear5 = moment().subtract('seconds', periods.year5);
@@ -221,9 +217,13 @@ export default function Index() {
   return (
     <ContentBox 
     title=""
-    pageDescription={getDescription(data)}
-
+    pageDescription={getDescription(data.instrument)}
      hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
+
+{/* 
+<InfoBoxInstrument instrument={data.instrument} /> */}
+       
+
       <div className={styles.graphicHead}>
         <div className={styles.title}>{getNameInstrument(data)} : график событий</div>
         <div className={styles.button}>
@@ -242,6 +242,7 @@ export default function Index() {
               ticker={ticker} />
           </div>
         </div>
+ 
 
         <div className={styles.pageText}>
           <ListEvents instrument={data.instrument} period={period} periodName={periodName} data={data} />

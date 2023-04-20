@@ -7,6 +7,7 @@ import ContentBox from '../../../components/ContentBox';
 import { eventsName } from '../../../constants/general';
 
 import EchartsEvent from '../../../components/charts/EchartsEvent'; 
+import InfoBoxInstrument from '../../../components/Infobox/Infobox'; 
  
 import styles from './Slug.module.css';
 import stylesNews from '../../../components/news/styleNews.module.css';
@@ -30,7 +31,7 @@ const getEventClassName = (typeId: any) => {
 };
 
 const formatDate = (date: any) => {
-  return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+  return moment(date, 'DD/MM/YYYY').format('DD/MM/YYYY');
 };
 
 const getEventName = (typeId: any) => {
@@ -64,27 +65,32 @@ export default function Slug() {
   console.log(data.instrument);
 
   return (
-    <ContentBox hideBorder={true}>
+    <ContentBox hideBorder={true}> 
+    <InfoBoxInstrument instrument={data.instrument} />
 
-      <div className={styles.title}>{data.data.title}</div>
-      <div className={stylesNews.currentInfo + " " + styles.infoType}>
-        <div className={stylesNews.eventCircle} style={getEventClassName(data.data.typeId)}></div>
-        <div className={stylesNews.dateLineEvent}>{formatDate(data.data.date)}</div>
-        <div className={stylesNews.defaultTypeClassEvent}>{getEventName(data.data.typeId)}</div>
-      </div>
-
-      <div className={styles.shorttext}>{data.data.shorttext}</div>
-      <div className={styles.fulltext}>
-            <div className={styles.grafficNews}>
-              <EchartsEvent 
-               instrument={data.instrument}
-               dataInfo={data.price}
-                period={604800} 
-               />
-              
-            </div>
-            {parse(data.data.fulltext)}
+      <div className={stylesNews.slugContent}> 
+        <div className={stylesNews.title}><h1>{data.data.title}</h1></div>
+        <div className={stylesNews.currentInfo + " " + styles.infoType}>
+          <div className={stylesNews.eventCircle} style={getEventClassName(data.data.typeId)}></div>
+          <div className={stylesNews.dateLineEvent}>{formatDate(data.data.date)}</div>
+          <div className={stylesNews.defaultTypeClassEvent}>{getEventName(data.data.typeId)}</div>
         </div>
+        <div className={stylesNews.shorttext}>
+         <p>  {data.data.shorttext}
+         </p>
+          </div>
+        <div className={styles.fulltext}>
+              <div className={styles.grafficNews}>
+                <EchartsEvent 
+                instrument={data.instrument}
+                dataInfo={data.price}
+                  period={604800} 
+                />
+                
+              </div>
+              {parse(data.data.fulltext)}
+        </div>
+      </div>
     </ContentBox>
   );
 }

@@ -480,7 +480,6 @@ export default function TickerUrlIndex() {
                 <label>Короткое название:</label>
                 <Form.Control
                   id={'text'}
-
                   onChange={(text: any) => changeEventName(text.target.value)}
                   value={getData.title}
                   type="text"
@@ -488,8 +487,6 @@ export default function TickerUrlIndex() {
                   maxLength={250}
                   isInvalid={isInvalidTitle}
                   placeholder="Сплит акций, выход отчётности за квартал, выплата девидендов" />
-
-
               </div>
             </div>
 
