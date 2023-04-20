@@ -94,7 +94,6 @@ export default function Index() {
 
 
   const handleTimeChange = (params: any, typeDateName: any) => {
-    console.log(typeDateName)
     setPeriod(params);
     setPeriodName(typeDateName);
   }
@@ -222,7 +221,7 @@ export default function Index() {
   return (
     <ContentBox 
     title=""
-    pageDescription={data}
+    pageDescription={getDescription(data)}
 
      hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
       <div className={styles.graphicHead}>

@@ -60,7 +60,6 @@ export default function Home(req: any, res: any) {
     ['instruments'],
     // ['instruments',typeId],
     () => {
-      console.log('request 1');
       return instrumentStore.getTrendDashboard(
         { typeId: 0, level: 0 }
       )
@@ -156,16 +155,16 @@ export default function Home(req: any, res: any) {
         <div className={stylesTrend.trendInstrumentName + " " + stylesTrend.trendTableHead} onClick={handleSortByName}><span>Наименование</span></div>
       </div>
       <div className={stylesTrend.trendTableTrTd}>
-        <div className={stylesTrend.trendInstrumentPrice + " " + stylesTrend.trendTableHead} onClick={sortTableCost}><span style={{color: (sortType==='cost')?"#0D6EFD":""}}>Цена</span></div>
+        <div className={stylesTrend.trendInstrumentPrice + " " + stylesTrend.trendTableHead} onClick={sortTableCost}><span style={{"color": (sortType==='cost')?"#0D6EFD":"#000000"}}>Цена</span></div>
       </div>
       <div className={stylesTrend.trendTableTrTd}>
-        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTable5Years}><span  style={{color: (sortType==='years5')?"#0D6EFD":""}}>% 5 лет</span></div>
+        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTable5Years}><span  style={{"color": (sortType==='years5')?"#0D6EFD":"#000000"}}>% 5 лет</span></div>
       </div>
       <div className={stylesTrend.trendTableTrTd}>
-        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTableYears}><span style={{color: (sortType==='years')?"#0D6EFD":""}}>% год</span></div>
+        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTableYears}><span style={{"color": (sortType==='years')?"#0D6EFD":"#000000"}}>% год</span></div>
       </div>
       <div className={stylesTrend.trendTableTrTd}>
-        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTableMonth}><span style={{color: (sortType==='month')?"#0D6EFD":""}}>% месяц</span> </div>
+        <div className={stylesTrend.trendInstrumentPercent + " " + stylesTrend.trendTableHeadPercent} onClick={sortTableMonth}><span style={{"color": (sortType==='month')?"#0D6EFD":""}}>% месяц</span> </div>
       </div>
     </div>
   } 
@@ -188,7 +187,7 @@ export default function Home(req: any, res: any) {
           <div className={stylesTrend.trendTable}>
             <DashboardTrendTitle />
             {trendSures && trendSures.map((item: object, index: number) => (
-              <DashboardTrend index={index} item={item} />
+              <DashboardTrend index={index} item={item} key={index} />
             ))}
           </div>
         </div>

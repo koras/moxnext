@@ -20,7 +20,6 @@ export default function Inspects() {
   };
 
   const { data: rawData, isLoading, error, refetch } = useQuery(['inspects'], () => {
-    console.log('request 1');
     return news.getInspect();
   });
 

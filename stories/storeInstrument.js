@@ -16,7 +16,7 @@ class storeInstrument {
   }
 
   async getDashboard(params) {
-      console.log(params);
+   //   console.log(params);
     let request  = {
       typeId: "all",
       level: 0,
@@ -55,7 +55,7 @@ class storeInstrument {
       //   console.log(instruments);
         return instruments;
       });
-      console.log('result',result);
+    //  console.log('result',result);
       return result;
   }
 
@@ -63,7 +63,7 @@ class storeInstrument {
 
   
   async getTrendDashboard(params) {
-    console.log(params);
+ 
   let request  = {
     typeId: "all",
     level: 0,
@@ -126,7 +126,7 @@ class storeInstrument {
 
 
   getChart(ticker) {
-    console.log(" ticker", ticker);
+   // console.log(" ticker", ticker);
 
     return fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/data/${ticker}`, { headers })
       .then((res) => res.json())

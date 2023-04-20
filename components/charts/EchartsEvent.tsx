@@ -39,7 +39,7 @@ export default function EchartsEvent(props: any) {
   }
 
 
-  console.log('props.dataInfo',props.dataInfo);
+  //console.log('props.dataInfo',props.dataInfo);
 
   const reloadDataChart = () => {
     let dataParam = [];
@@ -101,7 +101,6 @@ export default function EchartsEvent(props: any) {
     setMarkEvents(markEvent)
   
     setXAxis(xAxisTMP);
-  //  console.log(yAxisTMP);
     setYAxis(yAxisTMP)
    // setYAxisLine(yAxisLineTMP)
 

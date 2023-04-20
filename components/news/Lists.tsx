@@ -22,7 +22,7 @@ import { eventsName } from "../../constants/general";
 
 
 export async function checkChart (data: any){
-  console.log('data', data);
+
 
 
   //  return props;
@@ -36,7 +36,6 @@ interface EventType {
 
 export async function classNameEvent(typeId: any) {
   const color: EventType | undefined = eventsName.find(item => item.value === typeId)
-  console.log(color?.color);
   return  {backgroundColor: color?.color };
   
 };
@@ -88,7 +87,7 @@ export default function ListEvents(props: any) {
  const classNameEvent = (typeId: any)=> {
 
     const color: EventType | undefined = eventsName.find(item => item.value === typeId)
-    console.log(color?.color);
+
     return  {backgroundColor: color?.color };
     
   };
