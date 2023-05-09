@@ -64,20 +64,19 @@ export default function ListEvents(props: any) {
     return type?.label;
   };
   const updateNews = () => {
-    let dataNews = [];
+    let dataNews = []; 
 
     if (props.data.price && props.data.price) {
-      // if( props.period !== 0){ 
       var CurrentDate = moment().subtract('seconds', props.period);
       dataNews = props.data.price.filter((item: any) => {
         return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title != ""
       })
-      //   }else{ 
-      //      dataNews = props.data.price.filter((item: any) =>    item.title !="")
-
-      //  }
-    }
-
+      
+      dataNews=  dataNews.sort((a:any, b:any) => {
+           return new Date(b.date) - new Date(a.date); 
+          }
+      )
+    } 
     setNews(dataNews)
   }
   useEffect(() => {

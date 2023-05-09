@@ -207,3 +207,13 @@
         z-index: 200;
     } 
 } 
+
+
+.headerClassMenuMobile {
+  background: #ebebeb;
+  height: 100%;
+  position: fixed;
+  z-index: 99;
+  border-right: 1px solid #eeeeee;
+  width: 50%;
+}

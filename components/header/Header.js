@@ -5,6 +5,7 @@ import Image from "next/image";
 import Search from "./../search/Search";
 import LKHeader from "./../LKHeader/LKHeader";
 import {names} from "./../../constants/general";
+import React, { useState} from "react";
 
 const searchStyle = {
   display: "flex",
@@ -13,7 +14,15 @@ const searchStyle = {
 };
  
 
-function Menu() {
+
+function Menu(props) {
+  const [showMenu, setShowMenu] = useState(false);
+
+   const invokeMenu = ()=> {
+     setShowMenu(!showMenu);
+     props.invokeMenuMobile(!showMenu)
+   }
+  
   const myLoader = ({ src, width, quality, height }) => {
     return `/${src}?w=${width}&h=${height}&q=${quality || 75}`;
   };
@@ -34,7 +43,7 @@ function Menu() {
 
       <div className={style.headMobile}>
         <div className={style.logoMobile}>
-          <div className={style.headMenu}>
+          <div className={style.headMenu}  onClick={()=>invokeMenu()} >
             <button
                 className={style.header__burger}
                 type="button"
@@ -52,9 +61,7 @@ function Menu() {
           <div className={style.headLink}> 
             <Link href="/">{names.siteName}</Link>
           </div>
-
         </div>
-         
         <div className={style.headLKMobile}>
           <LKHeader />
         </div>

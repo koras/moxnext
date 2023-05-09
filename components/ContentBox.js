@@ -3,15 +3,22 @@
 //   Link
 // } from "react-router-dom";
 import Menu from "./../components/menu/Menu";
+import MenuMobile from "./../components/menu/MenuMobile";
+ 
 import Header from "./header/Header";
 import Head from 'next/head'
 import styles from "./styleContent.module.css";
 import {notice} from "./../constants/general";
+import React, { useState} from "react";
 
  
 
 
 function ContentBox({ content="", children, ...params }) {
+
+  
+  const [showMenu, setShowMenu] = useState(false);
+
   let className = styles.boxContent;
   if (params.hideBorder) { 
     className += " "+ styles.boxContentHide;
@@ -36,6 +43,11 @@ function ContentBox({ content="", children, ...params }) {
     return params.pageTitle ? params.pageTitle  : "";
   }
 
+  const  invokeMenuMobile = (status)=> {
+   console.log(status)
+   setShowMenu(status);
+  }
+
   const  getDescriptionSeo = ()=> {
     return params.pageDescription ? params.pageDescription  : "";
   }
@@ -49,11 +61,14 @@ function ContentBox({ content="", children, ...params }) {
             <link rel="icon" href="/favicon.ico" />
         </Head>
       <div className={styles.headerClass}>
-        <Header />
+        <Header invokeMenuMobile={(status)=>invokeMenuMobile(status)}/>
       </div>
       <div className={styles.headerClassMobile}>
      
       </div>
+       
+     {showMenu ? <div className={styles.headerClassMenuMobile}><MenuMobile /></div> : <></>}  
+       
       <div className={styles.contentClass}>
         <div className={styles.mainClass}>
           <div className={styles.menuClass}>

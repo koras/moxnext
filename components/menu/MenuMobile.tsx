@@ -9,10 +9,10 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Link from 'next/link'
 {/* <button onClick={() => signOut()}>Sign out</button> */}
 
-function Menu() { 
+function MenuMobile() { 
   return ( 
     <div> 
-    <div className={style.menu}> 
+    <div className={style.menuMobile}> 
       <ul>
           <li>
             <Link href="/dashboard">Анализировать</Link>
@@ -37,4 +37,4 @@ function Menu() {
   );
 }
 
-export default Menu;
+export default MenuMobile;
