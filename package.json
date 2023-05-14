@@ -59,9 +59,13 @@
     "react-query": "^3.39.2",
     "react-router-dom": "^6.6.1",
     "react-select": "^5.7.0",
+    "react-spring": "^9.7.1",
+    "react-toastify": "^9.1.2",
     "react-yandex-metrika": "^2.6.0",
     "reactjs-popup": "^2.0.5",
-    "typescript": "4.9.4"
+    "toasted-notes": "^3.2.0",
+    "typescript": "4.9.4",
+    "zustand": "^4.3.8"
   },
   "resolutions": {
     "react": "18.2.0",

@@ -11,7 +11,12 @@ class MyDocument extends Document<MyDocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
      // замените на ваш идентификатор счетчика
-    const metrikaScript = `
+     let metrikaScript = "";
+
+    if(process.env.NEXT_PUBLIC_MODE === "DEV"){
+       metrikaScript = `(function (){})`;
+    }else{ 
+     metrikaScript = `
       (function (m, e, t, r, i, k, a) {
         m[i] =
           m[i] ||
@@ -33,6 +38,9 @@ class MyDocument extends Document<MyDocumentProps> {
         webvisor: true,
       });
     `;
+    }
+
+
     return {
       ...initialProps,
       metrikaScript,

@@ -72,3 +72,13 @@
 .readOnly input:read-only {
   background: #e5e5e5;
 }
+.notificationContainer {
+  position: relative;
+  z-index: 100;
+}
+.notificationContainerChild {
+  position: fixed;
+  display: block; 
+  top: 5px;
+  right: 5px;
+}

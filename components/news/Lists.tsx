@@ -2,23 +2,16 @@ import Link from 'next/link'
 
 //import "./styleNews.css";
 import { useRouter } from 'next/navigation';
-
 import moment from 'moment';
 import style from './styleNews.module.css';
 
-//import { useRouter } from 'next/router'
 import { observer } from "mobx-react-lite";
-
 import Button from "@mui/material/Button";
 
 import React, { useState, useEffect } from "react";
-
+import { useSession, getSession } from "next-auth/react"
 
 import { eventsName } from "../../constants/general";
-
- 
-
-
 
 
 export async function checkChart (data: any){
@@ -42,7 +35,7 @@ export async function classNameEvent(typeId: any) {
 
 export default function ListEvents(props: any) {
 
-   
+  const { data: session } = useSession();
 
   const changeDate = (date: any)=>{
     return moment(date, 'YYYY-MM-DD').format("DD/MM/YYYY")
@@ -72,7 +65,7 @@ export default function ListEvents(props: any) {
         return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title != ""
       })
       
-      dataNews=  dataNews.sort((a:any, b:any) => {
+      dataNews=  dataNews.sort((a:string, b:string) => {
            return new Date(b.date) - new Date(a.date); 
           }
       )
@@ -91,7 +84,15 @@ export default function ListEvents(props: any) {
     
   };
 
-  //const navigate = useNavigate();
+  const editor = () =>{
+    if (session ) {
+        return  <Button size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>;
+      }else{
+        return <></>;
+      }
+   }
+
+  
   const router = useRouter();
   const getUrlEdit = (hash: string) => {
     router.push("/event/change/" + hash)
@@ -117,7 +118,7 @@ export default function ListEvents(props: any) {
         </div>
         <div className="news-item-head__text">{props.item.shorttext}</div>
         <div className={style.controll}>
-          <Button size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>
+          {editor()}
         </div>
       </div>
     );

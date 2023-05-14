@@ -217,3 +217,8 @@
   border-right: 1px solid #eeeeee;
   width: 50%;
 }
+.notificationContainer {
+  position: fixed;
+  z-index: 100;
+  right: 0;
+}

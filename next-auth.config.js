@@ -122,7 +122,6 @@ import axios from 'react-axios'
         return baseUrl
       },
       async session({ session, user, token }) {
-  
         if (!session?.user) {
           return session;
         }

@@ -5,9 +5,7 @@ import Head from 'next/head'
 import Popup from 'reactjs-popup';
 import Form from "react-bootstrap/Form";
 import Select from "react-select";
-import moment from 'moment';
-//  
-
+import moment from 'moment'; 
 
 import 'moment/locale/ru';
 
@@ -22,11 +20,19 @@ import { eventsName } from "../../../constants/general";
 
 import ContentBox from "../../../components/ContentBox";
 import AddEvent from "../../../components/modals/AddEvent";
+import Notification from "../../../components/notification/Notification";
+
+ 
+import  {notificationStore}  from "../../../stories/notificationStore";
+
+ 
 
 
 import { useRouter } from 'next/router'
 
 export default function TickerUrlIndex() {
+
+  const addNotification = notificationStore((state:any) => state.addNotifications);
 
   const [isload, setLoad] = useState(false);
   const [isInvalidTitle, setIsInvalidTitle] = useState(false);
@@ -41,6 +47,7 @@ export default function TickerUrlIndex() {
   const [open, setOpen] = useState(false);
   const [fulltext, setFullText] = useState("");
   const [title, setTitle] = useState("События графика");
+  const [errors, setErrors] = useState(Array);
 
 
   interface InfoType {
@@ -293,6 +300,8 @@ export default function TickerUrlIndex() {
 
 
   const sendEvent = async () => { 
+
+    setErrors([]);
     const current = textareaEl?.current?.editor?.container;
 
     if(current && current.style){ 
@@ -317,10 +326,7 @@ export default function TickerUrlIndex() {
     if (validation()) {
       //   const hash = news.saveEvent(news.eventNew);
       console.log('getData')
-
- 
       console.log(getData,instrument)
-
       const responses = await fetch(process.env.NEXT_PUBLIC_SERVER_URL + `/event/save`, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
       //  mode: 'cors', // no-cors, *cors, same-origin
@@ -334,7 +340,30 @@ export default function TickerUrlIndex() {
       //  redirect: 'follow', // manual, *follow, error
        // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(getData) // body data type must match "Content-Type" header
-      }) 
+      })
+      .then((response) => {
+
+        return response.json();
+      }
+      )
+    //  .then((json) => setData(json))
+      .catch((error) => {
+        console.log( 'error 1');
+        console.log( error);
+      }
+      
+    //  setError(error)
+      );
+
+
+
+
+
+      // responses.then((json:any) => setData(json))
+      // .catch((error:any) => {
+      //   console.log( 'error');
+      //   console.log( error);
+      // })
       
      
       if (responses.ok) { // если HTTP-статус в диапазоне 200-299
@@ -345,11 +374,20 @@ export default function TickerUrlIndex() {
         setServerResponse(json);
         setOpen(true)
       } else {
-        alert("Ошибка HTTP: " + responses.status);
-    
         
-      } 
+        console.log("Ошибка HTTP: " );
+        console.log( responses.errors);
 
+        let dataErrors = responses.errors.map(item=>{ return item.message });
+        setErrors(dataErrors);
+
+        addNotification({ messages: dataErrors, type: 'error' });
+  
+        setErrors(responses.errors);
+    //    console.log( responses.data.message);
+    //    console.log( responses.data.message);
+      } 
+      
 
 
 
@@ -417,8 +455,18 @@ export default function TickerUrlIndex() {
   if (router.isReady && isload) {
 //    open={open}
     return (
-      <>
+      <> 
+        <div className={styles.notificationContainer}> 
+          <div className={styles.notificationContainerChild}> 
+            {errors && errors.map((item: any, i: any) => (
+              <Notification key={i} item={item}  message={item.message} />
+            ))}
+          </div>
+        </div>
         <ContentBox title={title} ticker="">
+        
+       
+
           <Popup open={open}
             closeOnDocumentClick={false}
             onClose={closeModal}>

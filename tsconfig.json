@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "stories/bitcoinData.js", "stories/store.js", "stories/storeNewsInspect.js", "stories/storeNews.js", "stories/storeInstrument.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "stories/bitcoinData.js", "stories/store.js", "stories/storeNewsInspect.js", "stories/storeNews.js", "stories/storeInstrument.js", "components/ContentBox.js"],
   "exclude": ["node_modules"]
 }

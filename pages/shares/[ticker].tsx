@@ -2,30 +2,31 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import React, { useRef, useState, useEffect, useReducer } from 'react';
+import { useSession, getSession } from "next-auth/react"
 
 import styles from './style.module.css'
 import stylesHome from './../../components/styleContent.module.css'
 
 import Tabs from "../../components/tabs/index";
-import InfoBoxInstrument from '../../components/Infobox/Infobox'; 
+import InfoBoxInstrument from '../../components/Infobox/Infobox';
 
 import Button from "@mui/material/Button";
 
 import { instrumentStore } from "../../stories/storeInstrument";
 import moment from 'moment';
 
-import ContentBox from "../../components/ContentBox";
-//import { LineTicker } from "../../components/charts/LineEvents";
+import ContentBox from "../../components/ContentBox"; 
 import { EchartsInfo } from "../../components/charts/EchartsLineEvents";
 
 
 
 import ListEvents from "../../components/news/Lists";
 
-import { eventsName } from "../../constants/general";
 
 
 import { useQuery, useQueries } from 'react-query'
+
+import  {notificationStore}  from "../../stories/notificationStore";
 
 
 import {
@@ -35,6 +36,8 @@ import {
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Index() {
+
+  const addNotification:any = notificationStore((state:any) => state.addNotifications);
 
   const periods = {
     all: 31556926000,
@@ -55,18 +58,25 @@ export default function Index() {
     shorttext: string;
     fulltext: string;
   }
+   //const {increment} = notificationStore.increment;
 
 
   const { ticker } = router.query
+
   const [instrument, setInstrument] = useState({});
   const [period, setPeriod] = useState(periods.all);
-  const [periodName, setPeriodName] = useState('all'); 
+  const [periodName, setPeriodName] = useState('all');
+  const { data: session } = useSession();
 
   const [news, setNews] = useState<string[]>([]);
-  const chartsRef: any = useRef(null);
+  const contentBoxRef: any = useRef(null);
 
-  const getUrlEdit = (ticker: string) => {
-    router.push("/event/create/" + ticker + "/")
+  const getUrlEdit = (ticker: string) => { 
+    if (session ) {
+      router.push("/event/create/" + ticker + "/") 
+    } else { 
+      addNotification({ messages: ['Необходимо залогиниться на сайте'], type: 'error' });
+    }
   };
 
 
@@ -110,7 +120,7 @@ export default function Index() {
   };
 
   const periodAll = moment().subtract('seconds', periods.all);
-   
+
   const periodYear5 = moment().subtract('seconds', periods.year5);
   const periodYear = moment().subtract('seconds', periods.year);
   const periodMonth = moment().subtract('seconds', periods.month);
@@ -120,7 +130,7 @@ export default function Index() {
 
   // надо определить сколько табов показывать в инструменете
   //  for (const tab of data.price) {
-  if( data.price){ 
+  if (data.price) {
     tabTime.all = data.price.filter((item: any) => {
       return moment(item.date, 'YYYY-MM-DD').isAfter(periodAll)
     })
@@ -140,7 +150,7 @@ export default function Index() {
 
   }
 
- 
+
 
   const getPercent = (_priceDate: any, _priceCurrent: any) => {
     if (_priceCurrent >= _priceDate) {
@@ -162,11 +172,11 @@ export default function Index() {
 
 
 
-  const getNameInstrument = (data:any) => {
-      if(data && data.instrument && data.instrument.instrument_name){
-        return data.instrument.instrument_name;
-      }
-      return '';
+  const getNameInstrument = (data: any) => {
+    if (data && data.instrument && data.instrument.instrument_name) {
+      return data.instrument.instrument_name;
+    }
+    return '';
   }
 
 
@@ -199,30 +209,32 @@ export default function Index() {
 
 
 
-  if(data.instrument && data.instrument.price && data.price ){ 
+  if (data.instrument && data.instrument.price && data.price) {
     getDateState(data.price, data.instrument.price)
   }
 
-  const getPageTitle = (instrument:any) => {
-    return  "График событий акций: " +instrument.instrument_full_name
+  const getPageTitle = (instrument: any) => {
+    return "График событий акций: " + instrument.instrument_full_name
   }
-  const getDescription = (instrument:any) => {
-    if(data && data.instrument && data.instrument.description){
+  const getDescription = (instrument: any) => {
+    if (data && data.instrument && data.instrument.description) {
       return data.instrument.description;
     }
-    
-    return  " "
+
+    return " "
   }
 
   return (
-    <ContentBox 
-    title=""
-    pageDescription={getDescription(data.instrument)}
-     hideBorder={true}  pageTitle={getPageTitle(data.instrument)}>
+    <ContentBox
+      title=""
+      ref={contentBoxRef}
+      pageDescription={getDescription(data.instrument)}
+      hideBorder={true}
+      pageTitle={getPageTitle(data.instrument)}>
 
-{/* 
+      {/* 
 <InfoBoxInstrument instrument={data.instrument} /> */}
-       
+
 
       <div className={styles.graphicHead}>
         <div className={styles.title}>{getNameInstrument(data)} : график событий</div>
@@ -238,11 +250,11 @@ export default function Index() {
               instrument={data.instrument}
               dataInfo={data}
               period={period}
-              periodName={periodName} 
+              periodName={periodName}
               ticker={ticker} />
           </div>
         </div>
- 
+
 
         <div className={styles.pageText}>
           <ListEvents instrument={data.instrument} period={period} periodName={periodName} data={data} />
