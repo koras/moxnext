@@ -366,20 +366,27 @@ export default function TickerUrlIndex() {
       // })
       
      
-      if (responses.ok) { // если HTTP-статус в диапазоне 200-299
+      if (responses.ok || responses.hash) { // если HTTP-статус в диапазоне 200-299
         // получаем тело ответа (см. про этот метод ниже)
+        if( responses.hash){
+
+          setServerResponse(responses);
+          setOpen(true)
+          return;
+        }
         let json = await responses.json();
      //   console.log(json);
       //  return json;
         setServerResponse(json);
         setOpen(true)
       } else {
-        
+      
         console.log("Ошибка HTTP: " );
+        console.log( responses);
         console.log( responses.errors);
 
         let dataErrors = responses.errors.map((item:any)=>{ return item.message });
-        setErrors(dataErrors);
+       // setErrors(dataErrors);
 
         addNotification({ messages: dataErrors, type: 'error' });
   

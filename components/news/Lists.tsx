@@ -84,13 +84,7 @@ export default function ListEvents(props: any) {
     
   };
 
-  const editor = () =>{
-    if (session ) {
-        return  <Button size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>;
-      }else{
-        return <></>;
-      }
-   }
+ 
 
   
   const router = useRouter();
@@ -118,7 +112,7 @@ export default function ListEvents(props: any) {
         </div>
         <div className="news-item-head__text">{props.item.shorttext}</div>
         <div className={style.controll}>
-          {editor()}
+          {(session )?<Button size="small" onClick={() => getUrlEdit(props.item.hash)} variant="outlined">Изменить</Button>:<></>}
         </div>
       </div>
     );
