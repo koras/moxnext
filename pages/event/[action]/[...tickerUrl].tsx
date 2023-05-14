@@ -378,7 +378,7 @@ export default function TickerUrlIndex() {
         console.log("Ошибка HTTP: " );
         console.log( responses.errors);
 
-        let dataErrors = responses.errors.map(item=>{ return item.message });
+        let dataErrors = responses.errors.map((item:any)=>{ return item.message });
         setErrors(dataErrors);
 
         addNotification({ messages: dataErrors, type: 'error' });
@@ -456,13 +456,13 @@ export default function TickerUrlIndex() {
 //    open={open}
     return (
       <> 
-        <div className={styles.notificationContainer}> 
+        {/* <div className={styles.notificationContainer}> 
           <div className={styles.notificationContainerChild}> 
             {errors && errors.map((item: any, i: any) => (
               <Notification key={i} item={item}  message={item.message} />
             ))}
           </div>
-        </div>
+        </div> */}
         <ContentBox title={title} ticker="">
         
        

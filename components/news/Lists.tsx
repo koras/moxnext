@@ -65,8 +65,8 @@ export default function ListEvents(props: any) {
         return moment(item.date, 'YYYY-MM-DD').isAfter(CurrentDate) && item.title != ""
       })
       
-      dataNews=  dataNews.sort((a:string, b:string) => {
-           return new Date(b.date) - new Date(a.date); 
+      dataNews=  dataNews.sort((a:any, b:any) => {
+        return new Date(b.date).toISOString() > new Date(a.date).toISOString() ? 1 : -1;
           }
       )
     } 
