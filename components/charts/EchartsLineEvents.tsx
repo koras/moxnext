@@ -242,8 +242,49 @@ export function EchartsInfo(props: any) {
             width: 1
           }
         },
+
+        axisPointer: {
+          show: true,
+          label: {
+            formatter: function(params:any) { 
+
+       //       console.log('params333 ', params  );
+              if(params.seriesData && params.seriesData[0] && params.seriesData[0].dataIndex){ 
+                const index = params.seriesData[0].dataIndex;
+              return props.dataInfo.price[index].date ;
+              }
+           //   return null;
+              return 'X: ' + params;
+            }
+          }
+        }
       },
       yAxis: {
+        axisPointer: {
+          animation: true,
+          show: true,
+          label: {
+            formatter: function(params:any)  {
+              let num = params.value;
+              let min = (num/100*10);
+              min = num - min;
+             
+              if(min>1){
+                  min =  +min.toFixed(2);
+              }
+   
+              if(min>10){
+                 min =  +min.toFixed(1);
+             }
+   
+             if(min>100){
+               min = parseInt(min.toString());
+             }
+
+              return '' + min + '₽';
+            }
+          }
+        },
         min: function (value:any) {
           let min = (value.min/100*10);
            min = value.min - min;
@@ -372,22 +413,32 @@ export function EchartsInfo(props: any) {
             opacity: 0.7,
           },
           markPoint: {
+            width: 100,
+          
             //    silent :true,
-            label: {
-              formatter: (param: any) => {
-                // return "asdfasdf";
-                //    return param != null ? Math.round(param.value) + '' : '';
-              }
-            },
+            // label: {
+            //   formatter: (param: any) => {
+            //     // return "asdfasdf";
+            //     //    return param != null ? Math.round(param.value) + '' : '';
+            //   }
+            // },
+            symbol: 'circle',
             data: markEvents,
+            symbolSize: 0,
             tooltip: {
               formatter: (param: any) => {
-                return param.name + '<br>' + (param.data.coord || '');
-              }
+                console.log('param.data',param.data)
+                let data =  param.name + '<br>' + ("<span  style='color:#00131c;font-weight: 700;'>"+param.data.yAxis + "₽</span>" || '');
+
+                return '<div style="width: 200px; ; word-wrap: break-word;white-space: normal; display:block">' + data + '</div>';
+              },
+            
+              borderWidth:2,
             }
           },
           smooth: true,
         },
+        
       ],
     };
     return data;
