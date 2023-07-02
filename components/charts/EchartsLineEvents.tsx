@@ -12,6 +12,7 @@ export function EchartsInfo(props: any) {
   let markEvent: object[] = [];
   const [xAxis, setXAxis] = useState<any | null>(null);
   const [yAxis, setYAxis] = useState<any | null>(null);
+  const [xAxisLineDate, setXAxisLineDate] = useState<any | null>(null);
  // const [ yAxisLine, setYAxisLine] = useState<any | null>(null);
 
   
@@ -20,6 +21,7 @@ export function EchartsInfo(props: any) {
   
   let xAxisTMP: string[] = [];
   let yAxisTMP: string[] = [];
+  let xLineDate : string[] = [];
  // let yAxisLineTMP: string[] = [];
    
   const eChartsRef: any = useRef<ReactECharts>();
@@ -42,7 +44,8 @@ export function EchartsInfo(props: any) {
           })
     }
     xAxisTMP = [];
-    yAxisTMP = [];
+    xLineDate = [];
+    yAxisTMP = []; 
     markEvent = [];
   //  yAxisLineTMP = [];
     // старая дата
@@ -87,6 +90,8 @@ export function EchartsInfo(props: any) {
         }else{  
           yAxisTMP.push(dt);
         }
+        
+        xLineDate.push(moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
        // console.log(dtOld, dt);
         dtOld = dt;
 
@@ -96,8 +101,9 @@ export function EchartsInfo(props: any) {
         if(dtOld === dt){
           yAxisTMP.push(" ");
         }else{  
-          yAxisTMP.push(dt);
+          yAxisTMP.push(dt); 
         }
+        xLineDate.push(moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
        // console.log(dtOld, dt);
         dtOld = dt;
 
@@ -111,8 +117,10 @@ export function EchartsInfo(props: any) {
             yAxisTMP.push(dtMonth);
           }else{
             yAxisTMP.push(dtMonth+"/"+dtYears);
-          }
+          } 
         }
+        xLineDate.push(moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
        dtOld = dtYears;
        dtOldMonth = dtMonth;
 
@@ -135,6 +143,10 @@ export function EchartsInfo(props: any) {
        dtOld = dtYears;
        dtOldMonth = dtMonth;
        dtOldDay = dtDay;
+       xLineDate.push(moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
+
+
       } else if(props.periodName === "week"){ 
         const dtYears = moment(item.date, 'YYYY-MM-DD').format('YY');
         const dtMonth = moment(item.date, 'YYYY-MM-DD').format('MMMM');
@@ -149,9 +161,10 @@ export function EchartsInfo(props: any) {
     setMarkEvents(markEvent)
   
     setXAxis(xAxisTMP);
-  //  console.log(yAxisTMP);
-    setYAxis(yAxisTMP)
-   // setYAxisLine(yAxisLineTMP)
+    
+    setYAxis(yAxisTMP);
+    console.log(xLineDate);
+    setXAxisLineDate(xLineDate); 
 
 
     if(props.periodName === "all"){ 
@@ -205,18 +218,25 @@ export function EchartsInfo(props: any) {
         width: '100%'
       },
       title: false,
-      tooltip: {
-
+      tooltip: { 
+        trigger: 'item',
+        formatter: function(params:any) {
+       //   console.log(params);
+          if (params.componentType === 'markPoint') {
+            // Вернуть форматированный тултип только для markPoint
+            return 'Ваш формат для markPoint tooltip';
+          } else {
+            // Вернуть пустую строку для остальных элементов
+            return '';
+          }
+        }
+    //    trigger: 'none', 
       },
       xAxis: {
-        animation: false,
-        triggerEvent: false,
-        silent: false,
-        showGrid: true,
         data: yAxis,
-        nameGap: 0,
-        axisTick: {
-          show: true, //为 false 时隐藏
+     //   nameGap: 0,
+   //     trigger: 'axis',
+        axisTick: {  
           alignWithLabel: true,
           interval: 0, //可以设置成 0 强制显示所有tick, 不是 label
           length: 1, // tick 长度, 默认5
@@ -226,6 +246,7 @@ export function EchartsInfo(props: any) {
           }
         },
         axisLabel: {
+          showMaxLabel: true,
           //x轴上标签
           show: true,
           interval: 0,
@@ -244,23 +265,59 @@ export function EchartsInfo(props: any) {
         },
 
         axisPointer: {
+          showMaxLabel: true,
+          axis: 'all',
+      //    status :true,
           show: true,
+        // type: 'none',  
+         // show:true,
           label: {
-            formatter: function(params:any) { 
+            formatter: function(params:any) {  
 
-       //       console.log('params333 ', params  );
-              if(params.seriesData && params.seriesData[0] && params.seriesData[0].dataIndex){ 
+            //  console.log('-------',params);
+              // if(params.seriesData && params.seriesData[0] && params.seriesData[0].name ){
+
+              //   console.log('-------',params );
+              //   return params.seriesData[0].name ;
+              // }  
+              if(params.seriesData && params.seriesData[0] && params.seriesData[0].dataIndex ){
                 const index = params.seriesData[0].dataIndex;
-              return props.dataInfo.price[index].date ;
+             //   console.log('++',params.seriesData[0].dataIndex      ,xAxisLineDate[index]        );
+                return xAxisLineDate[index] ;
+              }else{
+                if( params.axisIndex ){
+                  return xAxisLineDate[params.axisIndex] ;
+                }
+                console.log('----',params ,params.axisIndex,xAxisLineDate[params.axisIndex]   );
+                return "--";
+                return xAxisLineDate[params.axisIndex] ;
               }
+            //  console.log(params,props);
+        //
+           //   if(params.seriesData && params.seriesData[0] && params.seriesData[0].dataIndex){ 
+             //   const index = params.seriesData[0].dataIndex;
+            //    console.log('index',index);
+             
+          //    }
+
            //   return null;
-              return 'X: ' + params;
+           //   return 'X: ' + params;
             }
           }
-        }
+        },
+      //  tooltip: { 
+          //  trigger: 'none', 
+        //    },
+        
       },
       yAxis: {
+       // tooltip: { 
+       //   trigger: 'none', 
+        //  },
+        type: 'value',
         axisPointer: {
+          
+       //   type: 'none',
           animation: true,
           show: true,
           label: {
@@ -315,57 +372,28 @@ export function EchartsInfo(props: any) {
         return  max ;
       },
       //  boundaryGap: ['20%', '20%'],
-        animation: false,
-        triggerEvent: false,
+        animation: true,
+        triggerEvent: true,
         silent: false,
         showGrid: true,
       //  data: yAxisLine,  
         nameLocation : 'middle',
         nameGap: 0,
         axisTick: {
-          // show: true, //为 false 时隐藏
-          // alignWithLabel: true,
-          // interval: 10, //可以设置成 0 强制显示所有tick, 不是 label
-          // length: 1, // tick 长度, 默认5
-          // lineStyle: {
-          //   color: 'rgb(106,104,103)',
-          //   width: 12 //tick 宽度
-          // }
         },
         axisLabel: {
-          //x轴上标签
-        //  verticalAlign: 'bottom',
-
-         // show: true,
-          //interval: 100,
-         // rotate: rotate,
-        //  width: 1, 
-         // shadowBlur: 3,
           hideOverlap: true
         },
-        // minorTick: {
-        //   show: true
-        // },
         minorSplitLine: {
           show: true
         }, 
-
-        // axisLine: {
-        //   //轴线
-        //   show: true, //false 时隐藏
-        //   lineStyle: {
-        //     // текст
-        //     color: 'rgb(106,104,103)', 
-        //     width: 1
-        //   }
-        // },
       },
       series: [
         {
           animation: false,
           type: 'line',
           data: xAxis,
-          triggerLineEvent: true,
+          triggerLineEvent: false,
           symbol: 'none',
 
           silent: false,
@@ -384,10 +412,7 @@ export function EchartsInfo(props: any) {
               show: true
             }
           },
-
-
           areaStyle: {
-
             color: 'rgba(225,236,230,1)',
             opacity: 0.4,
           },
@@ -409,34 +434,38 @@ export function EchartsInfo(props: any) {
           },
           itemStyle: {
 
-            color: '#0770FF',
-            opacity: 0.7,
+         //   color: '#0770FF',
+         //   opacity: 0.7,
           },
           markPoint: {
             width: 100,
-          
-            //    silent :true,
-            // label: {
-            //   formatter: (param: any) => {
-            //     // return "asdfasdf";
-            //     //    return param != null ? Math.round(param.value) + '' : '';
-            //   }
-            // },
-            symbol: 'circle',
+          //  trigger: 'line', 
+           // symbol: 'circle',
             data: markEvents,
-            symbolSize: 0,
+         //   symbolSize: 0,
             tooltip: {
               formatter: (param: any) => {
-                console.log('param.data',param.data)
-                let data =  param.name + '<br>' + ("<span  style='color:#00131c;font-weight: 700;'>"+param.data.yAxis + "₽</span>" || '');
+                if(param.componentType ==  "markPoint"){ 
 
-                return '<div style="width: 200px; ; word-wrap: break-word;white-space: normal; display:block">' + data + '</div>';
+                  console.log(param.data);
+
+                  const index = param.data.xAxis;
+                  
+                       let date =  xAxisLineDate[index] ;
+      // xLineDate.push(moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
+                let data =  `${param.name}<br><span  style="color:#00131c;font-weight: 700;">${param.data.yAxis}₽</span><br><span  style="color:#00131c;font-weight: 700;">${date} </span>` || '';
+
+                return `<div style="width: 200px; ; word-wrap: break-word;white-space: normal; display:block">${data}</div>`;
+              }
+              return '';
               },
-            
+            //  trigger: 'item',
               borderWidth:2,
             }
           },
-          smooth: true,
+          smooth: false,
+          
         },
         
       ],
